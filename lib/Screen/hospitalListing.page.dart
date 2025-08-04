@@ -69,7 +69,7 @@ class _HospitalListingPageState extends State<HospitalListingPage> {
       "ammount": "\$20–\$45",
     },
     {
-      "image": "assets/h1.png",
+      "image": "assets/h2.png",
       "address": "R3, Accra",
       "reting": "4.4/5",
       "name": "Korle Bu Teaching Hospital",
@@ -210,38 +210,36 @@ class _HospitalListingPageState extends State<HospitalListingPage> {
                                     ],
                                   ),
                                 ),
-                                Flexible(
-                                  child: Container(
-                                    margin: EdgeInsets.only(left: 6.w),
-                                    padding: EdgeInsets.only(
-                                      left: 5.w,
-                                      right: 5.w,
-                                      top: 5.h,
-                                      bottom: 5.h,
-                                    ),
-                                    decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(40.r),
-                                      color: Color.fromARGB(25, 255, 191, 9),
-                                    ),
-                                    child: Row(
-                                      children: [
-                                        Icon(
-                                          Icons.star,
+                                Container(
+                                  margin: EdgeInsets.only(left: 6.w),
+                                  padding: EdgeInsets.only(
+                                    left: 5.w,
+                                    right: 5.w,
+                                    top: 5.h,
+                                    bottom: 5.h,
+                                  ),
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(40.r),
+                                    color: Color.fromARGB(25, 255, 191, 9),
+                                  ),
+                                  child: Row(
+                                    children: [
+                                      Icon(
+                                        Icons.star,
+                                        color: Color(0xFFFFBF00),
+                                        size: 15.sp,
+                                      ),
+                                      Text(
+                                        hospitalList[index]['reting']
+                                            .toString(),
+                                        style: GoogleFonts.poppins(
+                                          fontSize: 12.sp,
+                                          fontWeight: FontWeight.w500,
                                           color: Color(0xFFFFBF00),
-                                          size: 15.sp,
+                                          letterSpacing: -0.3,
                                         ),
-                                        Text(
-                                          hospitalList[index]['reting']
-                                              .toString(),
-                                          style: GoogleFonts.poppins(
-                                            fontSize: 12.sp,
-                                            fontWeight: FontWeight.w500,
-                                            color: Color(0xFFFFBF00),
-                                            letterSpacing: -0.3,
-                                          ),
-                                        ),
-                                      ],
-                                    ),
+                                      ),
+                                    ],
                                   ),
                                 ),
                               ],
