@@ -17,204 +17,259 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       key: _scaffoldKey,
-      drawer: Drawer(
-        child: Stack(
-          children: [
-            Image.asset(
-              "assets/drawerimage.png",
-              width: MediaQuery.of(context).size.width,
-              height: MediaQuery.of(context).size.height,
-              fit: BoxFit.fill,
-            ),
-            Align(
-              alignment: Alignment.topLeft,
-              child: Padding(
-                padding: EdgeInsets.only(left: 20.w, right: 20.w, top: 45.h),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      "SiHHA",
-                      style: GoogleFonts.poppins(
-                        fontSize: 36.sp,
-                        fontWeight: FontWeight.w500,
-                        color: Colors.white,
-                      ),
-                    ),
-                    Divider(color: Colors.white38),
-                    SizedBox(height: 20.h),
-                    Text(
-                      "MAIN MENU",
-                      style: GoogleFonts.poppins(
-                        fontSize: 14.sp,
-                        fontWeight: FontWeight.w500,
-                        color: Color(0xFFB0BABF),
-                        letterSpacing: 1.5,
-                      ),
-                    ),
-                    SizedBox(height: 10.h),
-                    ListTile(
-                      contentPadding: EdgeInsets.zero,
-                      leading: Icon(
-                        Icons.home_outlined,
-                        size: 30.sp,
-                        color: Colors.white60,
-                      ),
-                      title: Text(
-                        "Home",
+      drawer: SizedBox(
+        width: 280.w,
+        child: Drawer(
+          child: Stack(
+            children: [
+              Image.asset(
+                "assets/drawerimage.png",
+                width: 280.w,
+                height: MediaQuery.of(context).size.height,
+                fit: BoxFit.fill,
+              ),
+              Align(
+                alignment: Alignment.topLeft,
+                child: Padding(
+                  padding: EdgeInsets.only(left: 20.w, right: 20.w, top: 30.h),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        "SiHHA",
                         style: GoogleFonts.poppins(
-                          fontSize: 18.sp,
+                          fontSize: 36.sp,
                           fontWeight: FontWeight.w500,
-                          color: Color(0xFFB0BABF),
+                          color: Colors.white,
                         ),
                       ),
-                    ),
-                    ListTile(
-                      contentPadding: EdgeInsets.zero,
-                      leading: Icon(
-                        Icons.calendar_today_outlined,
-                        size: 28.sp,
-                        color: Colors.white60,
-                      ),
-                      title: Text(
-                        "Appointments",
+                      Divider(color: Colors.white38),
+                      SizedBox(height: 20.h),
+                      Text(
+                        "MAIN MENU",
                         style: GoogleFonts.poppins(
-                          fontSize: 18.sp,
+                          fontSize: 14.sp,
                           fontWeight: FontWeight.w500,
                           color: Color(0xFFB0BABF),
+                          letterSpacing: 1.5,
                         ),
                       ),
-                    ),
-                    ListTile(
-                      contentPadding: EdgeInsets.zero,
-                      leading: Icon(
-                        Icons.description,
-                        size: 30.sp,
-                        color: Colors.white60,
-                      ),
-                      title: Text(
-                        "Insurance",
-                        style: GoogleFonts.poppins(
-                          fontSize: 18.sp,
-                          fontWeight: FontWeight.w500,
-                          color: Color(0xFFB0BABF),
+                      SizedBox(height: 10.h),
+                      ListTile(
+                        dense: true,
+                        contentPadding: EdgeInsets.zero,
+                        leading: Icon(
+                          Icons.home_outlined,
+                          size: 30.sp,
+                          color: Colors.white60,
+                        ),
+                        title: Text(
+                          "Home",
+                          style: GoogleFonts.poppins(
+                            fontSize: 18.sp,
+                            fontWeight: FontWeight.w500,
+                            color: Color(0xFFB0BABF),
+                          ),
                         ),
                       ),
-                    ),
-                    ListTile(
-                      contentPadding: EdgeInsets.zero,
-                      leading: Icon(
-                        Icons.person_outline,
-                        size: 30.sp,
-                        color: Colors.white60,
-                      ),
-                      title: Text(
-                        "Insurance",
-                        style: GoogleFonts.poppins(
-                          fontSize: 18.sp,
-                          fontWeight: FontWeight.w500,
-                          color: Color(0xFFB0BABF),
+                      ListTile(
+                        dense: true,
+                        contentPadding: EdgeInsets.zero,
+                        leading: Icon(
+                          Icons.calendar_today_outlined,
+                          size: 28.sp,
+                          color: Colors.white60,
+                        ),
+                        title: Text(
+                          "Appointments",
+                          style: GoogleFonts.poppins(
+                            fontSize: 18.sp,
+                            fontWeight: FontWeight.w500,
+                            color: Color(0xFFB0BABF),
+                          ),
                         ),
                       ),
-                    ),
-                    ListTile(
-                      contentPadding: EdgeInsets.zero,
-                      leading: Icon(
-                        Icons.device_thermostat_outlined,
-                        size: 30.sp,
-                        color: Colors.white60,
-                      ),
-                      title: Text(
-                        "Laboratory",
-                        style: GoogleFonts.poppins(
-                          fontSize: 18.sp,
-                          fontWeight: FontWeight.w500,
-                          color: Color(0xFFB0BABF),
+                      ListTile(
+                        dense: true,
+                        contentPadding: EdgeInsets.zero,
+                        leading: Icon(
+                          Icons.description,
+                          size: 30.sp,
+                          color: Colors.white60,
+                        ),
+                        title: Text(
+                          "Insurance",
+                          style: GoogleFonts.poppins(
+                            fontSize: 18.sp,
+                            fontWeight: FontWeight.w500,
+                            color: Color(0xFFB0BABF),
+                          ),
                         ),
                       ),
-                    ),
-                    ListTile(
-                      contentPadding: EdgeInsets.zero,
-                      leading: Icon(
-                        Icons.map_outlined,
-                        size: 30.sp,
-                        color: Colors.white60,
-                      ),
-                      title: Text(
-                        "International",
-                        style: GoogleFonts.poppins(
-                          fontSize: 18.sp,
-                          fontWeight: FontWeight.w500,
-                          color: Color(0xFFB0BABF),
+                      ListTile(
+                        dense: true, // space ko kam karega
+                        contentPadding: EdgeInsets.zero,
+                        leading: Icon(
+                          Icons.person_outline,
+                          size: 30.sp,
+                          color: Colors.white60,
+                        ),
+                        title: Text(
+                          "Insurance",
+                          style: GoogleFonts.poppins(
+                            fontSize: 18.sp,
+                            fontWeight: FontWeight.w500,
+                            color: Color(0xFFB0BABF),
+                          ),
                         ),
                       ),
-                    ),
-                    ListTile(
-                      contentPadding: EdgeInsets.zero,
-                      leading: Icon(
-                        Icons.favorite_border,
-                        size: 30.sp,
-                        color: Colors.white60,
-                      ),
-                      title: Text(
-                        "Self Care",
-                        style: GoogleFonts.poppins(
-                          fontSize: 18.sp,
-                          fontWeight: FontWeight.w500,
-                          color: Color(0xFFB0BABF),
+                      ListTile(
+                        dense: true,
+                        contentPadding: EdgeInsets.zero,
+                        leading: Icon(
+                          Icons.device_thermostat_outlined,
+                          size: 30.sp,
+                          color: Colors.white60,
+                        ),
+                        title: Text(
+                          "Laboratory",
+                          style: GoogleFonts.poppins(
+                            fontSize: 18.sp,
+                            fontWeight: FontWeight.w500,
+                            color: Color(0xFFB0BABF),
+                          ),
                         ),
                       ),
-                    ),
-                    SizedBox(height: 10.h),
-                    Divider(color: Colors.white38, height: 1),
-                    SizedBox(height: 20.h),
-                    Text(
-                      "Settings",
-                      style: GoogleFonts.poppins(
-                        fontSize: 14.sp,
-                        fontWeight: FontWeight.w500,
-                        color: Color(0xFFB0BABF),
-                        letterSpacing: 2,
-                      ),
-                    ),
-                    SizedBox(height: 10.h),
-                    ListTile(
-                      contentPadding: EdgeInsets.zero,
-                      leading: Icon(
-                        Icons.headphones,
-                        size: 30.sp,
-                        color: Colors.white60,
-                      ),
-                      title: Text(
-                        "Support",
-                        style: GoogleFonts.poppins(
-                          fontSize: 18.sp,
-                          fontWeight: FontWeight.w500,
-                          color: Color(0xFFB0BABF),
+                      ListTile(
+                        dense: true,
+                        contentPadding: EdgeInsets.zero,
+                        leading: Icon(
+                          Icons.map_outlined,
+                          size: 30.sp,
+                          color: Colors.white60,
+                        ),
+                        title: Text(
+                          "International",
+                          style: GoogleFonts.poppins(
+                            fontSize: 18.sp,
+                            fontWeight: FontWeight.w500,
+                            color: Color(0xFFB0BABF),
+                          ),
                         ),
                       ),
-                    ),
-                    ListTile(
-                      contentPadding: EdgeInsets.zero,
-                      leading: Icon(
-                        Icons.settings,
-                        size: 30.sp,
-                        color: Colors.white60,
+                      ListTile(
+                        dense: true,
+                        contentPadding: EdgeInsets.zero,
+                        leading: Icon(
+                          Icons.favorite_border,
+                          size: 30.sp,
+                          color: Colors.white60,
+                        ),
+                        title: Text(
+                          "Self Care",
+                          style: GoogleFonts.poppins(
+                            fontSize: 18.sp,
+                            fontWeight: FontWeight.w500,
+                            color: Color(0xFFB0BABF),
+                          ),
+                        ),
                       ),
-                      title: Text(
+                      SizedBox(height: 10.h),
+                      Divider(color: Colors.white38, height: 1),
+                      SizedBox(height: 20.h),
+                      Text(
                         "Settings",
                         style: GoogleFonts.poppins(
-                          fontSize: 18.sp,
+                          fontSize: 14.sp,
                           fontWeight: FontWeight.w500,
                           color: Color(0xFFB0BABF),
+                          letterSpacing: 2,
                         ),
                       ),
+                      SizedBox(height: 10.h),
+                      ListTile(
+                        dense: true,
+                        contentPadding: EdgeInsets.zero,
+                        leading: Icon(
+                          Icons.headphones,
+                          size: 30.sp,
+                          color: Colors.white60,
+                        ),
+                        title: Text(
+                          "Support",
+                          style: GoogleFonts.poppins(
+                            fontSize: 18.sp,
+                            fontWeight: FontWeight.w500,
+                            color: Color(0xFFB0BABF),
+                          ),
+                        ),
+                      ),
+                      ListTile(
+                        dense: true,
+                        contentPadding: EdgeInsets.zero,
+                        leading: Icon(
+                          Icons.settings,
+                          size: 30.sp,
+                          color: Colors.white60,
+                        ),
+                        title: Text(
+                          "Settings",
+                          style: GoogleFonts.poppins(
+                            fontSize: 18.sp,
+                            fontWeight: FontWeight.w500,
+                            color: Color(0xFFB0BABF),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+              Positioned(
+                bottom: 20.h,
+                child: Row(
+                  children: [
+                    Container(
+                      margin: EdgeInsets.only(left: 20.w),
+                      width: 44.w,
+                      height: 44.h,
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        // border: Border.all(color: Colors.white, width: 1.w),
+                        image: DecorationImage(
+                          image: AssetImage("assets/profile.png"),
+                        ),
+                      ),
+                    ),
+                    SizedBox(width: 10.w),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          "Amina Sharma",
+                          style: GoogleFonts.poppins(
+                            fontSize: 15.sp,
+                            fontWeight: FontWeight.w500,
+                            color: Colors.white,
+                            letterSpacing: -0.5,
+                          ),
+                        ),
+                        Text(
+                          "sharam21@gmail.com",
+                          style: GoogleFonts.poppins(
+                            fontSize: 12.sp,
+                            fontWeight: FontWeight.w400,
+                            color: Color.fromARGB(178, 255, 255, 255),
+                            letterSpacing: -0.4,
+                          ),
+                        ),
+                      ],
                     ),
                   ],
                 ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
       body: SingleChildScrollView(
