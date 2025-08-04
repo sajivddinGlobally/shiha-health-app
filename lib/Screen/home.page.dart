@@ -442,18 +442,18 @@ class _HomePageState extends State<HomePage> {
                     // width: 448.w,
                     // height: 59.h,
                     decoration: BoxDecoration(
-                      // color: Color(0xFF0E1329),
-                      gradient: LinearGradient(
-                        begin: Alignment(0.01, 0.51),
-                        end: Alignment(1.00, 0.51),
-                        colors: [
-                          const Color(0x6675FFBA),
-                          const Color(0xC030FF97),
-                          const Color(0xFF00FF7F),
-                          const Color(0x6200FF7F),
-                          const Color(0x4C00FF7F),
-                        ],
-                      ),
+                      color: Color(0xFF012B2B),
+                      // gradient: LinearGradient(
+                      //   begin: Alignment(0.01, 0.51),
+                      //   end: Alignment(1.00, 0.51),
+                      //   colors: [
+                      //     const Color(0x6675FFBA),
+                      //     const Color(0xC030FF97),
+                      //     const Color(0xFF00FF7F),
+                      //     const Color(0x6200FF7F),
+                      //     const Color(0x4C00FF7F),
+                      //   ],
+                      // ),
                     ),
                     child: Padding(
                       padding: EdgeInsets.only(
@@ -585,15 +585,16 @@ class _HomePageState extends State<HomePage> {
                         top: BorderSide(color: Colors.white, width: 1.w),
                         right: BorderSide(color: Colors.white, width: 1.w),
                       ),
-                      gradient: LinearGradient(
-                        begin: Alignment(0.05, 0.03),
-                        end: Alignment(0.95, 0.90),
-                        colors: [
-                          const Color(0xFF0084FF),
-                          const Color(0xFF339CFF),
-                          const Color(0xFF0084FF),
-                        ],
-                      ),
+                      color: Color(0xFF0A4D80),
+                      // gradient: LinearGradient(
+                      //   begin: Alignment(0.05, 0.03),
+                      //   end: Alignment(0.95, 0.90),
+                      //   colors: [
+                      //     const Color(0xFF0084FF),
+                      //     const Color(0xFF339CFF),
+                      //     const Color(0xFF0084FF),
+                      //   ],
+                      // ),
                     ),
                     child: Padding(
                       padding: EdgeInsets.only(
