@@ -137,13 +137,13 @@ class _HospitalListingPageState extends State<HospitalListingPage> {
                   child: Row(
                     children: [
                       SizedBox(width: 20.w),
-                      buildFilter("Speciality"),
+                      buildFilter(name: "Speciality"),
                       SizedBox(width: 8.w),
-                      buildFilter("Price"),
+                      buildFilter(name: "Price"),
                       SizedBox(width: 8.w),
-                      buildFilter("Availability"),
+                      buildFilter(name: "Availability"),
                       SizedBox(width: 8.w),
-                      buildFilter("Rating"),
+                      buildFilter(name: "Rating"),
                       SizedBox(width: 8.w),
                     ],
                   ),
@@ -306,7 +306,15 @@ class _HospitalListingPageState extends State<HospitalListingPage> {
     );
   }
 
-  Widget buildFilter(String name) {
+  // Widget buildFilter(String name) {}
+}
+
+class buildFilter extends StatelessWidget {
+  final String name;
+  const buildFilter({super.key, required this.name});
+
+  @override
+  Widget build(BuildContext context) {
     return Container(
       padding: EdgeInsets.only(left: 15.w, right: 10.w, top: 3.h, bottom: 3.h),
       decoration: BoxDecoration(

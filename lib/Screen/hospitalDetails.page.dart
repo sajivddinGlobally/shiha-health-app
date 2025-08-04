@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:shiha_health_app/Screen/doctorList.page.dart';
 
 class HospitalDetailsPage extends StatefulWidget {
   const HospitalDetailsPage({super.key});
@@ -29,10 +30,9 @@ class _HospitalDetailsPageState extends State<HospitalDetailsPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.transparent,
       body: SingleChildScrollView(
         child: SizedBox(
-          height: MediaQuery.of(context).size.height + 200.h,
+          height: MediaQuery.of(context).size.height + 250.h,
           child: Stack(
             children: [
               Image.asset(
@@ -322,28 +322,38 @@ class _HospitalDetailsPageState extends State<HospitalDetailsPage> {
                         fit: BoxFit.cover,
                       ),
                     ),
+                    Padding(
+                      padding: EdgeInsets.only(left: 20.w, right: 20.w),
+                      child: ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          minimumSize: Size(400.w, 55.h),
+                          backgroundColor: Color(0xFF067594),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10.r),
+                          ),
+                        ),
+                        onPressed: () {
+                          Navigator.push(
+                            context,
+                            CupertinoPageRoute(
+                              builder: (context) => DoctorListPage(),
+                            ),
+                          );
+                        },
+                        child: Text(
+                          "View Doctors",
+                          style: GoogleFonts.poppins(
+                            fontSize: 16.sp,
+                            fontWeight: FontWeight.w500,
+                            color: Colors.white,
+                          ),
+                        ),
+                      ),
+                    ),
                   ],
                 ),
               ),
             ],
-          ),
-        ),
-      ),
-      bottomSheet: ElevatedButton(
-        style: ElevatedButton.styleFrom(
-          minimumSize: Size(400.w, 55.h),
-          backgroundColor: Color(0xFF067594),
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(10.r),
-          ),
-        ),
-        onPressed: () {},
-        child: Text(
-          "View Doctors",
-          style: GoogleFonts.poppins(
-            fontSize: 16.sp,
-            fontWeight: FontWeight.w500,
-            color: Colors.white,
           ),
         ),
       ),
