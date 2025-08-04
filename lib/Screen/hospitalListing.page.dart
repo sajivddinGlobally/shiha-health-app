@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:shiha_health_app/Screen/hospitalDetails.page.dart';
 
 class HospitalListingPage extends StatefulWidget {
   const HospitalListingPage({super.key});
@@ -165,14 +166,24 @@ class _HospitalListingPageState extends State<HospitalListingPage> {
                           mainAxisSize: MainAxisSize.min,
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            SizedBox(
-                              width: 190.w,
-                              height: 130.h,
-                              child: ClipRRect(
-                                borderRadius: BorderRadius.circular(10.r),
-                                child: Image.asset(
-                                  hospitalList[index]['image'].toString(),
-                                  fit: BoxFit.cover,
+                            InkWell(
+                              onTap: () {
+                                Navigator.push(
+                                  context,
+                                  CupertinoPageRoute(
+                                    builder: (context) => HospitalDetailsPage(),
+                                  ),
+                                );
+                              },
+                              child: SizedBox(
+                                width: 190.w,
+                                height: 130.h,
+                                child: ClipRRect(
+                                  borderRadius: BorderRadius.circular(10.r),
+                                  child: Image.asset(
+                                    hospitalList[index]['image'].toString(),
+                                    fit: BoxFit.cover,
+                                  ),
                                 ),
                               ),
                             ),
