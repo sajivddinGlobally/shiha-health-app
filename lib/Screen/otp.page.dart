@@ -129,15 +129,14 @@ class _OtpPageState extends State<OtpPage> {
                           fieldWidth: 55.w,
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           otpPinFieldDecoration:
-                              OtpPinFieldDecoration.roundedPinBoxDecoration,
+                              OtpPinFieldDecoration.defaultPinBoxDecoration,
                           otpPinFieldStyle: OtpPinFieldStyle(
                             fieldBorderWidth: 0, // ❌ Removes border
                             defaultFieldBorderColor: Colors.grey,
                             activeFieldBorderColor: Colors.blue,
                             defaultFieldBackgroundColor:
                                 Colors.white, // Background white
-                            activeFieldBackgroundColor:
-                                Colors.white, // Background white when selected
+                            activeFieldBackgroundColor: Colors.white,
                           ),
                           maxLength: 6,
                           onSubmit: (text) {},

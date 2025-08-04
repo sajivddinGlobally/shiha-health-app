@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:shiha_health_app/Screen/hospitalListing.page.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -482,7 +483,17 @@ class _HomePageState extends State<HomePage> {
                       children: [
                         namebuild("assets/Consultation.png", "Consultation"),
                         namebuild("assets/Int. Doctors.png", "Int. Doctors"),
-                        namebuild("assets/Hospitals.png", "Hospitals"),
+                        InkWell(
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              CupertinoPageRoute(
+                                builder: (context) => HospitalListingPage(),
+                              ),
+                            );
+                          },
+                          child: namebuild("assets/Hospitals.png", "Hospitals"),
+                        ),
                       ],
                     ),
                   ),
