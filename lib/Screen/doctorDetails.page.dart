@@ -598,6 +598,31 @@ class _DoctorDetailsPageState extends State<DoctorDetailsPage> {
                       ],
                     ),
                   ),
+                  SizedBox(height: 30.h),
+                  Row(
+                    children: [
+                      SizedBox(width: 22.w),
+                      Text(
+                        "Patient Reviews",
+                        style: GoogleFonts.poppins(
+                          fontSize: 15.sp,
+                          fontWeight: FontWeight.w500,
+                          color: Colors.white,
+                        ),
+                      ),
+                      Spacer(),
+                      Text(
+                        "View All Reviews",
+                        style: GoogleFonts.poppins(
+                          fontSize: 14.sp,
+                          fontWeight: FontWeight.w500,
+                          color: Color(0xFF067594),
+                        ),
+                      ),
+                      SizedBox(width: 21.w),
+                    ],
+                  ),
+                  SizedBox(height: 12.h,),
                 ],
               ),
             ),
