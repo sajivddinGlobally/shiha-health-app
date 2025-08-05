@@ -155,7 +155,11 @@ class _HospitalDetailsPageState extends State<HospitalDetailsPage> {
                       decoration: BoxDecoration(
                         color: Color.fromARGB(255, 16, 31, 45),
                         borderRadius: BorderRadius.circular(10.r),
-                        border: Border.all(color: Colors.white, width: 0.85.w),
+                        //border: Border.all(color: Colors.white, width: 0.85.w),
+                        border: Border(
+                          top: BorderSide(color: Colors.white, width: 0.85.w),
+                          right: BorderSide(color: Colors.white, width: 0.85.w),
+                        ),
                       ),
                       child: Row(
                         children: [

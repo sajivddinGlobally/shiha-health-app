@@ -187,7 +187,6 @@ class _DoctorListPageState extends State<DoctorListPage> {
                                 Row(
                                   children: [
                                     Container(
-                                      margin: EdgeInsets.only(left: 6.w),
                                       padding: EdgeInsets.only(
                                         left: 5.w,
                                         right: 5.w,
