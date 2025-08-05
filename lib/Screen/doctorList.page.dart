@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:shiha_health_app/Screen/doctorDetails.page.dart';
 import 'package:shiha_health_app/Screen/hospitalListing.page.dart';
 
 class DoctorListPage extends StatefulWidget {
@@ -134,78 +135,57 @@ class _DoctorListPageState extends State<DoctorListPage> {
                         childAspectRatio: 0.65,
                       ),
                       itemBuilder: (context, index) {
-                        return Container(
-                          padding: EdgeInsets.only(
-                            left: 10.w,
-                            right: 10.w,
-                            top: 10.h,
-                            bottom: 10.h,
-                          ),
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(20.r),
-                            color: Color(0xFF0E1329),
-                            border: Border(
-                              top: BorderSide(color: Colors.white, width: 1.w),
-                              right: BorderSide(
-                                color: Colors.white,
-                                width: 1.w,
+                        return InkWell(
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              CupertinoPageRoute(
+                                builder: (context) => DoctorDetailsPage(),
+                              ),
+                            );
+                          },
+                          child: Container(
+                            padding: EdgeInsets.only(
+                              left: 10.w,
+                              right: 10.w,
+                              top: 10.h,
+                              bottom: 10.h,
+                            ),
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(20.r),
+                              color: Color(0xFF0E1329),
+                              border: Border(
+                                top: BorderSide(
+                                  color: Colors.white,
+                                  width: 1.w,
+                                ),
+                                right: BorderSide(
+                                  color: Colors.white,
+                                  width: 1.w,
+                                ),
                               ),
                             ),
-                          ),
-                          child: Column(
-                            mainAxisSize: MainAxisSize.min,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              InkWell(
-                                onTap: () {},
-                                child: SizedBox(
-                                  width: 170.w,
-                                  height: 170.h,
-                                  child: ClipRRect(
-                                    borderRadius: BorderRadius.circular(10.r),
-                                    child: Image.asset(
-                                      doctorList[index]['image'].toString(),
-                                      fit: BoxFit.cover,
+                            child: Column(
+                              mainAxisSize: MainAxisSize.min,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                InkWell(
+                                  onTap: () {},
+                                  child: SizedBox(
+                                    width: 170.w,
+                                    height: 170.h,
+                                    child: ClipRRect(
+                                      borderRadius: BorderRadius.circular(10.r),
+                                      child: Image.asset(
+                                        doctorList[index]['image'].toString(),
+                                        fit: BoxFit.cover,
+                                      ),
                                     ),
                                   ),
                                 ),
-                              ),
-                              SizedBox(height: 12.h),
-                              Row(
-                                children: [
-                                  Container(
-                                    margin: EdgeInsets.only(left: 6.w),
-                                    padding: EdgeInsets.only(
-                                      left: 5.w,
-                                      right: 5.w,
-                                      top: 5.h,
-                                      bottom: 5.h,
-                                    ),
-                                    decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(40.r),
-                                      color: Color.fromARGB(255, 38, 36, 37),
-                                    ),
-                                    child: Row(
-                                      children: [
-                                        Icon(
-                                          Icons.star,
-                                          color: Color(0xFFD8A200),
-                                          size: 15.sp,
-                                        ),
-                                        Text(
-                                          doctorList[index]['reting']
-                                              .toString(),
-                                          style: GoogleFonts.poppins(
-                                            fontSize: 12.sp,
-                                            fontWeight: FontWeight.w500,
-                                            color: Color(0xFFD8A200),
-                                            letterSpacing: -0.3,
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                  if (index == 1 || index == 4)
+                                SizedBox(height: 12.h),
+                                Row(
+                                  children: [
                                     Container(
                                       margin: EdgeInsets.only(left: 6.w),
                                       padding: EdgeInsets.only(
@@ -218,59 +198,97 @@ class _DoctorListPageState extends State<DoctorListPage> {
                                         borderRadius: BorderRadius.circular(
                                           40.r,
                                         ),
-                                        color: Color.fromARGB(
-                                          25,
-                                          125,
-                                          255,
-                                          180,
-                                        ),
+                                        color: Color.fromARGB(255, 38, 36, 37),
                                       ),
                                       child: Row(
                                         children: [
-                                          CircleAvatar(
-                                            radius: 5.r,
-                                            backgroundColor: Color(0xFF2ECC71),
+                                          Icon(
+                                            Icons.star,
+                                            color: Color(0xFFD8A200),
+                                            size: 15.sp,
                                           ),
-                                          SizedBox(width: 5.w),
                                           Text(
-                                            "Active",
+                                            doctorList[index]['reting']
+                                                .toString(),
                                             style: GoogleFonts.poppins(
-                                              fontSize: 10.sp,
+                                              fontSize: 12.sp,
                                               fontWeight: FontWeight.w500,
-                                              color: Color(0xFF2ECC71),
+                                              color: Color(0xFFD8A200),
                                               letterSpacing: -0.3,
                                             ),
                                           ),
                                         ],
                                       ),
                                     ),
-                                ],
-                              ),
-                              SizedBox(height: 7.h),
-                              SizedBox(
-                                width: 161.w,
-                                child: Text(
-                                  overflow: TextOverflow.ellipsis,
-                                  doctorList[index]['name'].toString(),
-                                  style: GoogleFonts.poppins(
-                                    fontSize: 14.sp,
-                                    fontWeight: FontWeight.w500,
-                                    color: Colors.white,
-                                    letterSpacing: -0.4,
+                                    if (index == 1 || index == 4)
+                                      Container(
+                                        margin: EdgeInsets.only(left: 6.w),
+                                        padding: EdgeInsets.only(
+                                          left: 5.w,
+                                          right: 5.w,
+                                          top: 5.h,
+                                          bottom: 5.h,
+                                        ),
+                                        decoration: BoxDecoration(
+                                          borderRadius: BorderRadius.circular(
+                                            40.r,
+                                          ),
+                                          color: Color.fromARGB(
+                                            25,
+                                            125,
+                                            255,
+                                            180,
+                                          ),
+                                        ),
+                                        child: Row(
+                                          children: [
+                                            CircleAvatar(
+                                              radius: 5.r,
+                                              backgroundColor: Color(
+                                                0xFF2ECC71,
+                                              ),
+                                            ),
+                                            SizedBox(width: 5.w),
+                                            Text(
+                                              "Active",
+                                              style: GoogleFonts.poppins(
+                                                fontSize: 10.sp,
+                                                fontWeight: FontWeight.w500,
+                                                color: Color(0xFF2ECC71),
+                                                letterSpacing: -0.3,
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                  ],
+                                ),
+                                SizedBox(height: 7.h),
+                                SizedBox(
+                                  width: 161.w,
+                                  child: Text(
+                                    overflow: TextOverflow.ellipsis,
+                                    doctorList[index]['name'].toString(),
+                                    style: GoogleFonts.poppins(
+                                      fontSize: 14.sp,
+                                      fontWeight: FontWeight.w500,
+                                      color: Colors.white,
+                                      letterSpacing: -0.4,
+                                    ),
                                   ),
                                 ),
-                              ),
-                              SizedBox(height: 7.h),
-                              Text(
-                                doctorList[index]['title'].toString(),
-                                style: GoogleFonts.poppins(
-                                  fontSize: 12.sp,
-                                  fontWeight: FontWeight.w500,
-                                  color: Color(0xFFB0BABF),
-                                  letterSpacing: -0.3,
+                                SizedBox(height: 7.h),
+                                Text(
+                                  doctorList[index]['title'].toString(),
+                                  style: GoogleFonts.poppins(
+                                    fontSize: 12.sp,
+                                    fontWeight: FontWeight.w500,
+                                    color: Color(0xFFB0BABF),
+                                    letterSpacing: -0.3,
+                                  ),
                                 ),
-                              ),
-                            ],
+                              ],
+                            ),
                           ),
                         );
                       },
