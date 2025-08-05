@@ -131,7 +131,7 @@ class _DoctorListPageState extends State<DoctorListPage> {
                         crossAxisCount: 2,
                         mainAxisSpacing: 15.w,
                         crossAxisSpacing: 15.h,
-                        childAspectRatio: 0.90.h,
+                        childAspectRatio: 0.65,
                       ),
                       itemBuilder: (context, index) {
                         return Container(
@@ -139,7 +139,7 @@ class _DoctorListPageState extends State<DoctorListPage> {
                             left: 10.w,
                             right: 10.w,
                             top: 10.h,
-                            bottom: 15.h,
+                            bottom: 10.h,
                           ),
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(20.r),
@@ -199,6 +199,37 @@ class _DoctorListPageState extends State<DoctorListPage> {
                                             fontSize: 12.sp,
                                             fontWeight: FontWeight.w500,
                                             color: Color(0xFFD8A200),
+                                            letterSpacing: -0.3,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                  Container(
+                                    margin: EdgeInsets.only(left: 6.w),
+                                    padding: EdgeInsets.only(
+                                      left: 5.w,
+                                      right: 5.w,
+                                      top: 5.h,
+                                      bottom: 5.h,
+                                    ),
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(40.r),
+                                      color: Color.fromARGB(25, 125, 255, 180),
+                                    ),
+                                    child: Row(
+                                      children: [
+                                        CircleAvatar(
+                                          radius: 5.r,
+                                          backgroundColor: Color(0xFF2ECC71),
+                                        ),
+                                        SizedBox(width: 5.w),
+                                        Text(
+                                          "Active",
+                                          style: GoogleFonts.poppins(
+                                            fontSize: 10.sp,
+                                            fontWeight: FontWeight.w500,
+                                            color: Color(0xFF2ECC71),
                                             letterSpacing: -0.3,
                                           ),
                                         ),
