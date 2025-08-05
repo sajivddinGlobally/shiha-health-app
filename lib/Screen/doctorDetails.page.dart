@@ -28,6 +28,7 @@ class _DoctorDetailsPageState extends State<DoctorDetailsPage> {
     "02:00 AM",
     "03:00 AM",
     "04:00 AM",
+    "05:20 AM",
   ];
 
   DateTime get baseMonthDate {
@@ -401,18 +402,21 @@ class _DoctorDetailsPageState extends State<DoctorDetailsPage> {
                       ],
                     ),
                   ),
-                  SizedBox(height: 12.h),
-                  Text(
-                    "Available Slots",
-                    style: GoogleFonts.poppins(
-                      fontSize: 15.sp,
-                      fontWeight: FontWeight.w500,
-                      color: Colors.white,
-                      letterSpacing: -0.4,
+                  SizedBox(height: 20.h),
+                  Padding(
+                    padding: EdgeInsets.only(left: 20.w),
+                    child: Text(
+                      "Available Slots",
+                      style: GoogleFonts.poppins(
+                        fontSize: 15.sp,
+                        fontWeight: FontWeight.w500,
+                        color: Colors.white,
+                        letterSpacing: -0.4,
+                      ),
                     ),
                   ),
                   Container(
-                    height: MediaQuery.of(context).size.height,
+                    margin: EdgeInsets.only(top: 15.h, left: 20.w, right: 20.w),
                     padding: EdgeInsets.only(
                       left: 14.w,
                       right: 14.w,
@@ -422,15 +426,10 @@ class _DoctorDetailsPageState extends State<DoctorDetailsPage> {
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(20.r),
                       color: Color.fromARGB(255, 5, 49, 75),
-                      // gradient: LinearGradient(
-                      //   begin: Alignment(0.05, 0.03),
-                      //   end: Alignment(0.95, 0.90),
-                      //   colors: [
-                      //     const Color(0xFF067594),
-                      //     const Color(0xFF067594),
-                      //     const Color(0xFF1694B7),
-                      //   ],
-                      // ),
+                      border: Border(
+                        top: BorderSide(color: Colors.white, width: 0.85.w),
+                        right: BorderSide(color: Colors.white, width: 0.85.w),
+                      ),
                     ),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -534,48 +533,67 @@ class _DoctorDetailsPageState extends State<DoctorDetailsPage> {
                           ),
                         ),
                         Divider(color: Colors.white30),
-                        const SizedBox(height: 24),
+                        SizedBox(height: 15.h),
                         // Time slots
-                        Expanded(
-                          child: GridView.builder(
-                            itemCount: timeSlots.length,
-                            gridDelegate:
-                                const SliverGridDelegateWithFixedCrossAxisCount(
-                                  crossAxisCount: 3,
-                                  childAspectRatio: 2.6,
-                                  mainAxisSpacing: 12,
-                                  crossAxisSpacing: 12,
-                                ),
-                            itemBuilder: (context, index) {
-                              final time = timeSlots[index];
-                              final isSelected = selectedTime == time;
-                              return GestureDetector(
-                                onTap: () {
-                                  setState(() {
-                                    selectedTime = time;
-                                  });
-                                },
-                                child: Container(
-                                  decoration: BoxDecoration(
-                                    color: isSelected
-                                        ? Colors.blueAccent
-                                        : Colors.grey[800],
-                                    borderRadius: BorderRadius.circular(12),
-                                  ),
-                                  alignment: Alignment.center,
-                                  child: Text(
-                                    time,
-                                    style: TextStyle(
+                        GridView.builder(
+                          itemCount: timeSlots.length,
+                          padding: EdgeInsets.zero,
+                          shrinkWrap: true,
+                          physics: NeverScrollableScrollPhysics(),
+                          gridDelegate:
+                              SliverGridDelegateWithFixedCrossAxisCount(
+                                crossAxisCount: 6,
+                                childAspectRatio: 1,
+                                mainAxisSpacing: 9.h,
+                                crossAxisSpacing: 8.w,
+                              ),
+                          itemBuilder: (context, index) {
+                            final time = timeSlots[index];
+                            final isSelected = selectedTime == time;
+                            return Column(
+                              children: [
+                                GestureDetector(
+                                  onTap: () {
+                                    setState(() {
+                                      selectedTime = time;
+                                    });
+                                  },
+                                  child: Container(
+                                    padding: EdgeInsets.only(
+                                      left: 10.w,
+                                      right: 10.w,
+                                      top: 8.h,
+                                      bottom: 8.h,
+                                    ),
+                                    decoration: BoxDecoration(
                                       color: isSelected
-                                          ? Colors.white
-                                          : Colors.grey[300],
-                                      fontSize: 16,
+                                          ? Color(0xFF067594)
+                                          : Color.fromARGB(20, 255, 255, 255),
+                                      borderRadius: BorderRadius.circular(15.r),
+                                    ),
+                                    alignment: Alignment.center,
+                                    child: Text(
+                                      textAlign: TextAlign.center,
+                                      time,
+                                      style: GoogleFonts.poppins(
+                                        fontSize: 13.sp,
+                                        fontWeight: FontWeight.w500,
+                                        color: isSelected
+                                            ? Colors.white
+                                            : Color.fromARGB(
+                                                153,
+                                                255,
+                                                255,
+                                                255,
+                                              ),
+                                        letterSpacing: -0.3,
+                                      ),
                                     ),
                                   ),
                                 ),
-                              );
-                            },
-                          ),
+                              ],
+                            );
+                          },
                         ),
                       ],
                     ),
