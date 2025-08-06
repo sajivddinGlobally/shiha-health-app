@@ -170,7 +170,15 @@ class _DoctorListPageState extends State<DoctorListPage> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 InkWell(
-                                  onTap: () {},
+                                  onTap: () {
+                                    Navigator.push(
+                                      context,
+                                      CupertinoPageRoute(
+                                        builder: (context) =>
+                                            DoctorDetailsPage(),
+                                      ),
+                                    );
+                                  },
                                   child: SizedBox(
                                     width: 170.w,
                                     height: 170.h,

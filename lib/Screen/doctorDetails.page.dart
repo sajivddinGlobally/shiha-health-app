@@ -622,7 +622,71 @@ class _DoctorDetailsPageState extends State<DoctorDetailsPage> {
                       SizedBox(width: 21.w),
                     ],
                   ),
-                  SizedBox(height: 12.h,),
+                  SizedBox(height: 12.h),
+                  ListView.builder(
+                    shrinkWrap: true,
+                    physics: NeverScrollableScrollPhysics(),
+                    padding: EdgeInsets.zero,
+                    itemCount: 3,
+                    itemBuilder: (context, index) {
+                      return Container(
+                        margin: EdgeInsets.only(
+                          left: 20.w,
+                          right: 20.w,
+                          top: 10.h,
+                        ),
+                        padding: EdgeInsets.only(
+                          left: 15.w,
+                          right: 15.w,
+                          bottom: 15.h,
+                          top: 15.h,
+                        ),
+                        decoration: BoxDecoration(
+                          color: Color(0xFF0A122A),
+                          borderRadius: BorderRadius.circular(10.r),
+                          border: Border(
+                            top: BorderSide(color: Colors.white, width: 0.86.w),
+                            right: BorderSide(
+                              color: Colors.white,
+                              width: 0.86.w,
+                            ),
+                          ),
+                        ),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Row(
+                              children: [
+                                Icon(Icons.star, color: Color(0xFFD8A200)),
+                                Icon(Icons.star, color: Color(0xFFD8A200)),
+                                Icon(Icons.star, color: Color(0xFFD8A200)),
+                                Icon(Icons.star, color: Color(0xFFD8A200)),
+                                Icon(Icons.star, color: Color(0xFFD8A200)),
+                              ],
+                            ),
+                            SizedBox(height: 12.h),
+                            Text(
+                              "“Very clean facility and professional staff.”",
+                              style: GoogleFonts.poppins(
+                                fontSize: 13.sp,
+                                fontWeight: FontWeight.w400,
+                                color: Color(0xFFB0BABF),
+                                fontStyle: FontStyle.italic,
+                              ),
+                            ),
+                            Text(
+                              "- Robert",
+                              style: GoogleFonts.poppins(
+                                fontSize: 12.sp,
+                                fontWeight: FontWeight.w400,
+                                color: Color(0xFF0A74DA),
+                              ),
+                            ),
+                          ],
+                        ),
+                      );
+                    },
+                  ),
                 ],
               ),
             ),
