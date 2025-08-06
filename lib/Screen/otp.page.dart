@@ -4,6 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:otp_pin_field/otp_pin_field.dart';
 import 'package:shiha_health_app/Screen/login.page.dart';
+import 'package:shiha_health_app/Screen/register.page.dart';
 
 class OtpPage extends StatefulWidget {
   const OtpPage({super.key});
@@ -157,7 +158,7 @@ class _OtpPageState extends State<OtpPage> {
                               Navigator.push(
                                 context,
                                 CupertinoPageRoute(
-                                  builder: (context) => LoginPage(),
+                                  builder: (context) => RegisterPage(),
                                 ),
                               );
                             },

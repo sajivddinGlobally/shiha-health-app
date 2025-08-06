@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:shiha_health_app/Screen/hospitalListing.page.dart';
+import 'package:shiha_health_app/Screen/selfCare.page.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -481,7 +482,20 @@ class _HomePageState extends State<HomePage> {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        namebuild("assets/Consultation.png", "Consultation"),
+                        InkWell(
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              CupertinoPageRoute(
+                                builder: (context) => SelfCarePage(),
+                              ),
+                            );
+                          },
+                          child: namebuild(
+                            "assets/Consultation.png",
+                            "Consultation",
+                          ),
+                        ),
                         namebuild("assets/Int. Doctors.png", "Int. Doctors"),
                         InkWell(
                           onTap: () {
