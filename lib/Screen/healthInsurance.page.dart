@@ -13,6 +13,24 @@ class HealthInsurancePage extends StatefulWidget {
 
 class _HealthInsurancePageState extends State<HealthInsurancePage> {
   int tab = 0;
+  List<Map<String, dynamic>> healthList = [
+    {
+      "image": "assets/he1.png",
+      "name": "Mother & Child Insurance",
+      "month": "\$10/month",
+      "desc":
+          "Our coverage offers financial protection for both mothers and their children, ensuring peace of mind during pregnancy and beyond. Benefits include prenatal care, postnatal support, and pediatric services, all tailored to meet your family's needs. Get started today to secure a healthy future!",
+      "button": "Register Now",
+    },
+    {
+      "image": "assets/he2.png",
+      "name": "Family Health Package",
+      "month": "\$25/month",
+      "desc":
+          "This comprehensive health package provides extensive coverage for all family members, focusing on preventative care and wellness. Enjoy benefits such as regular check-ups, vaccinations, and access to a network of healthcare professionals dedicated to your family's health.",
+      "button": "Join Today",
+    },
+  ];
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -144,108 +162,123 @@ class _HealthInsurancePageState extends State<HealthInsurancePage> {
                     ),
                   ),
                 ),
-                SizedBox(height: 20.h),
-                Container(
-                  margin: EdgeInsets.only(left: 20.w, right: 20.w),
-                  padding: EdgeInsets.only(
-                    left: 12.w,
-                    right: 12.w,
-                    top: 12.h,
-                    bottom: 12.h,
-                  ),
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(20.r),
-                    color: Color(0xFF0E1329),
-                    border: Border.all(color: Colors.white, width: 1.w),
-                  ),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      ClipRRect(
-                        borderRadius: BorderRadius.circular(10.r),
-                        child: Image.asset(
-                          "assets/he1.png",
-                          width: 376.w,
-                          height: 158.h,
-                          fit: BoxFit.cover,
+                SizedBox(height: 10.h),
+                Expanded(
+                  child: ListView.builder(
+                    padding: EdgeInsets.zero,
+                    itemCount: healthList.length,
+                    itemBuilder: (context, index) {
+                      return Container(
+                        margin: EdgeInsets.only(
+                          left: 20.w,
+                          right: 20.w,
+                          top: 10.h,
                         ),
-                      ),
-                      SizedBox(height: 12.h),
-                      Row(
-                        children: [
-                          Container(
-                            width: 52.w,
-                            height: 52.h,
-                            decoration: BoxDecoration(
-                              shape: BoxShape.circle,
-                              color: Color.fromARGB(255, 13, 29, 52),
-                            ),
-                            child: Center(
-                              child: Icon(
-                                Icons.calendar_today,
-                                size: 20.sp,
-                                color: Color(0xFF067594),
-                              ),
-                            ),
-                          ),
-                          SizedBox(width: 10.w),
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                "Mother & Child Insurance",
-                                style: GoogleFonts.poppins(
-                                  fontSize: 14.sp,
-                                  fontWeight: FontWeight.w500,
-                                  color: Colors.white,
-                                  letterSpacing: -1,
-                                ),
-                              ),
-                              Text(
-                                "\$10/month",
-                                style: GoogleFonts.poppins(
-                                  fontSize: 12.sp,
-                                  fontWeight: FontWeight.w500,
-                                  color: Color(0xFF067594),
-                                ),
-                              ),
-                            ],
-                          ),
-                        ],
-                      ),
-                      SizedBox(width: 12.w),
-                      Text(
-                        "Our coverage offers financial protection for both mothers and their children, ensuring peace of mind during pregnancy and beyond. Benefits include prenatal care, postnatal support, and pediatric services, all tailored to meet your family's needs. Get started today to secure a healthy future!",
-                        style: GoogleFonts.poppins(
-                          fontSize: 13.sp,
-                          fontWeight: FontWeight.w500,
-                          color: Color.fromARGB(153, 240, 243, 245),
-                          letterSpacing: -1,
+                        padding: EdgeInsets.only(
+                          left: 12.w,
+                          right: 12.w,
+                          top: 12.h,
+                          bottom: 12.h,
                         ),
-                      ),
-                      SizedBox(height: 20.w),
-                      Container(
-                        width: 400.w,
-                        height: 50.h,
                         decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(10.r),
-                          color: Color(0xFF067594),
-                          border: Border(
-                            top: BorderSide(color: Colors.white, width: 0.85),
-                          ),
+                          borderRadius: BorderRadius.circular(20.r),
+                          color: Color(0xFF0E1329),
+                          border: Border.all(color: Colors.white, width: 1.w),
                         ),
-                        child: Center(
-                          child: Text(
-                            "Register",
-                            style: GoogleFonts.poppins(
-                              fontSize: 16.sp,
-                              fontWeight: FontWeight.w500,
-                              color: Colors.white,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            ClipRRect(
+                              borderRadius: BorderRadius.circular(10.r),
+                              child: Image.asset(
+                                healthList[index]['image'].toString(),
+                                width: 376.w,
+                                height: 158.h,
+                                fit: BoxFit.cover,
+                              ),
                             ),
-                          ),
+                            SizedBox(height: 12.h),
+                            Row(
+                              children: [
+                                Container(
+                                  width: 52.w,
+                                  height: 52.h,
+                                  decoration: BoxDecoration(
+                                    shape: BoxShape.circle,
+                                    color: Color.fromARGB(255, 13, 29, 52),
+                                  ),
+                                  child: Center(
+                                    child: Icon(
+                                      Icons.calendar_today_outlined,
+                                      size: 20.sp,
+                                      color: Color(0xFF067594),
+                                    ),
+                                  ),
+                                ),
+                                SizedBox(width: 10.w),
+                                Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      healthList[index]['name'].toString(),
+                                      style: GoogleFonts.poppins(
+                                        fontSize: 14.sp,
+                                        fontWeight: FontWeight.w500,
+                                        color: Colors.white,
+                                        letterSpacing: -1,
+                                      ),
+                                    ),
+                                    Text(
+                                      healthList[index]['month'].toString(),
+                                      style: GoogleFonts.poppins(
+                                        fontSize: 12.sp,
+                                        fontWeight: FontWeight.w500,
+                                        color: Color(0xFF067594),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ],
+                            ),
+                            SizedBox(width: 12.w),
+                            Text(
+                              healthList[index]['desc'].toString(),
+                              style: GoogleFonts.poppins(
+                                fontSize: 13.sp,
+                                fontWeight: FontWeight.w500,
+                                color: Color.fromARGB(153, 240, 243, 245),
+                                letterSpacing: -1,
+                              ),
+                            ),
+                            SizedBox(height: 20.w),
+                            Container(
+                              width: 400.w,
+                              height: 50.h,
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(10.r),
+                                color: Color(0xFF067594),
+                                border: Border(
+                                  top: BorderSide(
+                                    color: Colors.white,
+                                    width: 0.85,
+                                  ),
+                                ),
+                              ),
+                              child: Center(
+                                child: Text(
+                                  healthList[index]['button'].toString(),
+                                  style: GoogleFonts.poppins(
+                                    fontSize: 16.sp,
+                                    fontWeight: FontWeight.w500,
+                                    color: Colors.white,
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ],
                         ),
-                      ),
-                    ],
+                      );
+                    },
                   ),
                 ),
               ],
