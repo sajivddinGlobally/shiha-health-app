@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:shiha_health_app/Screen/appointment.page.dart';
+import 'package:shiha_health_app/Screen/healthInsurance.page.dart';
 import 'package:shiha_health_app/Screen/hospitalListing.page.dart';
 import 'package:shiha_health_app/Screen/selfCare.page.dart';
 
@@ -533,7 +534,17 @@ class _HomePageState extends State<HomePage> {
                             "Appointments",
                           ),
                         ),
-                        namebuild("assets/Pharmacy.png", "Pharmacy"),
+                        InkWell(
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              CupertinoPageRoute(
+                                builder: (context) => HealthInsurancePage(),
+                              ),
+                            );
+                          },
+                          child: namebuild("assets/Pharmacy.png", "Pharmacy"),
+                        ),
                       ],
                     ),
                   ),
