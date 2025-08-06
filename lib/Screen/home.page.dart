@@ -5,6 +5,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:shiha_health_app/Screen/appointment.page.dart';
 import 'package:shiha_health_app/Screen/healthInsurance.page.dart';
 import 'package:shiha_health_app/Screen/hospitalListing.page.dart';
+import 'package:shiha_health_app/Screen/laboratoryService.page.dart';
 import 'package:shiha_health_app/Screen/selfCare.page.dart';
 
 class HomePage extends StatefulWidget {
@@ -519,7 +520,20 @@ class _HomePageState extends State<HomePage> {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        namebuild("assets/Laboratory.png", "Laboratory"),
+                        InkWell(
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              CupertinoPageRoute(
+                                builder: (context) => LaboratoryServicePage(),
+                              ),
+                            );
+                          },
+                          child: namebuild(
+                            "assets/Laboratory.png",
+                            "Laboratory",
+                          ),
+                        ),
                         InkWell(
                           onTap: () {
                             Navigator.push(
