@@ -19,9 +19,20 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   int tab = 0;
+  int selectedIndex = 0;
+
+  List<IconData> icons = [
+    Icons.home_outlined,
+    Icons.calendar_today_outlined,
+    Icons.local_hospital_outlined, // You can replace this with a drop icon
+    Icons.medication_outlined,
+  ];
+
+  List<String> labels = ['Home', 'Appointments', 'Health', 'Medicine'];
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Color(0xFF0E1329), // Dark background 
       key: _scaffoldKey,
       drawer: SizedBox(
         width: 280.w,
@@ -974,6 +985,54 @@ class _HomePageState extends State<HomePage> {
               ),
             ),
           ],
+        ),
+      ),
+      bottomNavigationBar: Container(
+        margin: EdgeInsets.all(16),
+        padding: EdgeInsets.symmetric(vertical: 10, horizontal: 8),
+        decoration: BoxDecoration(
+          color: Color(0xFF0E1329),
+          borderRadius: BorderRadius.circular(50),
+          border: Border.all(color: Colors.white12),
+        ),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          children: List.generate(icons.length, (index) {
+            final isSelected = selectedIndex == index;
+
+            return GestureDetector(
+              onTap: () {
+                setState(() => selectedIndex = index);
+              },
+              child: AnimatedContainer(
+                duration: Duration(milliseconds: 300),
+                padding: EdgeInsets.symmetric(
+                  horizontal: isSelected ? 16 : 0,
+                  vertical: 10,
+                ),
+                decoration: BoxDecoration(
+                  color: isSelected ? Color(0xFF067594) : Colors.transparent,
+                  borderRadius: BorderRadius.circular(30),
+                ),
+                child: Row(
+                  children: [
+                    Icon(
+                      icons[index],
+                      color: isSelected ? Colors.white : Colors.grey.shade400,
+                      size: 24,
+                    ),
+                    if (isSelected) ...[
+                      SizedBox(width: 8),
+                      Text(
+                        labels[index],
+                        style: TextStyle(color: Colors.white, fontSize: 14),
+                      ),
+                    ],
+                  ],
+                ),
+              ),
+            );
+          }),
         ),
       ),
     );
