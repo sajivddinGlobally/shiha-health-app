@@ -319,56 +319,57 @@ class _AppointmentPageState extends State<AppointmentPage> {
                                   ),
                                   SizedBox(height: 15.h),
                                   Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
                                     children: [
-                                      ElevatedButton(
-                                        style: ElevatedButton.styleFrom(
-                                          backgroundColor: Color(0xFF0E1329),
-                                          minimumSize: Size(170.w, 39.h),
-                                          shape: RoundedRectangleBorder(
-                                            borderRadius: BorderRadius.circular(
-                                              10.r,
-                                            ),
-                                            side: BorderSide(
-                                              color: Color(0xFF2ECC71),
-                                              width: 1.w,
+                                      Expanded(
+                                        child: ElevatedButton(
+                                          style: ElevatedButton.styleFrom(
+                                            backgroundColor: Color(0xFF0E1329),
+                                            minimumSize: Size(0.w, 39.h),
+                                            shape: RoundedRectangleBorder(
+                                              borderRadius:
+                                                  BorderRadius.circular(10.r),
+                                              side: BorderSide(
+                                                color: Color(0xFF2ECC71),
+                                                width: 1.w,
+                                              ),
                                             ),
                                           ),
-                                        ),
-                                        onPressed: () {},
-                                        child: Text(
-                                          "Change Appointment",
-                                          style: GoogleFonts.poppins(
-                                            fontSize: 13.sp,
-                                            fontWeight: FontWeight.w500,
-                                            color: Color(0xFF2ECC71),
-                                            letterSpacing: -0.4,
+                                          onPressed: () {},
+                                          child: Text(
+                                            "Change Appointment",
+                                            style: GoogleFonts.poppins(
+                                              fontSize: 12.sp,
+                                              fontWeight: FontWeight.w500,
+                                              color: Color(0xFF2ECC71),
+                                              letterSpacing: -0.4,
+                                            ),
                                           ),
                                         ),
                                       ),
-                                      ElevatedButton(
-                                        style: ElevatedButton.styleFrom(
-                                          backgroundColor: Color(0xFF0E1329),
-                                          minimumSize: Size(170.w, 39.h),
-                                          shape: RoundedRectangleBorder(
-                                            borderRadius: BorderRadius.circular(
-                                              10.r,
-                                            ),
-                                            side: BorderSide(
-                                              color: Color(0xFFDA110A),
-                                              width: 1.w,
+                                      SizedBox(width: 10.w),
+                                      Expanded(
+                                        child: ElevatedButton(
+                                          style: ElevatedButton.styleFrom(
+                                            backgroundColor: Color(0xFF0E1329),
+                                            minimumSize: Size(0.w, 39.h),
+                                            shape: RoundedRectangleBorder(
+                                              borderRadius:
+                                                  BorderRadius.circular(10.r),
+                                              side: BorderSide(
+                                                color: Color(0xFFDA110A),
+                                                width: 1.w,
+                                              ),
                                             ),
                                           ),
-                                        ),
-                                        onPressed: () {},
-                                        child: Text(
-                                          "Delete Appointment ",
-                                          style: GoogleFonts.poppins(
-                                            fontSize: 13.sp,
-                                            fontWeight: FontWeight.w500,
-                                            color: Color(0xFFDA110A),
-                                            letterSpacing: -0.4,
+                                          onPressed: () {},
+                                          child: Text(
+                                            "Delete Appointment ",
+                                            style: GoogleFonts.poppins(
+                                              fontSize: 13.sp,
+                                              fontWeight: FontWeight.w500,
+                                              color: Color(0xFFDA110A),
+                                              letterSpacing: -0.4,
+                                            ),
                                           ),
                                         ),
                                       ),
@@ -558,12 +559,11 @@ class MissedAppointment extends StatelessWidget {
                 ),
                 SizedBox(height: 15.h),
                 Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     ElevatedButton(
                       style: ElevatedButton.styleFrom(
                         backgroundColor: Color(0xFF0E1329),
-                        minimumSize: Size(170.w, 39.h),
+                        minimumSize: Size(150.w, 39.h),
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(10.r),
                           side: BorderSide(
@@ -583,10 +583,11 @@ class MissedAppointment extends StatelessWidget {
                         ),
                       ),
                     ),
+                    SizedBox(width: 10.w),
                     ElevatedButton(
                       style: ElevatedButton.styleFrom(
                         backgroundColor: Color(0xFF0E1329),
-                        minimumSize: Size(170.w, 39.h),
+                        minimumSize: Size(150.w, 39.h),
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(10.r),
                           side: BorderSide(
@@ -599,7 +600,7 @@ class MissedAppointment extends StatelessWidget {
                       child: Text(
                         "Make new Appointment",
                         style: GoogleFonts.poppins(
-                          fontSize: 13.sp,
+                          fontSize: 12.sp,
                           fontWeight: FontWeight.w500,
                           color: Color(0xFF2ECC71),
                           letterSpacing: -0.4,
