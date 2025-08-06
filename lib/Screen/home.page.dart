@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:shiha_health_app/Screen/appointment.page.dart';
 import 'package:shiha_health_app/Screen/hospitalListing.page.dart';
 import 'package:shiha_health_app/Screen/selfCare.page.dart';
 
@@ -518,7 +519,20 @@ class _HomePageState extends State<HomePage> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         namebuild("assets/Laboratory.png", "Laboratory"),
-                        namebuild("assets/Appointments.png", "Appointments"),
+                        InkWell(
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              CupertinoPageRoute(
+                                builder: (context) => AppointmentPage(),
+                              ),
+                            );
+                          },
+                          child: namebuild(
+                            "assets/Appointments.png",
+                            "Appointments",
+                          ),
+                        ),
                         namebuild("assets/Pharmacy.png", "Pharmacy"),
                       ],
                     ),
