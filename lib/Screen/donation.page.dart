@@ -11,6 +11,11 @@ class DonationPage extends StatefulWidget {
 }
 
 class _DonationPageState extends State<DonationPage> {
+  List<Map<String, dynamic>> donationList = [
+    {"image": "assets/don.png"},
+    {"image": "assets/don1.png"},
+    {"image": "assets/don.png"},
+  ];
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -93,7 +98,7 @@ class _DonationPageState extends State<DonationPage> {
                 Expanded(
                   child: ListView.builder(
                     padding: EdgeInsets.zero,
-                    itemCount: 2,
+                    itemCount: donationList.length,
                     itemBuilder: (context, index) {
                       return Container(
                         margin: EdgeInsets.only(
@@ -119,7 +124,7 @@ class _DonationPageState extends State<DonationPage> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Image.asset(
-                              "assets/don.png",
+                              donationList[index]['image'].toString(),
                               width: 380.w,
                               height: 162.h,
                               fit: BoxFit.cover,
