@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:shiha_health_app/Screen/appointment.page.dart';
+import 'package:shiha_health_app/Screen/donation.page.dart';
 import 'package:shiha_health_app/Screen/healthInsurance.page.dart';
 import 'package:shiha_health_app/Screen/hospitalListing.page.dart';
 import 'package:shiha_health_app/Screen/laboratoryService.page.dart';
@@ -120,7 +121,7 @@ class _HomePageState extends State<HomePage> {
                           color: Colors.white60,
                         ),
                         title: Text(
-                          "Insurance",
+                          "Profile",
                           style: GoogleFonts.poppins(
                             fontSize: 18.sp,
                             fontWeight: FontWeight.w500,
@@ -499,7 +500,20 @@ class _HomePageState extends State<HomePage> {
                             "Consultation",
                           ),
                         ),
-                        namebuild("assets/Int. Doctors.png", "Int. Doctors"),
+                        InkWell(
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              CupertinoPageRoute(
+                                builder: (context) => DonationPage(),
+                              ),
+                            );
+                          },
+                          child: namebuild(
+                            "assets/Int. Doctors.png",
+                            "Int. Doctors",
+                          ),
+                        ),
                         InkWell(
                           onTap: () {
                             Navigator.push(

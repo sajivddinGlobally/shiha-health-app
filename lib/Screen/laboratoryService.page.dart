@@ -276,37 +276,38 @@ class _LaboratoryServicePageState extends State<LaboratoryServicePage> {
                             SizedBox(height: 15.h),
                             Row(
                               children: [
-                                Container(
-                                  margin: EdgeInsets.only(left: 6.w),
-                                  padding: EdgeInsets.only(
-                                    left: 5.w,
-                                    right: 5.w,
-                                    top: 5.h,
-                                    bottom: 5.h,
-                                  ),
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(40.r),
-                                    color: Color.fromARGB(25, 125, 255, 180),
-                                  ),
-                                  child: Row(
-                                    children: [
-                                      CircleAvatar(
-                                        radius: 5.r,
-                                        backgroundColor: Color(0xFF2ECC71),
-                                      ),
-                                      SizedBox(width: 5.w),
-                                      Text(
-                                        "Available Today",
-                                        style: GoogleFonts.poppins(
-                                          fontSize: 10.sp,
-                                          fontWeight: FontWeight.w500,
-                                          color: Color(0xFF2ECC71),
-                                          letterSpacing: -0.4,
+                                if (index == 0 || index == 1 || index == 2)
+                                  Container(
+                                    margin: EdgeInsets.only(left: 6.w),
+                                    padding: EdgeInsets.only(
+                                      left: 5.w,
+                                      right: 5.w,
+                                      top: 5.h,
+                                      bottom: 5.h,
+                                    ),
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(40.r),
+                                      color: Color.fromARGB(25, 125, 255, 180),
+                                    ),
+                                    child: Row(
+                                      children: [
+                                        CircleAvatar(
+                                          radius: 5.r,
+                                          backgroundColor: Color(0xFF2ECC71),
                                         ),
-                                      ),
-                                    ],
+                                        SizedBox(width: 5.w),
+                                        Text(
+                                          "Available Today",
+                                          style: GoogleFonts.poppins(
+                                            fontSize: 10.sp,
+                                            fontWeight: FontWeight.w500,
+                                            color: Color(0xFF2ECC71),
+                                            letterSpacing: -0.4,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
                                   ),
-                                ),
                                 Container(
                                   margin: EdgeInsets.only(left: 6.w),
                                   padding: EdgeInsets.only(
