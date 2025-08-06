@@ -17,7 +17,7 @@ class _RegisterPageState extends State<RegisterPage> {
     return Scaffold(
       body: SingleChildScrollView(
         child: SizedBox(
-          height: MediaQuery.of(context).size.height + 60.h,
+          height: MediaQuery.of(context).size.height + 130.h,
           child: Stack(
             children: [
               Image.asset(
@@ -138,13 +138,18 @@ class RegisterBody extends StatelessWidget {
             fontSize: 14.sp,
             fontWeight: FontWeight.w400,
             color: Colors.white54,
-            letterSpacing: 2,
+            letterSpacing: 1.5,
           ),
         ),
         SizedBox(height: 10.h),
         TextFormField(
           decoration: InputDecoration(
-            contentPadding: EdgeInsets.only(top: 10.h, bottom: 10.h),
+            contentPadding: EdgeInsets.only(
+              top: 10.h,
+              bottom: 10.h,
+              left: 20.w,
+              right: 20.w,
+            ),
             filled: true,
             fillColor: Color(0xFFFFFFFF),
             enabledBorder: OutlineInputBorder(

@@ -242,7 +242,9 @@ class _SelfCarePageState extends State<SelfCarePage> {
                           ),
                         ),
                       )
-                    : RemindScreen(),
+                    : tab == 1
+                    ? RemindScreen()
+                    : SelfScreen(),
               ],
             ),
           ),
@@ -359,6 +361,8 @@ class _RemindScreenState extends State<RemindScreen> {
                             color: Color(0xFF76BDFF),
                             width: 1.w,
                           ),
+                          activeColor: Color(0xFF067594),
+                          checkColor: Colors.black,
                           value: isCheck,
                           onChanged: (value) {
                             setState(() {
@@ -510,6 +514,7 @@ class _RemindScreenState extends State<RemindScreen> {
                       style: GoogleFonts.poppins(
                         fontSize: 14.sp,
                         fontWeight: FontWeight.w400,
+                        letterSpacing: -0.2,
                         color: Color(0xFFB0BABF),
                         decoration: item['isChecked']
                             ? TextDecoration.lineThrough
@@ -543,6 +548,145 @@ class _RemindScreenState extends State<RemindScreen> {
             },
           ),
         ],
+      ),
+    );
+  }
+}
+
+//////////////
+
+class SelfScreen extends StatefulWidget {
+  const SelfScreen({super.key});
+
+  @override
+  State<SelfScreen> createState() => _SelfScreenState();
+}
+
+class _SelfScreenState extends State<SelfScreen> {
+  List<Map<String, dynamic>> careList = [
+    {"name": "Heart Rate", "re": "80", "image": "assets/rate.png", "b": "bpm"},
+    {
+      "name": "Blood Pressure",
+      "re": "120",
+      "image": "assets/pressure.png",
+      "b": "bpm",
+    },
+    {"name": "Your Weight", "re": "70", "image": "assets/rate.png", "b": "Kg"},
+    {
+      "name": "Last Checkup",
+      "re": "2 ",
+      "image": "assets/rate.png",
+      "b": "Weeks ago",
+    },
+    {
+      "name": "Paracetamol",
+      "re": "2 ",
+      "image": "assets/rate.png",
+      "b": "taken out of 7",
+    },
+  ];
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: EdgeInsets.only(left: 20.w, right: 20.w),
+      child: GridView.builder(
+        shrinkWrap: true,
+        physics: NeverScrollableScrollPhysics(),
+        padding: EdgeInsets.zero,
+        itemCount: careList.length,
+        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+          crossAxisCount: 2,
+          mainAxisSpacing: 15.h,
+          crossAxisSpacing: 15.w,
+          childAspectRatio: 195 / 180, //10833
+        ),
+        itemBuilder: (context, index) {
+          return Container(
+            width: 195.w,
+            height: 180.h,
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(20.r),
+              color: Color(0xFF0E1329),
+              border: Border(
+                top: BorderSide(color: Colors.white),
+                right: BorderSide(color: Colors.white),
+              ),
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Padding(
+                  padding: EdgeInsets.only(left: 18.w, right: 23.w, top: 20.h),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        careList[index]['name'].toString(),
+                        style: GoogleFonts.poppins(
+                          fontSize: 14.sp,
+                          fontWeight: FontWeight.w400,
+                          color: Colors.white,
+                        ),
+                      ),
+                      Image.asset(
+                        "assets/heart.png",
+                        width: 24.w,
+                        height: 24.h,
+                        fit: BoxFit.cover,
+                      ),
+                    ],
+                  ),
+                ),
+                Spacer(),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Padding(
+                          padding: EdgeInsets.only(left: 18.w),
+                          child: Text(
+                            careList[index]['re'].toString(),
+                            style: GoogleFonts.poppins(
+                              fontSize: 48.sp,
+                              fontWeight: FontWeight.w300,
+                              color: Colors.white,
+                              height: 1.h,
+                            ),
+                          ),
+                        ),
+                        Padding(
+                          padding: EdgeInsets.only(left: 20.w),
+                          child: Text(
+                            careList[index]['b'].toString(),
+                            style: GoogleFonts.poppins(
+                              fontSize: 14.sp,
+                              fontWeight: FontWeight.w300,
+                              color: Color(0xFFA5A7A8),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                    if (index == 0 || index == 1)
+                      Padding(
+                        padding: EdgeInsets.only(right: 18.w),
+                        child: Image.asset(
+                          // "assets/rate.png",
+                          careList[index]['image'].toString(),
+                          width: 74.w,
+                          height: 91.h,
+                          fit: BoxFit.cover,
+                        ),
+                      ),
+                  ],
+                ),
+                SizedBox(height: 10.h),
+              ],
+            ),
+          );
+        },
       ),
     );
   }
