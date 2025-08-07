@@ -81,6 +81,14 @@ class _HomePageState extends State<HomePage> {
                         ),
                       ),
                       ListTile(
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            CupertinoPageRoute(
+                              builder: (context) => AppointmentPage(),
+                            ),
+                          );
+                        },
                         dense: true,
                         contentPadding: EdgeInsets.zero,
                         leading: Icon(
@@ -98,6 +106,14 @@ class _HomePageState extends State<HomePage> {
                         ),
                       ),
                       ListTile(
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            CupertinoPageRoute(
+                              builder: (context) => HealthInsurancePage(),
+                            ),
+                          );
+                        },
                         dense: true,
                         contentPadding: EdgeInsets.zero,
                         leading: Icon(
@@ -132,6 +148,14 @@ class _HomePageState extends State<HomePage> {
                         ),
                       ),
                       ListTile(
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            CupertinoPageRoute(
+                              builder: (context) => LaboratoryServicePage(),
+                            ),
+                          );
+                        },
                         dense: true,
                         contentPadding: EdgeInsets.zero,
                         leading: Icon(
@@ -166,6 +190,14 @@ class _HomePageState extends State<HomePage> {
                         ),
                       ),
                       ListTile(
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            CupertinoPageRoute(
+                              builder: (context) => SelfCarePage(),
+                            ),
+                          );
+                        },
                         dense: true,
                         contentPadding: EdgeInsets.zero,
                         leading: Icon(
@@ -1179,7 +1211,7 @@ class _BottomNavigationState extends State<BottomNavigation> {
   final List<Widget> pages = [
     HomePage(), // index 0
     AppointmentPage(), // index 1
-    LaboratoryServicePage(), // index 2
+    DonationPage(), // index 2
     SelfCarePage(),
   ];
   @override
