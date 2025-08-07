@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:shiha_health_app/Screen/hospitalDetails.page.dart';
 import 'package:shiha_health_app/Screen/hospitalListing.page.dart';
 
 class LaboratoryServicePage extends StatefulWidget {
@@ -260,7 +261,14 @@ class _LaboratoryServicePageState extends State<LaboratoryServicePage> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             InkWell(
-                              onTap: () {},
+                              onTap: () {
+                                Navigator.push(
+                                  context,
+                                  CupertinoPageRoute(
+                                    builder: (context) => HospitalDetailsPage(),
+                                  ),
+                                );
+                              },
                               child: SizedBox(
                                 width: 190.w,
                                 height: 130.h,

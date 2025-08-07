@@ -1192,74 +1192,88 @@ class _BottomNavigationState extends State<BottomNavigation> {
     DonationPage(), // index 2
     SelfCarePage(),
   ];
+
+   Future<bool> _onWillPop() async {
+    if(selectedIndex != 0) {
+      setState(() {
+        selectedIndex = 0;
+      });
+      return false;
+    }
+    return true;
+   }
+
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Color(0xFF0E1329), // Dark background
-      body: pages[selectedIndex], // Show different page here
-      bottomNavigationBar: Container(
-        margin: EdgeInsets.only(left: 20.w, right: 20.w),
-        padding: EdgeInsets.symmetric(vertical: 8.h),
-        decoration: BoxDecoration(
-          color: Color(0xFF01061D),
-          borderRadius: BorderRadius.circular(40.r),
-          border: Border(
-            top: BorderSide(color: Colors.white38),
-            right: BorderSide(color: Colors.white38),
+    return WillPopScope(
+      onWillPop: _onWillPop,
+      child: Scaffold(
+        backgroundColor: Color(0xFF0E1329), // Dark background
+        body: pages[selectedIndex], // Show different page here
+        bottomNavigationBar: Container(
+          margin: EdgeInsets.only(left: 20.w, right: 20.w),
+          padding: EdgeInsets.symmetric(vertical: 8.h),
+          decoration: BoxDecoration(
+            color: Color(0xFF01061D),
+            borderRadius: BorderRadius.circular(40.r),
+            border: Border(
+              top: BorderSide(color: Colors.white38),
+              right: BorderSide(color: Colors.white38),
+            ),
           ),
-        ),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
-          children: List.generate(icons.length, (index) {
-            final isSelected = selectedIndex == index;
-
-            return GestureDetector(
-              onTap: () {
-                setState(() => selectedIndex = index);
-              },
-              child: AnimatedContainer(
-                duration: Duration(milliseconds: 300),
-                // padding: EdgeInsets.symmetric(
-                //   horizontal: isSelected ? 12.w : 0,
-                //   vertical: 8.h,
-                // ),
-                padding: EdgeInsets.only(
-                  left: 15.w,
-                  right: 15.w,
-                  top: 10.h,
-                  bottom: 10.h,
-                ),
-                decoration: BoxDecoration(
-                  color: isSelected ? Color(0xFF067594) : Colors.transparent,
-                  borderRadius: BorderRadius.circular(30.r),
-                  border: Border.all(
-                    color: isSelected ? Colors.white : Colors.transparent,
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: List.generate(icons.length, (index) {
+              final isSelected = selectedIndex == index;
+      
+              return GestureDetector(
+                onTap: () {
+                  setState(() => selectedIndex = index);
+                },
+                child: AnimatedContainer(
+                  duration: Duration(milliseconds: 300),
+                  // padding: EdgeInsets.symmetric(
+                  //   horizontal: isSelected ? 12.w : 0,
+                  //   vertical: 8.h,
+                  // ),
+                  padding: EdgeInsets.only(
+                    left: 15.w,
+                    right: 15.w,
+                    top: 10.h,
+                    bottom: 10.h,
+                  ),
+                  decoration: BoxDecoration(
+                    color: isSelected ? Color(0xFF067594) : Colors.transparent,
+                    borderRadius: BorderRadius.circular(30.r),
+                    border: Border.all(
+                      color: isSelected ? Colors.white : Colors.transparent,
+                    ),
+                  ),
+                  child: Row(
+                    children: [
+                      Icon(
+                        icons[index],
+                        color: isSelected ? Colors.white : Color(0xFFB0BABF),
+                        size: 24.sp,
+                      ),
+                      if (isSelected) ...[
+                        SizedBox(width: 8.w),
+                        Text(
+                          labels[index],
+                          style: GoogleFonts.poppins(
+                            fontSize: 13.sp,
+                            fontWeight: FontWeight.w400,
+                            color: Colors.white,
+                          ),
+                        ),
+                        SizedBox(width: 3.w),
+                      ],
+                    ],
                   ),
                 ),
-                child: Row(
-                  children: [
-                    Icon(
-                      icons[index],
-                      color: isSelected ? Colors.white : Color(0xFFB0BABF),
-                      size: 24.sp,
-                    ),
-                    if (isSelected) ...[
-                      SizedBox(width: 8.w),
-                      Text(
-                        labels[index],
-                        style: GoogleFonts.poppins(
-                          fontSize: 13.sp,
-                          fontWeight: FontWeight.w400,
-                          color: Colors.white,
-                        ),
-                      ),
-                      SizedBox(width: 3.w),
-                    ],
-                  ],
-                ),
-              ),
-            );
-          }),
+              );
+            }),
+          ),
         ),
       ),
     );
