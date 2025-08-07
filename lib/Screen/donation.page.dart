@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:shiha_health_app/Screen/donationDetails.page.dart';
 import 'package:shiha_health_app/Screen/yourDonation.page.dart';
 
 class DonationPage extends StatefulWidget {
@@ -137,11 +138,24 @@ class _DonationPageState extends State<DonationPage> {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Image.asset(
-                              donationList[index]['image'].toString(),
-                              width: 380.w,
-                              height: 162.h,
-                              fit: BoxFit.cover,
+                            InkWell(
+                              onTap: () {
+                                Navigator.push(
+                                  context,
+                                  CupertinoPageRoute(
+                                    builder: (context) => DonationDetailsPage(),
+                                  ),
+                                );
+                              },
+                              child: ClipRRect(
+                                borderRadius: BorderRadius.circular(10.r),
+                                child: Image.asset(
+                                  donationList[index]['image'].toString(),
+                                  width: 380.w,
+                                  height: 162.h,
+                                  fit: BoxFit.cover,
+                                ),
+                              ),
                             ),
                             SizedBox(height: 10.h),
                             Row(
