@@ -179,9 +179,9 @@ class _SelfCarePageState extends State<SelfCarePage> {
                   ),
                 ),
                 SizedBox(height: 20.h),
-                tab == 0
-                    ? Expanded(
-                        child: Padding(
+                Expanded(
+                  child: tab == 0
+                      ? Padding(
                           padding: EdgeInsets.only(left: 20.w, right: 20.w),
                           child: GridView.builder(
                             padding: EdgeInsets.zero,
@@ -240,11 +240,11 @@ class _SelfCarePageState extends State<SelfCarePage> {
                               );
                             },
                           ),
-                        ),
-                      )
-                    : tab == 1
-                    ? RemindScreen()
-                    : SelfScreen(),
+                        )
+                      : tab == 1
+                      ? RemindScreen()
+                      : SelfScreen(),
+                ),
               ],
             ),
           ),
@@ -292,262 +292,265 @@ class _RemindScreenState extends State<RemindScreen> {
   ];
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: EdgeInsets.only(left: 20.w, right: 20.w),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text(
-                "Your Reminders",
-                style: GoogleFonts.poppins(
-                  fontSize: 15.sp,
-                  fontWeight: FontWeight.w500,
-                  color: Colors.white,
-                  letterSpacing: -0.3,
-                ),
-              ),
-              ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  minimumSize: Size(86.w, 28.h),
-                  backgroundColor: Color(0xFF2ECC71),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(10.r),
-                  ),
-                ),
-                onPressed: () {},
-                child: Text(
-                  "Add New",
+    return SingleChildScrollView(
+      child: Padding(
+        padding: EdgeInsets.only(left: 20.w, right: 20.w),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  "Your Reminders",
                   style: GoogleFonts.poppins(
-                    fontSize: 12.sp,
+                    fontSize: 15.sp,
                     fontWeight: FontWeight.w500,
-                    color: Color(0xFF010D16),
+                    color: Colors.white,
                     letterSpacing: -0.3,
                   ),
                 ),
-              ),
-            ],
-          ),
-          SizedBox(height: 16.h),
-          Container(
-            padding: EdgeInsets.only(
-              left: 15.w,
-              top: 15.h,
-              right: 15.w,
-              bottom: 15.h,
+                ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    minimumSize: Size(86.w, 28.h),
+                    backgroundColor: Color(0xFF2ECC71),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10.r),
+                    ),
+                  ),
+                  onPressed: () {},
+                  child: Text(
+                    "Add New",
+                    style: GoogleFonts.poppins(
+                      fontSize: 12.sp,
+                      fontWeight: FontWeight.w500,
+                      color: Color(0xFF010D16),
+                      letterSpacing: -0.3,
+                    ),
+                  ),
+                ),
+              ],
             ),
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(10.r),
-              color: Color(0xFF081028),
-              border: Border(
-                top: BorderSide(color: Colors.white, width: 1.w),
-                right: BorderSide(color: Colors.white, width: 1.w),
+            SizedBox(height: 16.h),
+            Container(
+              padding: EdgeInsets.only(
+                left: 15.w,
+                top: 15.h,
+                right: 15.w,
+                bottom: 15.h,
               ),
-            ),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Row(
-                  children: [
-                    SizedBox(
-                      width: 20.w,
-                      height: 20.h,
-                      child: Transform.scale(
-                        scale: 1,
-                        child: Checkbox(
-                          side: BorderSide(
-                            color: Color(0xFF76BDFF),
-                            width: 1.w,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(10.r),
+                color: Color(0xFF081028),
+                border: Border(
+                  top: BorderSide(color: Colors.white, width: 1.w),
+                  right: BorderSide(color: Colors.white, width: 1.w),
+                ),
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
+                    children: [
+                      SizedBox(
+                        width: 20.w,
+                        height: 20.h,
+                        child: Transform.scale(
+                          scale: 1,
+                          child: Checkbox(
+                            side: BorderSide(
+                              color: Color(0xFF76BDFF),
+                              width: 1.w,
+                            ),
+                            activeColor: Color(0xFF067594),
+                            checkColor: Colors.black,
+                            value: isCheck,
+                            onChanged: (value) {
+                              setState(() {
+                                isCheck = !isCheck;
+                              });
+                            },
                           ),
-                          activeColor: Color(0xFF067594),
-                          checkColor: Colors.black,
-                          value: isCheck,
-                          onChanged: (value) {
-                            setState(() {
-                              isCheck = !isCheck;
-                            });
-                          },
                         ),
                       ),
-                    ),
-                    SizedBox(width: 10.w),
-                    Text(
-                      "Took Paracetamol Today",
-                      style: GoogleFonts.poppins(
-                        fontSize: 13.sp,
-                        fontWeight: FontWeight.w400,
-                        color: Color(0xFFB0BABF),
+                      SizedBox(width: 10.w),
+                      Text(
+                        "Took Paracetamol Today",
+                        style: GoogleFonts.poppins(
+                          fontSize: 13.sp,
+                          fontWeight: FontWeight.w400,
+                          color: Color(0xFFB0BABF),
+                        ),
                       ),
-                    ),
-                    Spacer(),
-                    Icon(
-                      Icons.access_alarm,
-                      color: Color(0xFF067594),
-                      size: 20.sp,
-                    ),
-                    SizedBox(width: 10.w),
-                    Text(
-                      "09:00 PM",
-                      style: GoogleFonts.poppins(
-                        fontSize: 14.sp,
-                        fontWeight: FontWeight.w400,
+                      Spacer(),
+                      Icon(
+                        Icons.access_alarm,
                         color: Color(0xFF067594),
+                        size: 20.sp,
                       ),
+                      SizedBox(width: 10.w),
+                      Text(
+                        "09:00 PM",
+                        style: GoogleFonts.poppins(
+                          fontSize: 14.sp,
+                          fontWeight: FontWeight.w400,
+                          color: Color(0xFF067594),
+                        ),
+                      ),
+                    ],
+                  ),
+                  SizedBox(height: 13.h),
+                  Container(
+                    // width: 370.w,
+                    // height: 56.h,
+                    padding: EdgeInsets.only(
+                      left: 15.w,
+                      right: 15.w,
+                      bottom: 12.h,
+                      top: 12.h,
                     ),
-                  ],
-                ),
-                SizedBox(height: 13.h),
-                Container(
-                  // width: 370.w,
-                  // height: 56.h,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(10.r),
+                      color: Color(0xFF091A34),
+                    ),
+                    child: Column(
+                      children: [
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              "Taken : 6",
+                              style: GoogleFonts.poppins(
+                                fontSize: 12.sp,
+                                fontWeight: FontWeight.w500,
+                                color: Color(0xFF067594),
+                              ),
+                            ),
+                            Text(
+                              "Goal : 7",
+                              style: GoogleFonts.poppins(
+                                fontSize: 12.sp,
+                                fontWeight: FontWeight.w500,
+                                color: Color(0xFF067594),
+                              ),
+                            ),
+                          ],
+                        ),
+                        SizedBox(height: 13.h),
+                        Container(
+                          width: MediaQuery.of(context).size.width,
+                          height: 5.h,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(30.r),
+                            color: Color(0xFF09233E),
+                          ),
+                          child: Align(
+                            alignment: Alignment.centerLeft,
+                            child: Container(
+                              width: 263.w,
+                              height: 5.h,
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(30.r),
+                                color: Color(0xFF067594),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            SizedBox(height: 10.h),
+            ListView.builder(
+              shrinkWrap: true,
+              physics: NeverScrollableScrollPhysics(),
+              padding: EdgeInsets.zero,
+              itemCount: reminders.length,
+              itemBuilder: (context, index) {
+                final item = reminders[index];
+                return Container(
+                  margin: EdgeInsets.only(top: 10.h),
                   padding: EdgeInsets.only(
                     left: 15.w,
+                    top: 15.h,
                     right: 15.w,
-                    bottom: 12.h,
-                    top: 12.h,
+                    bottom: 15.h,
                   ),
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(10.r),
-                    color: Color(0xFF091A34),
+                    color: Color(0xFF081028),
+                    border: Border(
+                      top: BorderSide(color: Colors.white, width: 1.w),
+                      right: BorderSide(color: Colors.white, width: 1.w),
+                    ),
                   ),
-                  child: Column(
+                  child: Row(
                     children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text(
-                            "Taken : 6",
-                            style: GoogleFonts.poppins(
-                              fontSize: 12.sp,
-                              fontWeight: FontWeight.w500,
-                              color: Color(0xFF067594),
+                      SizedBox(
+                        width: 20.w,
+                        height: 20.h,
+                        child: Transform.scale(
+                          scale: 1,
+                          child: Checkbox(
+                            value: item['isChecked'],
+                            onChanged: (val) {
+                              setState(() {
+                                reminders[index]['isChecked'] = val!;
+                              });
+                            },
+                            side: BorderSide(
+                              color: Color(0xFF76BDFF),
+                              width: 1.w,
                             ),
+                            activeColor: Color(0xFF067594),
+                            checkColor: Colors.black,
                           ),
+                        ),
+                      ),
+                      SizedBox(width: 10.w),
+                      Text(
+                        item['label'],
+                        style: GoogleFonts.poppins(
+                          fontSize: 14.sp,
+                          fontWeight: FontWeight.w400,
+                          letterSpacing: -0.2,
+                          color: Color(0xFFB0BABF),
+                          decoration: item['isChecked']
+                              ? TextDecoration.lineThrough
+                              : TextDecoration.none,
+                          decorationThickness: 1.2,
+                          decorationColor: Colors.white,
+                        ),
+                      ),
+                      Spacer(),
+                      Row(
+                        children: [
+                          Icon(
+                            Icons.alarm,
+                            color: Color(0xFF067594),
+                            size: 20.sp,
+                          ),
+                          SizedBox(width: 10.w),
                           Text(
-                            "Goal : 7",
+                            item['time'],
                             style: GoogleFonts.poppins(
-                              fontSize: 12.sp,
-                              fontWeight: FontWeight.w500,
+                              fontSize: 14.sp,
+                              fontWeight: FontWeight.w400,
                               color: Color(0xFF067594),
                             ),
                           ),
                         ],
                       ),
-                      SizedBox(height: 13.h),
-                      Container(
-                        width: MediaQuery.of(context).size.width,
-                        height: 5.h,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(30.r),
-                          color: Color(0xFF09233E),
-                        ),
-                        child: Align(
-                          alignment: Alignment.centerLeft,
-                          child: Container(
-                            width: 263.w,
-                            height: 5.h,
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(30.r),
-                              color: Color(0xFF067594),
-                            ),
-                          ),
-                        ),
-                      ),
                     ],
                   ),
-                ),
-              ],
+                );
+              },
             ),
-          ),
-          SizedBox(height: 10.h),
-          ListView.builder(
-            shrinkWrap: true,
-            physics: NeverScrollableScrollPhysics(),
-            padding: EdgeInsets.zero,
-            itemCount: reminders.length,
-            itemBuilder: (context, index) {
-              final item = reminders[index];
-              return Container(
-                margin: EdgeInsets.only(top: 10.h),
-                padding: EdgeInsets.only(
-                  left: 15.w,
-                  top: 15.h,
-                  right: 15.w,
-                  bottom: 15.h,
-                ),
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(10.r),
-                  color: Color(0xFF081028),
-                  border: Border(
-                    top: BorderSide(color: Colors.white, width: 1.w),
-                    right: BorderSide(color: Colors.white, width: 1.w),
-                  ),
-                ),
-                child: Row(
-                  children: [
-                    SizedBox(
-                      width: 20.w,
-                      height: 20.h,
-                      child: Transform.scale(
-                        scale: 1,
-                        child: Checkbox(
-                          value: item['isChecked'],
-                          onChanged: (val) {
-                            setState(() {
-                              reminders[index]['isChecked'] = val!;
-                            });
-                          },
-                          side: BorderSide(
-                            color: Color(0xFF76BDFF),
-                            width: 1.w,
-                          ),
-                          activeColor: Color(0xFF067594),
-                          checkColor: Colors.black,
-                        ),
-                      ),
-                    ),
-                    SizedBox(width: 10.w),
-                    Text(
-                      item['label'],
-                      style: GoogleFonts.poppins(
-                        fontSize: 14.sp,
-                        fontWeight: FontWeight.w400,
-                        letterSpacing: -0.2,
-                        color: Color(0xFFB0BABF),
-                        decoration: item['isChecked']
-                            ? TextDecoration.lineThrough
-                            : TextDecoration.none,
-                        decorationThickness: 1.2,
-                        decorationColor: Colors.white,
-                      ),
-                    ),
-                    Spacer(),
-                    Row(
-                      children: [
-                        Icon(
-                          Icons.alarm,
-                          color: Color(0xFF067594),
-                          size: 20.sp,
-                        ),
-                        SizedBox(width: 10.w),
-                        Text(
-                          item['time'],
-                          style: GoogleFonts.poppins(
-                            fontSize: 14.sp,
-                            fontWeight: FontWeight.w400,
-                            color: Color(0xFF067594),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
-              );
-            },
-          ),
-        ],
+            SizedBox(height: 10.h),
+          ],
+        ),
       ),
     );
   }
