@@ -20,21 +20,10 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   int tab = 0;
-  int selectedIndex = 0;
-
-  List<IconData> icons = [
-    Icons.home_outlined,
-    Icons.calendar_today_outlined,
-    Icons.bloodtype_outlined, // You can replace this with a drop icon
-    Icons.medication_outlined,
-  ];
-
-  List<String> labels = ['Home', 'Appointments', 'Health', 'Medicine'];
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color(0xFF0E1329), // Dark background
       key: _scaffoldKey,
       drawer: SizedBox(
         width: 280.w,
@@ -997,71 +986,6 @@ class _HomePageState extends State<HomePage> {
           ],
         ),
       ),
-      bottomNavigationBar: Container(
-        margin: EdgeInsets.only(left: 20.w, right: 20.w, bottom: 15.h),
-        padding: EdgeInsets.symmetric(vertical: 8.h),
-        decoration: BoxDecoration(
-          color: Color(0xFF01061D),
-          borderRadius: BorderRadius.circular(40.r),
-          border: Border(
-            top: BorderSide(color: Colors.white38),
-            right: BorderSide(color: Colors.white38),
-          ),
-        ),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
-          children: List.generate(icons.length, (index) {
-            final isSelected = selectedIndex == index;
-
-            return GestureDetector(
-              onTap: () {
-                setState(() => selectedIndex = index);
-              },
-              child: AnimatedContainer(
-                duration: Duration(milliseconds: 300),
-                // padding: EdgeInsets.symmetric(
-                //   horizontal: isSelected ? 12.w : 0,
-                //   vertical: 8.h,
-                // ),
-                padding: EdgeInsets.only(
-                  left: 15.w,
-                  right: 15.w,
-                  top: 10.h,
-                  bottom: 10.h,
-                ),
-                decoration: BoxDecoration(
-                  color: isSelected ? Color(0xFF067594) : Colors.transparent,
-                  borderRadius: BorderRadius.circular(30.r),
-                  border: Border.all(
-                    color: isSelected ? Colors.white : Colors.transparent,
-                  ),
-                ),
-                child: Row(
-                  children: [
-                    Icon(
-                      icons[index],
-                      color: isSelected ? Colors.white : Color(0xFFB0BABF),
-                      size: 24.sp,
-                    ),
-                    if (isSelected) ...[
-                      SizedBox(width: 8.w),
-                      Text(
-                        labels[index],
-                        style: GoogleFonts.poppins(
-                          fontSize: 13.sp,
-                          fontWeight: FontWeight.w400,
-                          color: Colors.white,
-                        ),
-                      ),
-                      SizedBox(width: 3.w),
-                    ],
-                  ],
-                ),
-              ),
-            );
-          }),
-        ),
-      ),
     );
   }
 
@@ -1228,6 +1152,106 @@ class ReminderTile extends StatelessWidget {
           ),
         ),
       ],
+    );
+  }
+}
+
+/////////////////
+class BottomNavigation extends StatefulWidget {
+  const BottomNavigation({super.key});
+
+  @override
+  State<BottomNavigation> createState() => _BottomNavigationState();
+}
+
+class _BottomNavigationState extends State<BottomNavigation> {
+  int selectedIndex = 0;
+
+  List<IconData> icons = [
+    Icons.home_outlined,
+    Icons.calendar_today_outlined,
+    Icons.bloodtype_outlined, // You can replace this with a drop icon
+    Icons.medication_outlined,
+  ];
+
+  List<String> labels = ['Home', 'Appointments', 'Health', 'Medicine'];
+
+  final List<Widget> pages = [
+    HomePage(), // index 0
+    AppointmentPage(), // index 1
+    LaboratoryServicePage(), // index 2
+    SelfCarePage(),
+  ];
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: Color(0xFF0E1329), // Dark background
+      body: pages[selectedIndex], // Show different page here
+      bottomNavigationBar: Container(
+        margin: EdgeInsets.only(left: 20.w, right: 20.w),
+        padding: EdgeInsets.symmetric(vertical: 8.h),
+        decoration: BoxDecoration(
+          color: Color(0xFF01061D),
+          borderRadius: BorderRadius.circular(40.r),
+          border: Border(
+            top: BorderSide(color: Colors.white38),
+            right: BorderSide(color: Colors.white38),
+          ),
+        ),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          children: List.generate(icons.length, (index) {
+            final isSelected = selectedIndex == index;
+
+            return GestureDetector(
+              onTap: () {
+                setState(() => selectedIndex = index);
+              },
+              child: AnimatedContainer(
+                duration: Duration(milliseconds: 300),
+                // padding: EdgeInsets.symmetric(
+                //   horizontal: isSelected ? 12.w : 0,
+                //   vertical: 8.h,
+                // ),
+                padding: EdgeInsets.only(
+                  left: 15.w,
+                  right: 15.w,
+                  top: 10.h,
+                  bottom: 10.h,
+                ),
+                decoration: BoxDecoration(
+                  color: isSelected ? Color(0xFF067594) : Colors.transparent,
+                  borderRadius: BorderRadius.circular(30.r),
+                  border: Border.all(
+                    color: isSelected ? Colors.white : Colors.transparent,
+                  ),
+                ),
+                child: Row(
+                  children: [
+                    Icon(
+                      icons[index],
+                      color: isSelected ? Colors.white : Color(0xFFB0BABF),
+                      size: 24.sp,
+                    ),
+                    if (isSelected) ...[
+                      SizedBox(width: 8.w),
+                      Text(
+                        labels[index],
+                        style: GoogleFonts.poppins(
+                          fontSize: 13.sp,
+                          fontWeight: FontWeight.w400,
+                          color: Colors.white,
+                        ),
+                      ),
+                      SizedBox(width: 3.w),
+                    ],
+                  ],
+                ),
+              ),
+            );
+          }),
+        ),
+      ),
     );
   }
 }

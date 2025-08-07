@@ -169,7 +169,7 @@ class _LoginPageState extends State<LoginPage> {
                             Navigator.push(
                               context,
                               CupertinoPageRoute(
-                                builder: (context) => HomePage(),
+                                builder: (context) => BottomNavigation(),
                               ),
                             );
                           },
