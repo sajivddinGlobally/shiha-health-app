@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:shiha_health_app/Screen/ai.chat.page.dart';
 import 'package:shiha_health_app/Screen/appointment.page.dart';
 import 'package:shiha_health_app/Screen/donation.page.dart';
 import 'package:shiha_health_app/Screen/healthInsurance.page.dart';
@@ -32,7 +33,7 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color(0xFF0E1329), // Dark background 
+      backgroundColor: Color(0xFF0E1329), // Dark background
       key: _scaffoldKey,
       drawer: SizedBox(
         width: 280.w,
@@ -614,6 +615,14 @@ class _HomePageState extends State<HomePage> {
                             Padding(
                               padding: EdgeInsets.only(left: 15.w, right: 15.w),
                               child: TextField(
+                                onTap: () {
+                                  Navigator.push(
+                                    context,
+                                    CupertinoPageRoute(
+                                      builder: (context) => AiChatPage(),
+                                    ),
+                                  );
+                                },
                                 decoration: InputDecoration(
                                   contentPadding: EdgeInsets.only(
                                     left: 15.w,
