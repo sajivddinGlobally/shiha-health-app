@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:shiha_health_app/Screen/ai.voice.page.dart';
 
 class AiChatPage extends StatefulWidget {
   const AiChatPage({super.key});
@@ -156,35 +157,24 @@ class _AiChatPageState extends State<AiChatPage> {
                     ),
                     Spacer(),
                     Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         SizedBox(width: 15.w),
-                        Container(
-                          width: 84.w,
-                          height: 34.h,
-                          // padding: EdgeInsets.only(
-                          //   left: 6.w,
-                          //   right: 9.w,
-                          //   top: 9.h,
-                          //   bottom: 9.h,
-                          // ),
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(10.r),
-                            color: Color.fromARGB(255, 32, 35, 55),
-                          ),
-                          child: Row(
-                            children: [
-                              Icon(Icons.attach_file_outlined),
-                              Text(
-                                "Attach",
-                                style: GoogleFonts.poppins(
-                                  fontSize: 13.sp,
-                                  fontWeight: FontWeight.w500,
-                                  color: Colors.white,
-                                ),
+                        textBody("Attach", Icons.attach_file),
+                        InkWell(
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              CupertinoPageRoute(
+                                builder: (context) => AiVoicePage(),
                               ),
-                            ],
-                          ),
+                            );
+                          },
+                          child: textBody("Voice", Icons.mic),
                         ),
+                        textBody("Interact", Icons.graphic_eq),
+                        textBody("Send", Icons.arrow_upward),
+                        SizedBox(width: 15.w),
                       ],
                     ),
                     SizedBox(height: 15.h),
@@ -193,6 +183,32 @@ class _AiChatPageState extends State<AiChatPage> {
               ),
             ),
           ),
+        ],
+      ),
+    );
+  }
+
+  Widget textBody(String name, IconData icon) {
+    return Container(
+      padding: EdgeInsets.only(left: 6.w, right: 10.w, top: 8.h, bottom: 8.h),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(10.r),
+        color: Color.fromARGB(255, 32, 35, 55),
+      ),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Icon(icon, color: Colors.white, size: 18.sp),
+          SizedBox(width: 5.w),
+          Text(
+            name,
+            style: GoogleFonts.poppins(
+              fontSize: 14.sp,
+              fontWeight: FontWeight.w500,
+              color: Colors.white,
+            ),
+          ),
+          SizedBox(width: 4.w),
         ],
       ),
     );
