@@ -1,21 +1,31 @@
+import 'dart:math';
+
+import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl_phone_field/intl_phone_field.dart';
 import 'package:shiha_health_app/Screen/home.page.dart';
 import 'package:shiha_health_app/Screen/signUp.page.dart';
+import 'package:shiha_health_app/config/core/network/api.state.dart';
+import 'package:shiha_health_app/config/core/utils/pretty.dio.dart';
+import 'package:shiha_health_app/data/controller/loadingController.dart';
+import 'package:shiha_health_app/data/loginUserModel.dart';
 
-class LoginPage extends StatefulWidget {
+class LoginPage extends ConsumerStatefulWidget {
   const LoginPage({super.key});
 
   @override
-  State<LoginPage> createState() => _LoginPageState();
+  ConsumerState<LoginPage> createState() => _LoginPageState();
 }
 
-class _LoginPageState extends State<LoginPage> {
+class _LoginPageState extends ConsumerState<LoginPage> {
+  final phoneController = TextEditingController();
   @override
   Widget build(BuildContext context) {
+    final isLoading = ref.watch(loadingProvider);
     return Scaffold(
       body: SingleChildScrollView(
         child: Stack(
@@ -126,6 +136,7 @@ class _LoginPageState extends State<LoginPage> {
                         Divider(color: Colors.white24, height: 1.h),
                         SizedBox(height: 20.h),
                         IntlPhoneField(
+                          controller: phoneController,
                           decoration: InputDecoration(
                             contentPadding: EdgeInsets.only(
                               left: 18.w,
@@ -165,22 +176,75 @@ class _LoginPageState extends State<LoginPage> {
                               side: BorderSide(),
                             ),
                           ),
-                          onPressed: () {
-                            Navigator.push(
-                              context,
-                              CupertinoPageRoute(
-                                builder: (context) => BottomNavigation(),
-                              ),
-                            );
-                          },
-                          child: Text(
-                            "Login",
-                            style: GoogleFonts.poppins(
-                              fontSize: 16.sp,
-                              fontWeight: FontWeight.w500,
-                              color: Color(0xFFFFFFFF),
-                            ),
-                          ),
+                          onPressed: isLoading
+                              ? null
+                              : () async {
+                                  try {
+                                    ref.read(loadingProvider.notifier).state =
+                                        true;
+                                    final body = LoginUserBodyModel(
+                                      phoneNumber: phoneController.text,
+                                    );
+                                    final service = APIStateNetwork(
+                                      createDio(),
+                                    );
+                                    final response = await service.loginUser(
+                                      body,
+                                    );
+                                    ref.read(loadingProvider.notifier).state =
+                                        false;
+                                    if (response != null) {
+                                      Navigator.push(
+                                        context,
+                                        CupertinoPageRoute(
+                                          builder: (context) =>
+                                              BottomNavigation(),
+                                        ),
+                                      );
+                                      ScaffoldMessenger.of(
+                                        context,
+                                      ).showSnackBar(
+                                        SnackBar(
+                                          content: Text(response.message),
+                                        ),
+                                      );
+                                    } else {
+                                      ref.read(loadingProvider.notifier).state =
+                                          false;
+
+                                      ScaffoldMessenger.of(
+                                        context,
+                                      ).showSnackBar(
+                                        SnackBar(content: Text("Error")),
+                                      );
+                                    }
+                                  } on DioException catch (e) {
+                                    ref.read(loadingProvider.notifier).state =
+                                        false;
+                                    if (e.response!.statusCode == 404) {
+                                      ScaffoldMessenger.of(
+                                        context,
+                                      ).showSnackBar(
+                                        SnackBar(
+                                          content: Text(
+                                            e.response!.statusMessage
+                                                .toString(),
+                                          ),
+                                        ),
+                                      );
+                                    }
+                                  }
+                                },
+                          child: isLoading == true
+                              ? Center(child: CircularProgressIndicator())
+                              : Text(
+                                  "Login",
+                                  style: GoogleFonts.poppins(
+                                    fontSize: 16.sp,
+                                    fontWeight: FontWeight.w500,
+                                    color: Color(0xFFFFFFFF),
+                                  ),
+                                ),
                         ),
                         SizedBox(height: 20.h),
                         InkWell(
