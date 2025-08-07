@@ -5,6 +5,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:intl_phone_field/intl_phone_field.dart';
 import 'package:shiha_health_app/Screen/login.page.dart';
 import 'package:shiha_health_app/Screen/otp.page.dart';
+import 'package:shiha_health_app/Screen/register.page.dart';
 
 class SignUpPage extends StatefulWidget {
   const SignUpPage({super.key});
@@ -214,7 +215,7 @@ class _SignUpPageState extends State<SignUpPage> {
                             Navigator.push(
                               context,
                               CupertinoPageRoute(
-                                builder: (context) => OtpPage(),
+                                builder: (context) => RegisterPage(),
                               ),
                             );
                           },

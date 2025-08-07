@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import 'package:google_fonts/google_fonts.dart';
+import 'package:shiha_health_app/Screen/login.page.dart';
 import 'package:shiha_health_app/Screen/signUp.page.dart';
 
 class SplashPage extends StatefulWidget {
@@ -185,7 +186,7 @@ class _SplashPageState extends State<SplashPage> {
                             Navigator.push(
                               context,
                               CupertinoPageRoute(
-                                builder: (context) => SignUpPage(),
+                                builder: (context) => LoginPage(),
                               ),
                             );
                           },

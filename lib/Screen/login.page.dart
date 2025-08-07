@@ -8,6 +8,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl_phone_field/intl_phone_field.dart';
 import 'package:shiha_health_app/Screen/home.page.dart';
+import 'package:shiha_health_app/Screen/otp.page.dart';
 import 'package:shiha_health_app/Screen/signUp.page.dart';
 import 'package:shiha_health_app/config/core/network/api.state.dart';
 import 'package:shiha_health_app/config/core/utils/pretty.dio.dart';
@@ -198,7 +199,7 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                                         context,
                                         CupertinoPageRoute(
                                           builder: (context) =>
-                                              BottomNavigation(),
+                                              OtpPage(),
                                         ),
                                       );
                                       ScaffoldMessenger.of(

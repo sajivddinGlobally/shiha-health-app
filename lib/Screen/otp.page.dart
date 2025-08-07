@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:otp_pin_field/otp_pin_field.dart';
+import 'package:shiha_health_app/Screen/home.page.dart';
 import 'package:shiha_health_app/Screen/login.page.dart';
 import 'package:shiha_health_app/Screen/register.page.dart';
 
@@ -158,7 +159,7 @@ class _OtpPageState extends State<OtpPage> {
                               Navigator.push(
                                 context,
                                 CupertinoPageRoute(
-                                  builder: (context) => RegisterPage(),
+                                  builder: (context) => BottomNavigation(),
                                 ),
                               );
                             },
