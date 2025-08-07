@@ -2,16 +2,15 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:shiha_health_app/Screen/yourDonation.page.dart';
 
-class DonationPage extends StatefulWidget {
-  const DonationPage({super.key});
+class YourDonationPage extends StatefulWidget {
+  const YourDonationPage({super.key});
 
   @override
-  State<DonationPage> createState() => _DonationPageState();
+  State<YourDonationPage> createState() => _YourDonationPageState();
 }
 
-class _DonationPageState extends State<DonationPage> {
+class _YourDonationPageState extends State<YourDonationPage> {
   List<Map<String, dynamic>> donationList = [
     {"image": "assets/don.png"},
     {"image": "assets/don1.png"},
@@ -50,7 +49,7 @@ class _DonationPageState extends State<DonationPage> {
                     ),
                     SizedBox(width: 10.w),
                     Text(
-                      "Donation",
+                      "Your Donation",
                       style: GoogleFonts.poppins(
                         fontSize: 18.sp,
                         fontWeight: FontWeight.w500,
@@ -75,21 +74,115 @@ class _DonationPageState extends State<DonationPage> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     SizedBox(width: 20.w),
-                    donationBuild("assets/blood.png", "Donate Blood"),
-                    donationBuild("assets/money.png", "Donate Money"),
-                    donationBuild("assets/Consultation.png", "Request Help"),
-                    InkWell(
-                      onTap: () {
-                        Navigator.push(
-                          context,
-                          CupertinoPageRoute(
-                            builder: (context) => YourDonationPage(),
-                          ),
-                        );
-                      },
-                      child: donationBuild(
-                        "assets/donation.png",
-                        "Your Donations",
+                    Container(
+                      width: 127.w,
+                      height: 91.h,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(10.r),
+                        color: Color(0xFF0E1329),
+                      ),
+                      child: Padding(
+                        padding: EdgeInsets.only(left: 15.w, top: 15.h),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          // mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Image.asset("assets/heart.png"),
+                            SizedBox(height: 6.h),
+                            Text(
+                              "Total Donations",
+                              style: GoogleFonts.poppins(
+                                fontSize: 11.sp,
+                                fontWeight: FontWeight.w400,
+                                color: Colors.white60,
+                              ),
+                            ),
+                            Text(
+                              "15",
+                              style: GoogleFonts.poppins(
+                                fontSize: 20.sp,
+                                fontWeight: FontWeight.w300,
+                                color: Colors.white,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                    Container(
+                      width: 127.w,
+                      height: 91.h,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(10.r),
+                        color: Color(0xFF0E1329),
+                      ),
+                      child: Padding(
+                        padding: EdgeInsets.only(left: 15.w, top: 15.h),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          // mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Image.asset(
+                              "assets/heart.png",
+                              color: Color(0xFF2ECC71),
+                            ),
+                            SizedBox(height: 6.h),
+                            Text(
+                              "Blood Donations",
+                              style: GoogleFonts.poppins(
+                                fontSize: 11.sp,
+                                fontWeight: FontWeight.w400,
+                                color: Colors.white60,
+                              ),
+                            ),
+                            Text(
+                              "12",
+                              style: GoogleFonts.poppins(
+                                fontSize: 20.sp,
+                                fontWeight: FontWeight.w300,
+                                color: Colors.white,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                    Container(
+                      width: 127.w,
+                      height: 91.h,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(10.r),
+                        color: Color(0xFF0E1329),
+                      ),
+                      child: Padding(
+                        padding: EdgeInsets.only(left: 15.w, top: 15.h),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          // mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Image.asset(
+                              "assets/heart.png",
+                              color: Color(0xFFFF0000),
+                            ),
+                            SizedBox(height: 6.h),
+                            Text(
+                              "Money Donated",
+                              style: GoogleFonts.poppins(
+                                fontSize: 11.sp,
+                                fontWeight: FontWeight.w400,
+                                color: Colors.white60,
+                              ),
+                            ),
+                            Text(
+                              "₹8,500",
+                              style: GoogleFonts.poppins(
+                                fontSize: 20.sp,
+                                fontWeight: FontWeight.w300,
+                                color: Colors.white,
+                              ),
+                            ),
+                          ],
+                        ),
                       ),
                     ),
                     SizedBox(width: 20.w),
@@ -99,7 +192,7 @@ class _DonationPageState extends State<DonationPage> {
                 Padding(
                   padding: EdgeInsets.only(left: 20.w),
                   child: Text(
-                    "Donation Requests",
+                    "Your Past Donation",
                     style: GoogleFonts.poppins(
                       fontSize: 15.sp,
                       fontWeight: FontWeight.w500,
@@ -221,13 +314,37 @@ class _DonationPageState extends State<DonationPage> {
                                   ),
                                   Spacer(),
                                   Icon(
-                                    Icons.calendar_today_outlined,
+                                    Icons.access_alarm,
                                     color: Color(0xFF067594),
                                     size: 20.sp,
                                   ),
                                   SizedBox(width: 7.w),
                                   Text(
-                                    "4.2 km away",
+                                    "11:30 AM",
+                                    style: GoogleFonts.poppins(
+                                      fontSize: 13.sp,
+                                      fontWeight: FontWeight.w500,
+                                      color: Color(0xFF067594),
+                                    ),
+                                  ),
+                                  Spacer(),
+                                  Container(
+                                    width: 1.w,
+                                    height: 17.h,
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(5.r),
+                                      color: Color(0xFF8D93AA),
+                                    ),
+                                  ),
+                                  Spacer(),
+                                  Icon(
+                                    Icons.check_circle_outline_sharp,
+                                    color: Color(0xFF067594),
+                                    size: 20.sp,
+                                  ),
+                                  SizedBox(width: 7.w),
+                                  Text(
+                                    "Completed",
                                     style: GoogleFonts.poppins(
                                       fontSize: 13.sp,
                                       fontWeight: FontWeight.w500,
@@ -235,16 +352,6 @@ class _DonationPageState extends State<DonationPage> {
                                     ),
                                   ),
                                 ],
-                              ),
-                            ),
-                            SizedBox(height: 12.h),
-                            Text(
-                              "Neha Sharma is in critical condition and requires blood transfusions to stabilize her health.",
-                              style: GoogleFonts.poppins(
-                                fontSize: 13.sp,
-                                fontWeight: FontWeight.w500,
-                                color: Color.fromARGB(153, 240, 243, 245),
-                                letterSpacing: -0.4,
                               ),
                             ),
                             SizedBox(height: 15.h),
@@ -259,7 +366,7 @@ class _DonationPageState extends State<DonationPage> {
                               ),
                               onPressed: () {},
                               child: Text(
-                                "Donate Blood",
+                                "View Details",
                                 style: GoogleFonts.poppins(
                                   fontSize: 13.sp,
                                   fontWeight: FontWeight.w500,
@@ -275,37 +382,6 @@ class _DonationPageState extends State<DonationPage> {
                   ),
                 ),
               ],
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget donationBuild(String image, String name) {
-    return Container(
-      width: 94.w,
-      height: 97.h,
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(10.r),
-        color: Color(0xFF0E1329),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Image.asset(image),
-          SizedBox(height: 6.h),
-          Padding(
-            padding: EdgeInsets.only(left: 10.w, right: 10.w),
-            child: Text(
-              textAlign: TextAlign.center,
-              name,
-              style: GoogleFonts.poppins(
-                fontSize: 13.sp,
-                fontWeight: FontWeight.w400,
-                color: Colors.white,
-              ),
             ),
           ),
         ],
