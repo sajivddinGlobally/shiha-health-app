@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:shiha_health_app/Screen/yourDonationDetails.page.dart';
 
 class YourDonationPage extends StatefulWidget {
   const YourDonationPage({super.key});
@@ -364,7 +365,15 @@ class _YourDonationPageState extends State<YourDonationPage> {
                                   side: BorderSide(color: Color(0xFF2ECC71)),
                                 ),
                               ),
-                              onPressed: () {},
+                              onPressed: () {
+                                Navigator.push(
+                                  context,
+                                  CupertinoPageRoute(
+                                    builder: (context) =>
+                                        YourDonationDetailsPage(),
+                                  ),
+                                );
+                              },
                               child: Text(
                                 "View Details",
                                 style: GoogleFonts.poppins(

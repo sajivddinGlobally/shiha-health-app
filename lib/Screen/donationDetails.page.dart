@@ -419,7 +419,6 @@ class _DonationDetailsPageState extends State<DonationDetailsPage> {
                             ),
                           ),
                           SizedBox(height: 30.h),
-
                           Container(
                             width: 400.w,
                             height: 45.h,
