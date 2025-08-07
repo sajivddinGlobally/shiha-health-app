@@ -63,7 +63,7 @@ class _HealthInsurancePageState extends State<HealthInsurancePage> {
                     ),
                     SizedBox(width: 10.w),
                     Text(
-                      "Book Hospitals",
+                      "Health Insurance",
                       style: GoogleFonts.poppins(
                         fontSize: 18.sp,
                         fontWeight: FontWeight.w500,

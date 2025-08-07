@@ -4,6 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:shiha_health_app/Screen/ai.chat.page.dart';
 import 'package:shiha_health_app/Screen/appointment.page.dart';
+import 'package:shiha_health_app/Screen/doctorList.page.dart';
 import 'package:shiha_health_app/Screen/donation.page.dart';
 import 'package:shiha_health_app/Screen/healthInsurance.page.dart';
 import 'package:shiha_health_app/Screen/hospitalListing.page.dart';
@@ -520,26 +521,13 @@ class _HomePageState extends State<HomePage> {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
+                        namebuild("assets/Consultation.png", "Consultation"),
                         InkWell(
                           onTap: () {
                             Navigator.push(
                               context,
                               CupertinoPageRoute(
-                                builder: (context) => SelfCarePage(),
-                              ),
-                            );
-                          },
-                          child: namebuild(
-                            "assets/Consultation.png",
-                            "Consultation",
-                          ),
-                        ),
-                        InkWell(
-                          onTap: () {
-                            Navigator.push(
-                              context,
-                              CupertinoPageRoute(
-                                builder: (context) => DonationPage(),
+                                builder: (context) => DoctorListPage(),
                               ),
                             );
                           },
@@ -596,17 +584,7 @@ class _HomePageState extends State<HomePage> {
                             "Appointments",
                           ),
                         ),
-                        InkWell(
-                          onTap: () {
-                            Navigator.push(
-                              context,
-                              CupertinoPageRoute(
-                                builder: (context) => HealthInsurancePage(),
-                              ),
-                            );
-                          },
-                          child: namebuild("assets/Pharmacy.png", "Pharmacy"),
-                        ),
+                        namebuild("assets/Pharmacy.png", "Pharmacy"),
                       ],
                     ),
                   ),
