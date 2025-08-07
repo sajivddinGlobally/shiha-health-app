@@ -1079,8 +1079,8 @@ class _HomePageState extends State<HomePage> {
         borderRadius: BorderRadius.circular(10.r),
         color: Color(0xFF0E1329),
         border: Border(
-          top: BorderSide(color: Colors.white, width: 1.w),
-          right: BorderSide(color: Colors.white, width: 1.w),
+          top: BorderSide(color: Colors.white60, width: 1.w),
+          right: BorderSide(color: Colors.white60, width: 1.w),
         ),
       ),
       child: Padding(
