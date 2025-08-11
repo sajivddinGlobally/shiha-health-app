@@ -10,10 +10,11 @@ import 'package:intl_phone_field/intl_phone_field.dart';
 import 'package:shiha_health_app/Screen/home.page.dart';
 import 'package:shiha_health_app/Screen/otp.page.dart';
 import 'package:shiha_health_app/Screen/signUp.page.dart';
-import 'package:shiha_health_app/config/core/network/api.state.dart';
-import 'package:shiha_health_app/config/core/utils/pretty.dio.dart';
+import 'package:shiha_health_app/Screen/widgets/errorShowFLushBar.dart';
+import 'package:shiha_health_app/config/network/api.state.dart';
+import 'package:shiha_health_app/config/utils/pretty.dio.dart';
 import 'package:shiha_health_app/data/controller/loadingController.dart';
-import 'package:shiha_health_app/data/loginUserModel.dart';
+import 'package:shiha_health_app/data/model/loginUserModel.dart';
 
 class LoginPage extends ConsumerStatefulWidget {
   const LoginPage({super.key});
@@ -24,271 +25,267 @@ class LoginPage extends ConsumerStatefulWidget {
 
 class _LoginPageState extends ConsumerState<LoginPage> {
   final phoneController = TextEditingController();
+  final _formKey = GlobalKey<FormState>();
   @override
   Widget build(BuildContext context) {
     final isLoading = ref.watch(loadingProvider);
     return Scaffold(
-      body: SingleChildScrollView(
-        child: Stack(
-          children: [
-            Image.asset(
-              "assets/si.png",
-              width: MediaQuery.of(context).size.width,
-              height: MediaQuery.of(context).size.height,
-              fit: BoxFit.fill,
-            ),
-            Align(
-              alignment: Alignment.topCenter,
-              child: Column(
-                children: [
-                  SizedBox(height: 70.h),
-                  Text.rich(
-                    TextSpan(
-                      children: [
-                        TextSpan(
-                          text: "Siha",
-                          style: GoogleFonts.poppins(
-                            fontSize: 40.sp,
-                            fontWeight: FontWeight.w300,
-                            color: Color(0xFFFFFFFF),
-                            letterSpacing: -1,
-                          ),
-                        ),
-                        TextSpan(
-                          text: "Health",
-                          style: GoogleFonts.poppins(
-                            fontSize: 40.sp,
-                            fontWeight: FontWeight.w600,
-                            color: Color(0xFFFFFFFF),
-                            letterSpacing: -1,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  SizedBox(height: 40.h),
-                  Padding(
-                    padding: EdgeInsets.only(left: 20.w, right: 20.w),
-                    child: Text(
-                      "POWER UP YOUR HEALTH JOURNEY",
-                      style: GoogleFonts.poppins(
-                        fontSize: 32.sp,
-                        fontWeight: FontWeight.w400,
-                        color: Color(0xFFFFFFFF),
-                        letterSpacing: -1,
-                        height: 1,
-                      ),
-                      textAlign: TextAlign.center,
-                    ),
-                  ),
-                  SizedBox(height: 10.h),
-                  Center(
-                    child: Text(
-                      "Enter your details to get started with us",
-                      style: GoogleFonts.poppins(
-                        fontSize: 14.sp,
-                        fontWeight: FontWeight.w400,
-                        color: Color(0xFFFFFFFF),
-                      ),
-                    ),
-                  ),
-                ],
+      body: Form(
+        key: _formKey,
+        child: SingleChildScrollView(
+          child: Stack(
+            children: [
+              Image.asset(
+                "assets/si.png",
+                width: MediaQuery.of(context).size.width,
+                height: MediaQuery.of(context).size.height,
+                fit: BoxFit.fill,
               ),
-            ),
-            Container(
-              margin: EdgeInsets.only(top: 500.h),
-              width: double.infinity,
-              //height: 500.h,
-              child: Stack(
-                children: [
-                  Image.asset(
-                    "assets/bottom.png",
-                    width: MediaQuery.of(context).size.width,
-                    // height: 460.h,
-                    fit: BoxFit.fill,
-                    alignment: Alignment.bottomCenter,
-                  ),
-                  Padding(
-                    padding: EdgeInsets.only(left: 20.w, right: 20.w),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        SizedBox(height: 70.h),
-                        Text(
-                          "Welcome Back ",
-                          style: GoogleFonts.poppins(
-                            fontSize: 22.sp,
-                            fontWeight: FontWeight.w400,
-                            color: Colors.white,
-                            letterSpacing: -1,
+              Align(
+                alignment: Alignment.topCenter,
+                child: Column(
+                  children: [
+                    SizedBox(height: 70.h),
+                    Text.rich(
+                      TextSpan(
+                        children: [
+                          TextSpan(
+                            text: "Siha",
+                            style: GoogleFonts.poppins(
+                              fontSize: 40.sp,
+                              fontWeight: FontWeight.w300,
+                              color: Color(0xFFFFFFFF),
+                              letterSpacing: -1,
+                            ),
                           ),
+                          TextSpan(
+                            text: "Health",
+                            style: GoogleFonts.poppins(
+                              fontSize: 40.sp,
+                              fontWeight: FontWeight.w600,
+                              color: Color(0xFFFFFFFF),
+                              letterSpacing: -1,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    SizedBox(height: 40.h),
+                    Padding(
+                      padding: EdgeInsets.only(left: 20.w, right: 20.w),
+                      child: Text(
+                        "POWER UP YOUR HEALTH JOURNEY",
+                        style: GoogleFonts.poppins(
+                          fontSize: 32.sp,
+                          fontWeight: FontWeight.w400,
+                          color: Color(0xFFFFFFFF),
+                          letterSpacing: -1,
+                          height: 1,
                         ),
-                        SizedBox(height: 10.h),
-                        Text(
-                          "Enter your details to continue",
-                          style: GoogleFonts.poppins(
-                            fontSize: 14.sp,
-                            fontWeight: FontWeight.w400,
-                            color: Colors.white60,
-                            letterSpacing: -0.4,
-                          ),
+                        textAlign: TextAlign.center,
+                      ),
+                    ),
+                    SizedBox(height: 10.h),
+                    Center(
+                      child: Text(
+                        "Enter your details to get started with us",
+                        style: GoogleFonts.poppins(
+                          fontSize: 14.sp,
+                          fontWeight: FontWeight.w400,
+                          color: Color(0xFFFFFFFF),
                         ),
-                        SizedBox(height: 20.h),
-                        Divider(color: Colors.white24, height: 1.h),
-                        SizedBox(height: 20.h),
-                        IntlPhoneField(
-                          controller: phoneController,
-                          decoration: InputDecoration(
-                            contentPadding: EdgeInsets.only(
-                              left: 18.w,
-                              right: 18.w,
-                              top: 15.h,
-                              bottom: 15.h,
-                            ),
-                            counterText: "",
-                            filled: true,
-                            fillColor: Color(0xFFD9D9D9),
-                            enabledBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(15.r),
-                            ),
-                            focusedBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(15.r),
-                            ),
-                            errorBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(15.r),
-                            ),
-                            focusedErrorBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(15.r),
-                            ),
-                            hint: Text("Phone"),
-                          ),
-                          initialCountryCode: "IN",
-                          onChanged: (phone) {
-                            print(phone.completeNumber);
-                          },
-                        ),
-                        SizedBox(height: 30.h),
-                        ElevatedButton(
-                          style: ElevatedButton.styleFrom(
-                            minimumSize: Size(400.w, 55.h),
-                            backgroundColor: Color(0xFF067594),
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(10.r),
-                              side: BorderSide(),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              Container(
+                margin: EdgeInsets.only(top: 500.h),
+                width: double.infinity,
+                //height: 500.h,
+                child: Stack(
+                  children: [
+                    Image.asset(
+                      "assets/bottom.png",
+                      width: MediaQuery.of(context).size.width,
+                      // height: 460.h,
+                      fit: BoxFit.fill,
+                      alignment: Alignment.bottomCenter,
+                    ),
+                    Padding(
+                      padding: EdgeInsets.only(left: 20.w, right: 20.w),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          SizedBox(height: 70.h),
+                          Text(
+                            "Welcome Back ",
+                            style: GoogleFonts.poppins(
+                              fontSize: 22.sp,
+                              fontWeight: FontWeight.w400,
+                              color: Colors.white,
+                              letterSpacing: -1,
                             ),
                           ),
-                          onPressed: isLoading
-                              ? null
-                              : () async {
-                                  try {
-                                    ref.read(loadingProvider.notifier).state =
-                                        true;
-                                    final body = LoginUserBodyModel(
-                                      phoneNumber: phoneController.text,
-                                    );
-                                    final service = APIStateNetwork(
-                                      createDio(),
-                                    );
-                                    final response = await service.loginUser(
-                                      body,
-                                    );
-                                    ref.read(loadingProvider.notifier).state =
-                                        false;
-                                    if (response != null) {
-                                      Navigator.push(
-                                        context,
-                                        CupertinoPageRoute(
-                                          builder: (context) =>
-                                              OtpPage(),
-                                        ),
+                          SizedBox(height: 10.h),
+                          Text(
+                            "Enter your details to continue",
+                            style: GoogleFonts.poppins(
+                              fontSize: 14.sp,
+                              fontWeight: FontWeight.w400,
+                              color: Colors.white60,
+                              letterSpacing: -0.4,
+                            ),
+                          ),
+                          SizedBox(height: 20.h),
+                          Divider(color: Colors.white24, height: 1.h),
+                          SizedBox(height: 20.h),
+                          IntlPhoneField(
+                            controller: phoneController,
+                            decoration: InputDecoration(
+                              contentPadding: EdgeInsets.only(
+                                left: 18.w,
+                                right: 18.w,
+                                top: 15.h,
+                                bottom: 15.h,
+                              ),
+                              counterText: "",
+                              filled: true,
+                              fillColor: Color(0xFFD9D9D9),
+                              enabledBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(15.r),
+                              ),
+                              focusedBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(15.r),
+                              ),
+                              errorBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(15.r),
+                              ),
+                              focusedErrorBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(15.r),
+                              ),
+                              hint: Text("Phone"),
+                            ),
+                            initialCountryCode: "IN",
+                            onChanged: (phone) {
+                              print(phone.completeNumber);
+                            },
+                            validator: (value){
+                              if (value == null || value.number.isEmpty) {
+                                return 'Please enter your phone number';
+                              }
+                              return null;
+                            },
+                          ),
+                          SizedBox(height: 30.h),
+                          ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                              minimumSize: Size(400.w, 55.h),
+                              backgroundColor: Color(0xFF067594),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(10.r),
+                                side: BorderSide(),
+                              ),
+                            ),
+                            onPressed: isLoading
+                                ? null
+                                : () async {
+                                    if(_formKey.currentState!.validate()){
+                                      try {
+                                      ref.read(loadingProvider.notifier).state =
+                                          true;
+                                      final body = LoginUserBodyModel(
+                                        phoneNumber: phoneController.text,
                                       );
-                                      ScaffoldMessenger.of(
-                                        context,
-                                      ).showSnackBar(
-                                        SnackBar(
-                                          content: Text(response.message),
-                                        ),
+                                      final service = APIStateNetwork(
+                                        createDio(),
                                       );
-                                    } else {
+                                      final response = await service.loginUser(
+                                        body,
+                                      );
                                       ref.read(loadingProvider.notifier).state =
                                           false;
-
-                                      ScaffoldMessenger.of(
-                                        context,
-                                      ).showSnackBar(
-                                        SnackBar(content: Text("Error")),
-                                      );
-                                    }
-                                  } on DioException catch (e) {
-                                    ref.read(loadingProvider.notifier).state =
-                                        false;
-                                    if (e.response!.statusCode == 404) {
-                                      ScaffoldMessenger.of(
-                                        context,
-                                      ).showSnackBar(
-                                        SnackBar(
-                                          content: Text(
-                                            e.response!.statusMessage
-                                                .toString(),
+                                      if (response != null) {
+                                        Navigator.push(
+                                          context,
+                                          CupertinoPageRoute(
+                                            builder: (context) =>
+                                                OtpPage(),
                                           ),
-                                        ),
-                                      );
+                                        );
+                                        
+                                        showErrorMessage(response.message);
+                                      } else {
+                                        ref.read(loadingProvider.notifier).state =
+                                            false;
+                                        showErrorMessage("Some thing went wrong");
+                                        
+                                      }
+                                    } on DioException catch (e) {
+                                      ref.read(loadingProvider.notifier).state =
+                                          false;
+                                      if (e.response!.statusCode == 404) {
+                                        showErrorMessage("User not found");
+                                      }
                                     }
-                                  }
-                                },
-                          child: isLoading == true
-                              ? Center(child: CircularProgressIndicator())
-                              : Text(
-                                  "Login",
-                                  style: GoogleFonts.poppins(
-                                    fontSize: 16.sp,
-                                    fontWeight: FontWeight.w500,
-                                    color: Color(0xFFFFFFFF),
+                                    }
+                                  },
+                            child: isLoading == true
+                                ? Center(child: CircularProgressIndicator(
+                                  color: Colors.white,
+                                ))
+                                : Text(
+                                    "Login",
+                                    style: GoogleFonts.poppins(
+                                      fontSize: 16.sp,
+                                      fontWeight: FontWeight.w500,
+                                      color: Color(0xFFFFFFFF),
+                                    ),
                                   ),
+                          ),
+                          SizedBox(height: 20.h),
+                          InkWell(
+                            onTap: () {
+                              Navigator.push(
+                                context,
+                                CupertinoPageRoute(
+                                  builder: (context) => SignUpPage(),
                                 ),
-                        ),
-                        SizedBox(height: 20.h),
-                        InkWell(
-                          onTap: () {
-                            Navigator.push(
-                              context,
-                              CupertinoPageRoute(
-                                builder: (context) => SignUpPage(),
+                              );
+                            },
+                            child: Text.rich(
+                              TextSpan(
+                                children: [
+                                  TextSpan(
+                                    text: "Don’t have an account? ",
+                                    style: GoogleFonts.poppins(
+                                      fontSize: 16.sp,
+                                      fontWeight: FontWeight.w400,
+                                      color: Color(0xFF717F8D),
+                                      letterSpacing: -1,
+                                    ),
+                                  ),
+                                  TextSpan(
+                                    text: "Sign up",
+                                    style: GoogleFonts.poppins(
+                                      fontSize: 16.sp,
+                                      fontWeight: FontWeight.w600,
+                                      color: Color(0xFF2998FF),
+                                      letterSpacing: -1,
+                                    ),
+                                  ),
+                                ],
                               ),
-                            );
-                          },
-                          child: Text.rich(
-                            TextSpan(
-                              children: [
-                                TextSpan(
-                                  text: "Don’t have an account? ",
-                                  style: GoogleFonts.poppins(
-                                    fontSize: 16.sp,
-                                    fontWeight: FontWeight.w400,
-                                    color: Color(0xFF717F8D),
-                                    letterSpacing: -1,
-                                  ),
-                                ),
-                                TextSpan(
-                                  text: "Sign up",
-                                  style: GoogleFonts.poppins(
-                                    fontSize: 16.sp,
-                                    fontWeight: FontWeight.w600,
-                                    color: Color(0xFF2998FF),
-                                    letterSpacing: -1,
-                                  ),
-                                ),
-                              ],
                             ),
                           ),
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );

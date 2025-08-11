@@ -40,13 +40,18 @@ dependencies:
   intl_phone_field: ^3.2.0
   otp_pin_field: ^1.4.1
   intl: ^0.20.2
-  retrofit: ^4.7.0
+  retrofit: ^4.7.1
   logger: ^2.6.1
   json_annotation: ^4.9.0
   pretty_dio_logger: ^1.4.0
   dio: ^5.8.0+1
   riverpod: ^2.6.1
   flutter_riverpod: ^2.6.1
+  hive: ^2.2.3
+  hive_flutter: ^1.1.0
+  network_info_plus: ^6.1.4
+  another_flushbar: ^1.12.30
+ 
 
 dev_dependencies:
   flutter_test:
@@ -58,8 +63,8 @@ dev_dependencies:
   # package. See that file for information about deactivating specific lint
   # rules and activating additional ones.
   flutter_lints: ^5.0.0
-  retrofit_generator: ^10.0.1
   build_runner: ^2.6.0
+  retrofit_generator: ^10.0.2
   json_serializable: ^6.10.0
 
 # For information on the generic Dart part of this file, see the
@@ -77,6 +82,7 @@ flutter:
   assets:
     - assets/
     - assets/Svg/sv.svg
+    - assets/vectors/Vector.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/to/resolution-aware-images

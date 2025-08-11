@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import 'package:google_fonts/google_fonts.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 import 'package:shiha_health_app/Screen/login.page.dart';
 import 'package:shiha_health_app/Screen/signUp.page.dart';
 
@@ -24,37 +25,10 @@ class _SplashPageState extends State<SplashPage> {
         height: MediaQuery.of(context).size.height,
         child: Stack(
           children: [
-            // Fullscreen background image
-            Image.asset(
-              "assets/blur1.jpg",
-              //"assets/bgthem.jpg",
-              width: MediaQuery.of(context).size.width,
-              height: MediaQuery.of(context).size.height,
-              fit: BoxFit.cover,
-            ),
-            // Positioned(
-            //   top: 90.h,
-            //   child: ClipRRect(
-            //     borderRadius: BorderRadius.only(
-            //       topLeft: Radius.circular(100.r),
-            //       topRight: Radius.circular(100.r),
-            //     ),
-            //     child: Image.asset(
-            //       "assets/h.png",
-            //       width: MediaQuery.of(context).size.width,
-            //       height: MediaQuery.of(context).size.height,
-            //       fit: BoxFit.cover,
-            //     ),
-            //   ),
-            // ),
-            // Clipped + Blurred overlay at top
             Positioned(
-              top: 90.h,
+              top: 0.h,
               child: ClipRRect(
-                borderRadius: BorderRadius.only(
-                  topLeft: Radius.circular(100.r),
-                  topRight: Radius.circular(100.r),
-                ),
+                borderRadius: BorderRadius.only(),
                 child: BackdropFilter(
                   filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
                   child: Container(
@@ -72,6 +46,31 @@ class _SplashPageState extends State<SplashPage> {
                   ),
                 ),
               ),
+            ),
+            ClipPath(
+              clipper: InwardCurveClipper(),
+              child: Container(
+                height: 150.h,
+                decoration: BoxDecoration(
+                  gradient: LinearGradient(
+                    colors: [
+                      Colors.cyan,
+                      Colors.transparent,
+                    ],
+                    begin: Alignment.topCenter,
+                    end: Alignment.bottomCenter,
+                  ),
+                ),
+                alignment: Alignment.center,
+                
+              ),
+            ),
+            Image.asset(
+              "assets/vectors/Vector.png",
+
+              width: MediaQuery.of(context).size.width,
+              height: 110.h,
+              fit: BoxFit.cover,
             ),
 
             Align(
@@ -213,7 +212,6 @@ class _SplashPageState extends State<SplashPage> {
   }
 }
 
-
 //  Align(
 //             alignment: Alignment.bottomCenter,
 //             child: ClipPath(
@@ -228,8 +226,6 @@ class _SplashPageState extends State<SplashPage> {
 //               ),
 //             ),
 //           ),
-
-
 
 /////////////////////////////////
 // class TopCenterWaveClipper extends CustomClipper<Path> {
@@ -269,3 +265,26 @@ class _SplashPageState extends State<SplashPage> {
 //   @override
 //   bool shouldReclip(CustomClipper<Path> oldClipper) => false;
 // }
+
+class InwardCurveClipper extends CustomClipper<Path> {
+  @override
+  Path getClip(Size size) {
+    Path path = Path();
+    path.lineTo(0, size.height - 50); // Start from bottom left
+
+    // Inward curve (bowl shape)
+    path.quadraticBezierTo(
+      size.width / 2,
+      size.height + 50, // control point (go inside)
+      size.width,
+      size.height - 50, // end point
+    );
+
+    path.lineTo(size.width, 0); // top right
+    path.close();
+    return path;
+  }
+
+  @override
+  bool shouldReclip(CustomClipper<Path> oldClipper) => false;
+}
