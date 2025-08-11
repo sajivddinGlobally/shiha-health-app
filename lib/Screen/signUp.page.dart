@@ -197,7 +197,7 @@ class _SignUpPageState extends State<SignUpPage> {
                             ),
                             hint: Text("Phone"),
                           ),
-                          initialCountryCode: "IN",
+                          initialCountryCode: "SO",
                           onChanged: (phone) {
                             print(phone.completeNumber);
                           },

@@ -166,7 +166,7 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                               ),
                               hint: Text("Phone"),
                             ),
-                            initialCountryCode: "IN",
+                            initialCountryCode: "SO",
                             onChanged: (phone) {
                               print(phone.completeNumber);
                             },

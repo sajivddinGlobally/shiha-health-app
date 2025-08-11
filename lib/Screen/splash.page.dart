@@ -1,5 +1,5 @@
 import 'dart:ui';
-
+import 'dart:math' as math;
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -34,15 +34,18 @@ class _SplashPageState extends State<SplashPage> {
                   child: Container(
                     width: MediaQuery.of(context).size.width,
                     height: MediaQuery.of(context).size.height,
-                    color: Colors.black.withOpacity(
+                    color: Colors.white.withOpacity(
                       0.4,
                     ), // Optional dim overlay
-                    child: Image.asset(
-                      "assets/h.png",
-                      width: double.infinity,
-                      height: double.infinity,
-                      fit: BoxFit.cover,
-                    ),
+                    child: SizedBox(
+                        width: MediaQuery.of(context).size.width,
+                        height: MediaQuery.of(context).size.height,
+                        child: Image.asset(
+                          "assets/mp4/dna.gif",
+                          fit: BoxFit.cover,
+                          // ya BoxFit.contain
+                        ),
+                      ),
                   ),
                 ),
               ),
@@ -53,16 +56,12 @@ class _SplashPageState extends State<SplashPage> {
                 height: 150.h,
                 decoration: BoxDecoration(
                   gradient: LinearGradient(
-                    colors: [
-                      Colors.cyan,
-                      Colors.transparent,
-                    ],
+                    colors: [Colors.cyan, Colors.transparent],
                     begin: Alignment.topCenter,
                     end: Alignment.bottomCenter,
                   ),
                 ),
                 alignment: Alignment.center,
-                
               ),
             ),
             Image.asset(
