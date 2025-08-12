@@ -1,21 +1,16 @@
-import 'dart:math';
 
-import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl_phone_field/intl_phone_field.dart';
-import 'package:shiha_health_app/Screen/home.page.dart';
-import 'package:shiha_health_app/Screen/otp.page.dart';
-import 'package:shiha_health_app/Screen/signUp.page.dart';
-import 'package:shiha_health_app/Screen/widgets/errorShowFLushBar.dart';
-import 'package:shiha_health_app/config/network/api.state.dart';
-import 'package:shiha_health_app/config/utils/pretty.dio.dart';
-import 'package:shiha_health_app/data/controller/loadingController.dart';
-import 'package:shiha_health_app/data/model/loginUserModel.dart';
+import 'package:shiha_health_app/Screen/loginpage/widgets/login_controller.dart';
+import 'package:shiha_health_app/Screen/signup/signUp.page.dart';
 
+
+
+  
 class LoginPage extends ConsumerStatefulWidget {
   const LoginPage({super.key});
 
@@ -23,15 +18,13 @@ class LoginPage extends ConsumerStatefulWidget {
   ConsumerState<LoginPage> createState() => _LoginPageState();
 }
 
-class _LoginPageState extends ConsumerState<LoginPage> {
-  final phoneController = TextEditingController();
-  final _formKey = GlobalKey<FormState>();
+class _LoginPageState extends ConsumerState<LoginPage> with LoginController<LoginPage>{
+
   @override
   Widget build(BuildContext context) {
-    final isLoading = ref.watch(loadingProvider);
     return Scaffold(
       body: Form(
-        key: _formKey,
+        key: formKey,
         child: SingleChildScrollView(
           child: Stack(
             children: [
@@ -168,7 +161,7 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                             ),
                             initialCountryCode: "SO",
                             onChanged: (phone) {
-                              print(phone.completeNumber);
+                           
                             },
                             validator: (value){
                               if (value == null || value.number.isEmpty) {
@@ -189,47 +182,7 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                             ),
                             onPressed: isLoading
                                 ? null
-                                : () async {
-                                    if(_formKey.currentState!.validate()){
-                                      try {
-                                      ref.read(loadingProvider.notifier).state =
-                                          true;
-                                      final body = LoginUserBodyModel(
-                                        phoneNumber: phoneController.text,
-                                      );
-                                      final service = APIStateNetwork(
-                                        createDio(),
-                                      );
-                                      final response = await service.loginUser(
-                                        body,
-                                      );
-                                      ref.read(loadingProvider.notifier).state =
-                                          false;
-                                      if (response != null) {
-                                        Navigator.push(
-                                          context,
-                                          CupertinoPageRoute(
-                                            builder: (context) =>
-                                                OtpPage(),
-                                          ),
-                                        );
-                                        
-                                        showErrorMessage(response.message);
-                                      } else {
-                                        ref.read(loadingProvider.notifier).state =
-                                            false;
-                                        showErrorMessage("Some thing went wrong");
-                                        
-                                      }
-                                    } on DioException catch (e) {
-                                      ref.read(loadingProvider.notifier).state =
-                                          false;
-                                      if (e.response!.statusCode == 404) {
-                                        showErrorMessage("User not found");
-                                      }
-                                    }
-                                    }
-                                  },
+                                : () => login(),
                             child: isLoading == true
                                 ? Center(child: CircularProgressIndicator(
                                   color: Colors.white,
@@ -245,14 +198,7 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                           ),
                           SizedBox(height: 20.h),
                           InkWell(
-                            onTap: () {
-                              Navigator.push(
-                                context,
-                                CupertinoPageRoute(
-                                  builder: (context) => SignUpPage(),
-                                ),
-                              );
-                            },
+                            onTap: () => sendToSignUpPage(),
                             child: Text.rich(
                               TextSpan(
                                 children: [

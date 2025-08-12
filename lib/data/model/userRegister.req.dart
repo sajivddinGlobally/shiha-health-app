@@ -27,3 +27,4 @@ class UserRegisterRequest {
         "phone_number": phoneNumber,
     };
 }
+

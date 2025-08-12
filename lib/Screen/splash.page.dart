@@ -7,7 +7,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:shiha_health_app/Screen/login.page.dart';
-import 'package:shiha_health_app/Screen/signUp.page.dart';
+import 'package:shiha_health_app/Screen/signup/signUp.page.dart';
 
 class SplashPage extends StatefulWidget {
   const SplashPage({super.key});

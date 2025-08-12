@@ -4,8 +4,8 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl_phone_field/intl_phone_field.dart';
 import 'package:shiha_health_app/Screen/login.page.dart';
-import 'package:shiha_health_app/Screen/otp.page.dart';
 import 'package:shiha_health_app/Screen/register.page.dart';
+import 'package:shiha_health_app/Screen/signup/controller/signupController.dart';
 
 class SignUpPage extends StatefulWidget {
   const SignUpPage({super.key});
@@ -14,7 +14,7 @@ class SignUpPage extends StatefulWidget {
   State<SignUpPage> createState() => _SignUpPageState();
 }
 
-class _SignUpPageState extends State<SignUpPage> {
+class _SignUpPageState extends State<SignUpPage> with SignupController<SignUpPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
