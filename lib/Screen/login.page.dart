@@ -134,7 +134,7 @@ class _LoginPageState extends ConsumerState<LoginPage> with LoginController<Logi
                           Divider(color: Colors.white24, height: 1.h),
                           SizedBox(height: 20.h),
                           IntlPhoneField(
-                            controller: phoneController,
+                         
                             decoration: InputDecoration(
                               contentPadding: EdgeInsets.only(
                                 left: 18.w,
@@ -161,7 +161,9 @@ class _LoginPageState extends ConsumerState<LoginPage> with LoginController<Logi
                             ),
                             initialCountryCode: "SO",
                             onChanged: (phone) {
-                           
+                            setState(() {
+                                phoneController.text = phone.completeNumber;
+                            });
                             },
                             validator: (value){
                               if (value == null || value.number.isEmpty) {

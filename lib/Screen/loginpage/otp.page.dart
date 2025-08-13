@@ -1,20 +1,19 @@
-import 'package:flutter/cupertino.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:otp_pin_field/otp_pin_field.dart';
-import 'package:shiha_health_app/Screen/home.page.dart';
-import 'package:shiha_health_app/Screen/login.page.dart';
-import 'package:shiha_health_app/Screen/register.page.dart';
+import 'package:shiha_health_app/Screen/loginpage/controller/otp.controller.dart';
 
 class OtpPage extends StatefulWidget {
-  const OtpPage({super.key});
+  final String phone;
+  const OtpPage({super.key, required this.phone});
 
   @override
   State<OtpPage> createState() => _OtpPageState();
 }
 
-class _OtpPageState extends State<OtpPage> {
+class _OtpPageState extends State<OtpPage> with OtpController<OtpPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -117,7 +116,7 @@ class _OtpPageState extends State<OtpPage> {
                           ),
                           SizedBox(height: 10.h),
                           Text(
-                            "We sent a 6-digit code to +252 61 2345678",
+                            "We sent a 6-digit code to ${widget.phone}",
                             style: GoogleFonts.poppins(
                               fontSize: 14.sp,
                               fontWeight: FontWeight.w400,
@@ -135,7 +134,7 @@ class _OtpPageState extends State<OtpPage> {
                             otpPinFieldDecoration:
                                 OtpPinFieldDecoration.defaultPinBoxDecoration,
                             otpPinFieldStyle: OtpPinFieldStyle(
-                              fieldBorderWidth: 0, // ❌ Removes border
+                              fieldBorderWidth: 0,
                               defaultFieldBorderColor: Colors.grey,
                               activeFieldBorderColor: Colors.blue,
                               defaultFieldBackgroundColor:
@@ -143,8 +142,12 @@ class _OtpPageState extends State<OtpPage> {
                               activeFieldBackgroundColor: Colors.white,
                             ),
                             maxLength: 6,
-                            onSubmit: (text) {},
-                            onChange: (text) {},
+                            onSubmit: (text) async {
+                              await verifyOtp(number: widget.phone);
+                            },
+                            onChange: (text) {
+                              setOtpCode(text);
+                            },
                           ),
                           SizedBox(height: 30.h),
                           ElevatedButton(
@@ -155,22 +158,22 @@ class _OtpPageState extends State<OtpPage> {
                                 borderRadius: BorderRadius.circular(10.r),
                               ),
                             ),
-                            onPressed: () {
-                              Navigator.push(
-                                context,
-                                CupertinoPageRoute(
-                                  builder: (context) => BottomNavigation(),
-                                ),
-                              );
-                            },
-                            child: Text(
-                              "Verify OTP",
-                              style: GoogleFonts.poppins(
-                                fontSize: 16.sp,
-                                fontWeight: FontWeight.w500,
-                                color: Color(0xFFFFFFFF),
-                              ),
-                            ),
+                            onPressed: () async =>
+                                await verifyOtp(number: widget.phone),
+                            child: isLoading == false
+                                ? Text(
+                                    "Verify OTP",
+                                    style: GoogleFonts.poppins(
+                                      fontSize: 16.sp,
+                                      fontWeight: FontWeight.w500,
+                                      color: Color(0xFFFFFFFF),
+                                    ),
+                                  )
+                                : Center(
+                                    child: CircularProgressIndicator(
+                                      color: Colors.white,
+                                    ),
+                                  ),
                           ),
                           SizedBox(height: 20.h),
                           Text.rich(
@@ -186,6 +189,12 @@ class _OtpPageState extends State<OtpPage> {
                                   ),
                                 ),
                                 TextSpan(
+                                  recognizer: TapGestureRecognizer()
+                                    ..onTap = () async {
+                                      await resendOtp(
+                                        phoneNumber: widget.phone,
+                                      );
+                                    },
                                   text: "Resend",
                                   style: GoogleFonts.poppins(
                                     fontSize: 16.sp,

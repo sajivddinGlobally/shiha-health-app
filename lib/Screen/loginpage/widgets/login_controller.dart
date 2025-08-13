@@ -1,7 +1,8 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:shiha_health_app/Screen/otp.page.dart';
+import 'package:intl_phone_field/phone_number.dart';
+import 'package:shiha_health_app/Screen/loginpage/otp.page.dart';
 import 'package:shiha_health_app/Screen/signup/signUp.page.dart';
 import 'package:shiha_health_app/Screen/widgets/errorShowFLushBar.dart';
 import 'package:shiha_health_app/config/network/api.state.dart';
@@ -14,7 +15,7 @@ mixin LoginController<T extends ConsumerStatefulWidget> on ConsumerState<T> {
   bool isLoading = false;
 
   Future<void> login() async {
-    if (formKey.currentState!.validate()) {
+    if (formKey.currentState!.validate() && phoneController.text.trim().isNotEmpty) {
       try {
         setState(() {
           isLoading = true;
@@ -31,7 +32,7 @@ mixin LoginController<T extends ConsumerStatefulWidget> on ConsumerState<T> {
         if (response != null) {
           Navigator.push(
             context,
-            CupertinoPageRoute(builder: (context) => const OtpPage()),
+            CupertinoPageRoute(builder: (context) =>  OtpPage(phone: phoneController.text,)),
           );
           showSuccessMessage(context, response.message);
         }
@@ -41,6 +42,8 @@ mixin LoginController<T extends ConsumerStatefulWidget> on ConsumerState<T> {
         });
         showErrorMessage("User not found");
       }
+    }else{
+      showErrorMessage("Please enter a valid phone number");
     }
   }
 
@@ -49,5 +52,11 @@ mixin LoginController<T extends ConsumerStatefulWidget> on ConsumerState<T> {
       context,
       CupertinoPageRoute(builder: (context) => SignUpPage()),
     );
+  }
+
+  @override
+  void dispose() {
+    phoneController.dispose();
+    super.dispose();
   }
 }
