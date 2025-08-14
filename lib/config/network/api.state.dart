@@ -27,5 +27,5 @@ abstract class APIStateNetwork {
   
   //Doctors
   @GET("/api/doctors")
-  Future<DoctorsListResponse> getDoctorsList();
+  Future<List<DoctorsListResponse>> getDoctorsList();
 }
