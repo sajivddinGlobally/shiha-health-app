@@ -7,6 +7,7 @@ import 'package:shiha_health_app/Screen/appointment.page.dart';
 import 'package:shiha_health_app/Screen/doctorList.page.dart';
 import 'package:shiha_health_app/Screen/donation.page.dart';
 import 'package:shiha_health_app/Screen/healthInsurance.page.dart';
+import 'package:shiha_health_app/Screen/homepage/controller/home.controller.dart';
 import 'package:shiha_health_app/Screen/hospitalListing.page.dart';
 import 'package:shiha_health_app/Screen/laboratoryService.page.dart';
 import 'package:shiha_health_app/Screen/selfCare.page.dart';
@@ -18,10 +19,17 @@ class HomePage extends StatefulWidget {
   State<HomePage> createState() => _HomePageState();
 }
 
-class _HomePageState extends State<HomePage> {
+class _HomePageState extends State<HomePage> with HomeController<HomePage>{
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   int tab = 0;
+  
 
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    fetchLocalDota();
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -287,7 +295,7 @@ class _HomePageState extends State<HomePage> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          "Amina Sharma",
+                          userName,
                           style: GoogleFonts.poppins(
                             fontSize: 15.sp,
                             fontWeight: FontWeight.w500,
@@ -350,7 +358,7 @@ class _HomePageState extends State<HomePage> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            "Hi, Amina",
+                            "Hi, $userName",
                             style: GoogleFonts.poppins(
                               fontSize: 15.sp,
                               fontWeight: FontWeight.w500,

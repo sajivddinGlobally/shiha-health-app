@@ -1,6 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:shiha_health_app/Screen/home.page.dart';
+import 'package:shiha_health_app/Screen/homepage/home.page.dart';
 import 'package:shiha_health_app/Screen/widgets/errorShowFLushBar.dart';
 import 'package:shiha_health_app/config/network/api.state.dart';
 import 'package:shiha_health_app/config/utils/pretty.dio.dart';
@@ -84,7 +84,7 @@ mixin OtpController<T extends StatefulWidget> on State<T> {
   }
 
   Future<void> saveData({required OtpVerifyResponse response}) async {
-    await HiveService().saveData<Map<String, dynamic>>(
+    await HiveService().saveData<Map<String, dynamic>?>(
       key: "user",
       data: response.toJson(),
       boxName: HiveBoxes.userData,
