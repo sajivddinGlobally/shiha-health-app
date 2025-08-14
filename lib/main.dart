@@ -4,7 +4,7 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:shiha_health_app/Screen/splash.page.dart';
+import 'package:shiha_health_app/Screen/splash/splash.page.dart';
 import 'package:shiha_health_app/config/core/init.dart';
 
 final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();

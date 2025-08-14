@@ -1,13 +1,10 @@
 import 'dart:ui';
-import 'dart:math' as math;
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-
 import 'package:google_fonts/google_fonts.dart';
-import 'package:hive_flutter/hive_flutter.dart';
 import 'package:shiha_health_app/Screen/login.page.dart';
-import 'package:shiha_health_app/Screen/signup/signUp.page.dart';
+import 'package:shiha_health_app/Screen/splash/controller/splash.controller.dart';
 
 class SplashPage extends StatefulWidget {
   const SplashPage({super.key});
@@ -16,7 +13,7 @@ class SplashPage extends StatefulWidget {
   State<SplashPage> createState() => _SplashPageState();
 }
 
-class _SplashPageState extends State<SplashPage> {
+class _SplashPageState extends State<SplashPage> with SplashController<SplashPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -104,6 +101,7 @@ class _SplashPageState extends State<SplashPage> {
                 ],
               ),
             ),
+            
             Align(
               alignment: Alignment.bottomCenter,
               child: Container(
