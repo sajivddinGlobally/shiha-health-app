@@ -38,7 +38,7 @@ mixin OtpController<T extends StatefulWidget> on State<T> {
             Future.delayed(Duration(seconds: 2), () {
               Navigator.pushAndRemoveUntil(
                 context,
-                CupertinoPageRoute(builder: (context) => HomePage()),
+                CupertinoPageRoute(builder: (context) => BottomNavigation()),
                 (route) => false,
               );
             });

@@ -1,7 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:intl_phone_field/phone_number.dart';
 import 'package:shiha_health_app/Screen/loginpage/otp.page.dart';
 import 'package:shiha_health_app/Screen/signup/signUp.page.dart';
 import 'package:shiha_health_app/Screen/widgets/errorShowFLushBar.dart';

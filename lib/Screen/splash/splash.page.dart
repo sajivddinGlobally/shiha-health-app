@@ -15,6 +15,13 @@ class SplashPage extends StatefulWidget {
 
 class _SplashPageState extends State<SplashPage> with SplashController<SplashPage> {
   @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    checLocalDataOrSendNext();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: SizedBox(
@@ -101,8 +108,8 @@ class _SplashPageState extends State<SplashPage> with SplashController<SplashPag
                 ],
               ),
             ),
-            
-            Align(
+            if(userData == null)...[
+              Align(
               alignment: Alignment.bottomCenter,
               child: Container(
                 margin: EdgeInsets.only(bottom: 30.h),
@@ -201,7 +208,9 @@ class _SplashPageState extends State<SplashPage> with SplashController<SplashPag
                   ),
                 ),
               ),
-            ),
+            )
+            ],
+            
           ],
         ),
       ),
@@ -209,59 +218,8 @@ class _SplashPageState extends State<SplashPage> with SplashController<SplashPag
   }
 }
 
-//  Align(
-//             alignment: Alignment.bottomCenter,
-//             child: ClipPath(
-//               clipper: TopCenterUpwardTriangleClipper(),
-//               child: Container(
-//                 width: MediaQuery.of(context).size.width,
-//                 height: 475.h,
-//                 decoration: BoxDecoration(
-//                   color: const Color(0xFF0D0D26),
-//                   borderRadius: BorderRadius.circular(20),
-//                 ),
-//               ),
-//             ),
-//           ),
 
-/////////////////////////////////
-// class TopCenterWaveClipper extends CustomClipper<Path> {
-//   @override
-//   Path getClip(Size size) {
-//     final path = Path();
 
-//     // Start from top-left
-//     path.moveTo(0, 20);
-
-//     // Top-left corner curve
-//     path.quadraticBezierTo(0, 0, 20, 0);
-
-//     // Go to 1/3rd, before the dip starts
-//     path.lineTo(size.width * 0.35, 0);
-
-//     // Dip in center
-//     path.quadraticBezierTo(
-//       size.width * 0.5,
-//       40, // Dip depth
-//       size.width * 0.65,
-//       0,
-//     );
-
-//     // Continue to right with corner
-//     path.lineTo(size.width - 20, 0);
-//     path.quadraticBezierTo(size.width, 0, size.width, 20);
-
-//     // Down to bottom right
-//     path.lineTo(size.width, size.height);
-//     path.lineTo(0, size.height);
-
-//     path.close();
-//     return path;
-//   }
-
-//   @override
-//   bool shouldReclip(CustomClipper<Path> oldClipper) => false;
-// }
 
 class InwardCurveClipper extends CustomClipper<Path> {
   @override
