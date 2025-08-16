@@ -119,12 +119,12 @@ class _APIStateNetwork implements APIStateNetwork {
   }
 
   @override
-  Future<DoctorsListResponse> getDoctorsList() async {
+  Future<List<DoctorsListResponse>> getDoctorsList() async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
     const Map<String, dynamic>? _data = null;
-    final _options = _setStreamType<DoctorsListResponse>(
+    final _options = _setStreamType<List<DoctorsListResponse>>(
       Options(method: 'GET', headers: _headers, extra: _extra)
           .compose(
             _dio.options,
@@ -134,10 +134,42 @@ class _APIStateNetwork implements APIStateNetwork {
           )
           .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
     );
-    final _result = await _dio.fetch<Map<String, dynamic>>(_options);
-    late DoctorsListResponse _value;
+    final _result = await _dio.fetch<List<dynamic>>(_options);
+    late List<DoctorsListResponse> _value;
     try {
-      _value = DoctorsListResponse.fromJson(_result.data!);
+      _value = _result.data!
+          .map(
+            (dynamic i) =>
+                DoctorsListResponse.fromJson(i as Map<String, dynamic>),
+          )
+          .toList();
+    } on Object catch (e, s) {
+      errorLogger?.logError(e, s, _options);
+      rethrow;
+    }
+    return _value;
+  }
+
+  @override
+  Future<DoctorDetailResponse> getDoctorDetail(String id) async {
+    final _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{};
+    const Map<String, dynamic>? _data = null;
+    final _options = _setStreamType<DoctorDetailResponse>(
+      Options(method: 'GET', headers: _headers, extra: _extra)
+          .compose(
+            _dio.options,
+            '/api/doctors/${id}',
+            queryParameters: queryParameters,
+            data: _data,
+          )
+          .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
+    );
+    final _result = await _dio.fetch<Map<String, dynamic>>(_options);
+    late DoctorDetailResponse _value;
+    try {
+      _value = DoctorDetailResponse.fromJson(_result.data!);
     } on Object catch (e, s) {
       errorLogger?.logError(e, s, _options);
       rethrow;

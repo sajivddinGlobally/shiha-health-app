@@ -1,37 +1,63 @@
 // To parse this JSON data, do
 //
-//     final doctorsListResponse = doctorsListResponseFromJson(jsonString);
+//     final doctorDetailResponse = doctorDetailResponseFromJson(jsonString);
 
 import 'dart:convert';
 
-List<DoctorsListResponse> doctorsListResponseFromJson(String str) => List<DoctorsListResponse>.from(json.decode(str).map((x) => DoctorsListResponse.fromJson(x)));
+DoctorDetailResponse doctorDetailResponseFromJson(String str) => DoctorDetailResponse.fromJson(json.decode(str));
 
-String doctorsListResponseToJson(List<DoctorsListResponse> data) => json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
+String doctorDetailResponseToJson(DoctorDetailResponse data) => json.encode(data.toJson());
 
-class DoctorsListResponse {
+class DoctorDetailResponse {
+    String message;
+    Doctor doctor;
+    dynamic user;
+
+    DoctorDetailResponse({
+        required this.message,
+        required this.doctor,
+        required this.user,
+    });
+
+    factory DoctorDetailResponse.fromJson(Map<String, dynamic> json) => DoctorDetailResponse(
+        message: json["message"],
+        doctor: Doctor.fromJson(json["doctor"]),
+        user: json["user"],
+    );
+
+    Map<String, dynamic> toJson() => {
+        "message": message,
+        "doctor": doctor.toJson(),
+        "user": user,
+    };
+}
+
+class Doctor {
     int id;
-    int? userId;
+    dynamic userId;
     String fullName;
     String specialty;
     int experienceYears;
     double rating;
     String profilePicture;
     int hospitalId;
-    int? consultationFees;
+    dynamic consultationFees;
     List<String> language;
-    dynamic availableSlots;
+    List<String> availableSlots;
     DateTime createdAt;
     DateTime updatedAt;
     int approvalStatus;
-    String? qualifications;
-    String? medicalLicenseNumber;
-    String? medicalLicenseFile;
-    String? consultationFee;
-    int? reviewsId;
+    String qualifications;
+    String medicalLicenseNumber;
+    String medicalLicenseFile;
+    dynamic consultationFee;
+    dynamic reviewsId;
+    dynamic user;
     Hospital hospital;
-    List<Appointment> appointments;
+    List<dynamic> appointments;
+    dynamic review;
 
-    DoctorsListResponse({
+    Doctor({
         required this.id,
         required this.userId,
         required this.fullName,
@@ -51,11 +77,13 @@ class DoctorsListResponse {
         required this.medicalLicenseFile,
         required this.consultationFee,
         required this.reviewsId,
+        required this.user,
         required this.hospital,
         required this.appointments,
+        required this.review,
     });
 
-    factory DoctorsListResponse.fromJson(Map<String, dynamic> json) => DoctorsListResponse(
+    factory Doctor.fromJson(Map<String, dynamic> json) => Doctor(
         id: json["id"],
         userId: json["user_id"],
         fullName: json["full_name"],
@@ -66,7 +94,7 @@ class DoctorsListResponse {
         hospitalId: json["hospital_id"],
         consultationFees: json["consultation_fees"],
         language: List<String>.from(json["language"].map((x) => x)),
-        availableSlots: json["available_slots"],
+        availableSlots: List<String>.from(json["available_slots"].map((x) => x)),
         createdAt: DateTime.parse(json["created_at"]),
         updatedAt: DateTime.parse(json["updated_at"]),
         approvalStatus: json["approval_status"],
@@ -75,8 +103,10 @@ class DoctorsListResponse {
         medicalLicenseFile: json["medical_license_file"],
         consultationFee: json["consultation_fee"],
         reviewsId: json["reviews_id"],
+        user: json["user"],
         hospital: Hospital.fromJson(json["hospital"]),
-        appointments: List<Appointment>.from(json["appointments"].map((x) => Appointment.fromJson(x))),
+        appointments: List<dynamic>.from(json["appointments"].map((x) => x)),
+        review: json["review"],
     );
 
     Map<String, dynamic> toJson() => {
@@ -90,7 +120,7 @@ class DoctorsListResponse {
         "hospital_id": hospitalId,
         "consultation_fees": consultationFees,
         "language": List<dynamic>.from(language.map((x) => x)),
-        "available_slots": availableSlots,
+        "available_slots": List<dynamic>.from(availableSlots.map((x) => x)),
         "created_at": createdAt.toIso8601String(),
         "updated_at": updatedAt.toIso8601String(),
         "approval_status": approvalStatus,
@@ -99,64 +129,10 @@ class DoctorsListResponse {
         "medical_license_file": medicalLicenseFile,
         "consultation_fee": consultationFee,
         "reviews_id": reviewsId,
+        "user": user,
         "hospital": hospital.toJson(),
-        "appointments": List<dynamic>.from(appointments.map((x) => x.toJson())),
-    };
-}
-
-class Appointment {
-    int id;
-    int userId;
-    int doctorId;
-    int hospitalId;
-    DateTime date;
-    dynamic time;
-    dynamic status;
-
-    Appointment({
-        required this.id,
-        required this.userId,
-        required this.doctorId,
-        required this.hospitalId,
-        required this.date,
-        required this.time,
-        required this.status,
-    });
-
-    factory Appointment.fromJson(Map<String, dynamic> json) => Appointment(
-        id: json["id"],
-        userId: json["user_id"],
-        doctorId: json["doctor_id"],
-        hospitalId: json["hospital_id"],
-        date: DateTime.parse(json["date"]),
-        time: json["time"],
-        status: json["status"],
-    );
-
-    Map<String, dynamic> toJson() => {
-        "id": id,
-        "user_id": userId,
-        "doctor_id": doctorId,
-        "hospital_id": hospitalId,
-        "date": "${date.year.toString().padLeft(4, '0')}-${date.month.toString().padLeft(2, '0')}-${date.day.toString().padLeft(2, '0')}",
-        "time": time,
-        "status": status,
-    };
-}
-
-class AvailableSlotsClass {
-    List<String> the20250801;
-
-    AvailableSlotsClass({
-        required this.the20250801,
-    });
-
-    factory AvailableSlotsClass.fromJson(Map<String, dynamic> json) => AvailableSlotsClass(
-        the20250801: List<String>.from(json["2025-08-01"].map((x) => x)),
-    );
-
-    Map<String, dynamic> toJson() => {
-        "2025-08-01": List<dynamic>.from(the20250801.map((x) => x)),
+        "appointments": List<dynamic>.from(appointments.map((x) => x)),
+        "review": review,
     };
 }
 

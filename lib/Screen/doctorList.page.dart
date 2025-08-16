@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 import 'package:shiha_health_app/Screen/doctorDetails.page.dart';
 import 'package:shiha_health_app/Screen/hospitalListing.page.dart';
 import 'package:shiha_health_app/data/controller/doctorsList.provider.dart';
@@ -16,56 +17,29 @@ class DoctorListPage extends ConsumerStatefulWidget {
 }
 
 class _DoctorListPageState extends ConsumerState<DoctorListPage> {
-  List<Map<String, dynamic>> doctorList = [
-    {
-      "image": "assets/d1.png",
-      "reting": "4.2/5",
-      "name": "Robert Smith",
-      "title": "Paediatrics (6 Yrs experience)",
-    },
-    {
-      "image": "assets/d2.png",
-      "reting": "4.5/5",
-      "name": "Emily Johnson",
-      "title": "Dermatology (8 Yrs experience)",
-    },
-    {
-      "image": "assets/d3.png",
-      "reting": "4.8/5",
-      "name": "Michael Brown",
-      "title": "Orthopedics (10 Yrs experience)",
-    },
-    {
-      "image": "assets/d4.png",
-      "reting": "4.0/5",
-      "name": "Addis Ababa Medical Center",
-      "title": "Consultation Price: ",
-    },
-    {
-      "image": "assets/d5.png",
-      "reting": "4.5/5",
-      "name": "Sarah Davis",
-      "title": "General Surgery (5 Yrs experience)",
-    },
-    {
-      "image": "assets/d6.png",
-      "reting": "4.6/5",
-      "name": "James Wilson",
-      "title": "Cardiology (7 Yrs experience)",
-    },
-  ];
+  bool isSearching = false;
+  String searchQuery = "";
+  TextEditingController searchController = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     final doctorsList = ref.watch(doctorsListProvider);
+
     return Scaffold(
       body: doctorsList.when(
         data: (snap) {
+          // Filter based on search query
+          final filteredDoctors = snap.where((doctor) {
+            final nameMatch = doctor.fullName.toLowerCase().contains(searchQuery.toLowerCase());
+            final specialtyMatch = doctor.specialty.toLowerCase().contains(searchQuery.toLowerCase());
+            return nameMatch || specialtyMatch;
+          }).toList();
+
           return Stack(
             children: [
               Image.asset(
                 "assets/homebg.png",
                 width: MediaQuery.of(context).size.width,
-                // height: MediaQuery.of(context).size.height,
                 fit: BoxFit.fill,
               ),
               Align(
@@ -84,33 +58,74 @@ class _DoctorListPageState extends ConsumerState<DoctorListPage> {
                             tapTargetSize: MaterialTapTargetSize.shrinkWrap,
                           ),
                           onPressed: () {
-                            Navigator.pop(context);
+                            if (isSearching) {
+                              setState(() {
+                                isSearching = false;
+                                searchQuery = "";
+                                searchController.clear();
+                              });
+                            } else {
+                              Navigator.pop(context);
+                            }
                           },
                           icon: Icon(Icons.arrow_back_ios, color: Colors.white),
                         ),
                         SizedBox(width: 10.w),
-                        Text(
-                          "All Doctors",
-                          style: GoogleFonts.poppins(
-                            fontSize: 18.sp,
-                            fontWeight: FontWeight.w500,
-                            color: Colors.white,
-                          ),
-                        ),
+
+                        // Title or Search Field
+                        isSearching
+                            ? Expanded(
+                                child: TextField(
+                                  controller: searchController,
+                                  autofocus: true,
+                                  style: TextStyle(color: Colors.white),
+                                  decoration: InputDecoration(
+                                    hintText: "Search by name or specialty",
+                                    hintStyle: TextStyle(color: Colors.white54),
+                                    border: InputBorder.none,
+                                  ),
+                                  onChanged: (value) {
+                                    setState(() {
+                                      searchQuery = value;
+                                    });
+                                  },
+                                ),
+                              )
+                            : Text(
+                                "All Doctors",
+                                style: GoogleFonts.poppins(
+                                  fontSize: 18.sp,
+                                  fontWeight: FontWeight.w500,
+                                  color: Colors.white,
+                                ),
+                              ),
+
                         Spacer(),
+
+                        // Search Icon
                         IconButton(
                           style: IconButton.styleFrom(
                             padding: EdgeInsets.zero,
                             minimumSize: Size(0, 0),
                             tapTargetSize: MaterialTapTargetSize.shrinkWrap,
                           ),
-                          onPressed: () {},
+                          onPressed: () {
+                            setState(() {
+                              isSearching = !isSearching;
+                              if (!isSearching) {
+                                searchQuery = "";
+                                searchController.clear();
+                              }
+                            });
+                          },
                           icon: Icon(Icons.search, color: Colors.white),
                         ),
                         SizedBox(width: 20.w),
                       ],
                     ),
                     SizedBox(height: 20.h),
+
+                    // Filters row (unchanged)
                     SingleChildScrollView(
                       scrollDirection: Axis.horizontal,
                       child: Row(
@@ -128,22 +143,29 @@ class _DoctorListPageState extends ConsumerState<DoctorListPage> {
                       ),
                     ),
                     SizedBox(height: 20.h),
+
+                    // Doctor List
                     Expanded(
-                      child: Padding(
-                        padding: EdgeInsets.only(left: 20.w, right: 20.w),
-                        child: GridView.builder(
-                          padding: EdgeInsets.zero,
-                          itemCount: snap.length,
-                          gridDelegate:
-                              SliverGridDelegateWithFixedCrossAxisCount(
+                      child: ClipPath(
+                        clipper: TopCurveClipper(),
+                        child: Container(
+                          color: Colors.transparent,
+                          child: Padding(
+                            padding: EdgeInsets.symmetric(horizontal: 20.w),
+                            child: GridView.builder(
+                              padding: EdgeInsets.only(top: 45.h),
+                              itemCount: filteredDoctors.length,
+                              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                                 crossAxisCount: 2,
                                 mainAxisSpacing: 15.w,
                                 crossAxisSpacing: 15.h,
                                 childAspectRatio: 0.65,
                               ),
-                          itemBuilder: (context, index) {
-                            return DoctorsTab(data: snap[index]);
-                          },
+                              itemBuilder: (context, index) {
+                                return DoctorsTab(data: filteredDoctors[index]);
+                              },
+                            ),
+                          ),
                         ),
                       ),
                     ),
@@ -153,10 +175,18 @@ class _DoctorListPageState extends ConsumerState<DoctorListPage> {
             ],
           );
         },
-        error: (err, stack) {
-          return Center(child: Text("$err"));
-        },
-        loading: () => Center(child: CircularProgressIndicator()),
+        error: (err, stack) => Center(child: Text("$err, $stack")),
+        loading: () => Container(
+          height: MediaQuery.of(context).size.height,
+          width: MediaQuery.of(context).size.width,
+          decoration: BoxDecoration(
+            image: DecorationImage(
+              image: AssetImage("assets/homebg.png"),
+              fit: BoxFit.fill,
+            ),
+          ),
+          child: Center(child: CircularProgressIndicator(color: Colors.white)),
+        ),
       ),
     );
   }
@@ -177,7 +207,7 @@ class _DoctorsTabState extends State<DoctorsTab> {
       onTap: () {
         Navigator.push(
           context,
-          CupertinoPageRoute(builder: (context) => DoctorDetailsPage()),
+          CupertinoPageRoute(builder: (context) => DoctorDetailsPage(userID: widget.data.id.toString(),)),
         );
       },
       child: Container(
@@ -199,25 +229,17 @@ class _DoctorsTabState extends State<DoctorsTab> {
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            InkWell(
-              onTap: () {
-                Navigator.push(
-                  context,
-                  CupertinoPageRoute(builder: (context) => DoctorDetailsPage()),
-                );
-              },
-              child: SizedBox(
+           SizedBox(
                 width: 170.w,
                 height: 170.h,
                 child: ClipRRect(
                   borderRadius: BorderRadius.circular(10.r),
-                  child: Image.asset(
-                    widget.data.profilePicture.toString(),
+                  child: Image.network(
+                    "http://sihahealth.globallywebsolutions.com"+widget.data.profilePicture.toString(),
                     fit: BoxFit.cover,
                   ),
                 ),
               ),
-            ),
             SizedBox(height: 12.h),
             Row(
               children: [
@@ -236,7 +258,7 @@ class _DoctorsTabState extends State<DoctorsTab> {
                     children: [
                       Icon(Icons.star, color: Color(0xFFD8A200), size: 15.sp),
                       Text(
-                        widget.data.rating.toString(),
+                        widget.data.rating.toStringAsFixed(2),
                         style: GoogleFonts.poppins(
                           fontSize: 12.sp,
                           fontWeight: FontWeight.w500,
@@ -247,48 +269,49 @@ class _DoctorsTabState extends State<DoctorsTab> {
                     ],
                   ),
                 ),
-                // if (index == 1 || index == 4)
-                //   Container(
-                //     margin: EdgeInsets.only(left: 6.w),
-                //     padding: EdgeInsets.only(
-                //       left: 5.w,
-                //       right: 5.w,
-                //       top: 5.h,
-                //       bottom: 5.h,
-                //     ),
-                //     decoration: BoxDecoration(
-                //       borderRadius: BorderRadius.circular(
-                //         40.r,
-                //       ),
-                //       color: Color.fromARGB(
-                //         25,
-                //         125,
-                //         255,
-                //         180,
-                //       ),
-                //     ),
-                //     child: Row(
-                //       children: [
-                //         CircleAvatar(
-                //           radius: 5.r,
-                //           backgroundColor: Color(
-                //             0xFF2ECC71,
-                //           ),
-                //         ),
-                //         SizedBox(width: 5.w),
-                //         Text(
-                //           "Active",
-                //           style: GoogleFonts.poppins(
-                //             fontSize: 10.sp,
-                //             fontWeight: FontWeight.w500,
-                //             color: Color(0xFF2ECC71),
-                //             letterSpacing: -0.3,
-                //           ),
-                //         ),
-                //       ],
-                //     ),
-                //   ),
-              ],
+              //   if (index == 1 || index == 4)
+              //     Container(
+              //       margin: EdgeInsets.only(left: 6.w),
+              //       padding: EdgeInsets.only(
+              //         left: 5.w,
+              //         right: 5.w,
+              //         top: 5.h,
+              //         bottom: 5.h,
+              //       ),
+              //       decoration: BoxDecoration(
+              //         borderRadius: BorderRadius.circular(
+              //           40.r,
+              //         ),
+              //         color: Color.fromARGB(
+              //           25,
+              //           125,
+              //           255,
+              //           180,
+              //         ),
+              //       ),
+              //       child: Row(
+              //         children: [
+              //           CircleAvatar(
+              //             radius: 5.r,
+              //             backgroundColor: Color(
+              //               0xFF2ECC71,
+              //             ),
+              //           ),
+              //           SizedBox(width: 5.w),
+              //           Text(
+              //             "Active",
+              //             style: GoogleFonts.poppins(
+              //               fontSize: 10.sp,
+              //               fontWeight: FontWeight.w500,
+              //               color: Color(0xFF2ECC71),
+              //               letterSpacing: -0.3,
+              //             ),
+              //           ),
+              //         ],
+              //       ),
+              //   //   ),
+              // ],
+              ]
             ),
             SizedBox(height: 7.h),
             SizedBox(
@@ -319,4 +342,32 @@ class _DoctorsTabState extends State<DoctorsTab> {
       ),
     );
   }
+}
+
+
+
+class TopCurveClipper extends CustomClipper<Path> {
+  @override
+  Path getClip(Size size) {
+    Path path = Path();
+
+    // Start point bottom left
+    path.moveTo(0, 50);
+
+    // Top curve
+    path.quadraticBezierTo(
+      size.width / 2, 0, // control point
+      size.width, 50,    // end point
+    );
+
+    // Rest rectangle
+    path.lineTo(size.width, size.height);
+    path.lineTo(0, size.height);
+    path.close();
+
+    return path;
+  }
+
+  @override
+  bool shouldReclip(CustomClipper<Path> oldClipper) => false;
 }

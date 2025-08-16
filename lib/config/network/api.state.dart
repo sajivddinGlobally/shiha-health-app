@@ -1,5 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:retrofit/retrofit.dart';
+import 'package:shiha_health_app/data/model/doctorDetails.model.dart';
 import 'package:shiha_health_app/data/model/doctorsList.response.dart';
 import 'package:shiha_health_app/data/model/loginUserModel.dart';
 import 'package:shiha_health_app/data/model/loginUserResModel.dart';
@@ -24,8 +25,11 @@ abstract class APIStateNetwork {
   Future<HttpResponse> registerUser(
     @Body() RegisterModelRequest body,
   );
-  
+
+
   //Doctors
   @GET("/api/doctors")
   Future<List<DoctorsListResponse>> getDoctorsList();
+  @GET("/api/doctors/{id}")
+  Future<DoctorDetailResponse> getDoctorDetail(@Path('id') String id); 
 }
