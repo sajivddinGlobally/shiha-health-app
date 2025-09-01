@@ -32,7 +32,7 @@ class UserRegisterResponse {
     );
 
     Map<String, dynamic> toJson() => {
-        "full_name": fullName,
+        "full_name": fullName, 
         "phone_number": phoneNumber,
         "updated_at": updatedAt.toIso8601String(),
         "created_at": createdAt.toIso8601String(),

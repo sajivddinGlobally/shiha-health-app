@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
+import 'package:shiha_health_app/Screen/appointment.page.dart';
 import 'package:shiha_health_app/data/controller/doctorDetails.provider.dart';
 import 'package:shiha_health_app/data/controller/doctorsList.provider.dart';
 
@@ -73,6 +74,15 @@ class _DoctorDetailsPageState extends ConsumerState<DoctorDetailsPage> {
             ),
             doctorDetail.when(
               data: (snap) {
+                final Map<String, List<String>> availableSlots = {
+                  "2025-08-01": ["10:00", "11:00", "12:00"],
+                  "2025-08-02": ["09:30", "14:00", "15:30"],
+                };
+                List<String> getTimeSlotsForSelectedDate() {
+                  final dateKey = DateFormat('yyyy-MM-dd').format(selectedDate);
+                  return availableSlots[dateKey] ?? [];
+                }
+
                 return Align(
                   alignment: Alignment.topLeft,
                   child: Column(
@@ -140,11 +150,19 @@ class _DoctorDetailsPageState extends ConsumerState<DoctorDetailsPage> {
                           children: [
                             ClipRRect(
                               borderRadius: BorderRadius.circular(10.r),
-                              child: Image.asset(
-                                "assets/d5.png",
+                              child: Image.network(
+                                "${snap.doctor.profilePicture}",
                                 width: 127.w,
                                 height: 136.h,
                                 fit: BoxFit.cover,
+                                errorBuilder: (context, error, stackTrace) {
+                                  return Image.network(
+                                    "https://static.vecteezy.com/system/resources/thumbnails/026/375/249/small_2x/ai-generative-portrait-of-confident-male-doctor-in-white-coat-and-stethoscope-standing-with-arms-crossed-and-looking-at-camera-photo.jpg",
+                                    width: 127.w,
+                                    height: 136.h,
+                                    fit: BoxFit.cover,
+                                  );
+                                },
                               ),
                             ),
                             SizedBox(width: 15.w),
@@ -576,7 +594,7 @@ class _DoctorDetailsPageState extends ConsumerState<DoctorDetailsPage> {
                             SizedBox(height: 15.h),
                             // Time slots
                             GridView.builder(
-                              itemCount: timeSlots.length,
+                              itemCount: getTimeSlotsForSelectedDate().length,
                               padding: EdgeInsets.zero,
                               shrinkWrap: true,
                               physics: NeverScrollableScrollPhysics(),
@@ -588,7 +606,8 @@ class _DoctorDetailsPageState extends ConsumerState<DoctorDetailsPage> {
                                     crossAxisSpacing: 8.w,
                                   ),
                               itemBuilder: (context, index) {
-                                final time = timeSlots[index];
+                                final time =
+                                    getTimeSlotsForSelectedDate()[index];
                                 final isSelected = selectedTime == time;
                                 return Column(
                                   children: [
@@ -599,11 +618,9 @@ class _DoctorDetailsPageState extends ConsumerState<DoctorDetailsPage> {
                                         });
                                       },
                                       child: Container(
-                                        padding: EdgeInsets.only(
-                                          left: 10.w,
-                                          right: 10.w,
-                                          top: 8.h,
-                                          bottom: 8.h,
+                                        padding: EdgeInsets.symmetric(
+                                          horizontal: 10.w,
+                                          vertical: 8.h,
                                         ),
                                         decoration: BoxDecoration(
                                           color: isSelected
@@ -620,8 +637,8 @@ class _DoctorDetailsPageState extends ConsumerState<DoctorDetailsPage> {
                                         ),
                                         alignment: Alignment.center,
                                         child: Text(
-                                          textAlign: TextAlign.center,
                                           time,
+                                          textAlign: TextAlign.center,
                                           style: GoogleFonts.poppins(
                                             fontSize: 13.sp,
                                             fontWeight: FontWeight.w500,
@@ -646,33 +663,32 @@ class _DoctorDetailsPageState extends ConsumerState<DoctorDetailsPage> {
                         ),
                       ),
                       SizedBox(height: 30.h),
-                      
-                      
+
                       if (snap.doctor.review != null) ...[
                         Row(
-                        children: [
-                          SizedBox(width: 22.w),
-                          Text(
-                            "Patient Reviews",
-                            style: GoogleFonts.poppins(
-                              fontSize: 15.sp,
-                              fontWeight: FontWeight.w500,
-                              color: Colors.white,
+                          children: [
+                            SizedBox(width: 22.w),
+                            Text(
+                              "Patient Reviews",
+                              style: GoogleFonts.poppins(
+                                fontSize: 15.sp,
+                                fontWeight: FontWeight.w500,
+                                color: Colors.white,
+                              ),
                             ),
-                          ),
-                          Spacer(),
-                          Text(
-                            "View All Reviews",
-                            style: GoogleFonts.poppins(
-                              fontSize: 14.sp,
-                              fontWeight: FontWeight.w500,
-                              color: Color(0xFF067594),
+                            Spacer(),
+                            Text(
+                              "View All Reviews",
+                              style: GoogleFonts.poppins(
+                                fontSize: 14.sp,
+                                fontWeight: FontWeight.w500,
+                                color: Color(0xFF067594),
+                              ),
                             ),
-                          ),
-                          SizedBox(width: 21.w),
-                        ],
-                      ),
-                      SizedBox(height: 12.h),
+                            SizedBox(width: 21.w),
+                          ],
+                        ),
+                        SizedBox(height: 12.h),
                         ListView.builder(
                           shrinkWrap: true,
                           physics: NeverScrollableScrollPhysics(),
@@ -756,6 +772,34 @@ class _DoctorDetailsPageState extends ConsumerState<DoctorDetailsPage> {
                           },
                         ),
                       ],
+                      Padding(
+                        padding: EdgeInsets.only(left: 20.w, right: 20.w),
+                        child: ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                            minimumSize: Size(400.w, 55.h),
+                            backgroundColor: Color(0xFF067594),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(10.r),
+                            ),
+                          ),
+                          onPressed: () {
+                            Navigator.push(
+                              context,
+                              CupertinoPageRoute(
+                                builder: (context) => AppointmentPage(),
+                              ),
+                            );
+                          },
+                          child: Text(
+                            "Book Appointment",
+                            style: GoogleFonts.poppins(
+                              fontSize: 16.sp,
+                              fontWeight: FontWeight.w500,
+                              color: Colors.white,
+                            ),
+                          ),
+                        ),
+                      ),
                     ],
                   ),
                 );

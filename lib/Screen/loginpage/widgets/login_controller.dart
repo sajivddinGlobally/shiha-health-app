@@ -28,11 +28,15 @@ mixin LoginController<T extends ConsumerStatefulWidget> on ConsumerState<T> {
           isLoading = false;
         });
 
+
         if (response != null) {
-          Navigator.push(
+          showSuccessMessage(context, response.otpCode.toString());
+          Future.delayed(Duration(seconds: 3), (){
+            Navigator.push(
             context,
             CupertinoPageRoute(builder: (context) =>  OtpPage(phone: phoneController.text,)),
           );
+          });
           showSuccessMessage(context, response.message);
         }
       } on DioException {

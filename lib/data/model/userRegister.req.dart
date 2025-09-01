@@ -19,7 +19,7 @@ class UserRegisterRequest {
 
     factory UserRegisterRequest.fromJson(Map<String, dynamic> json) => UserRegisterRequest(
         fullName: json["full_name"],
-        phoneNumber: json["phone_number"],
+      phoneNumber: json["phone_number"],
     );
 
     Map<String, dynamic> toJson() => {
