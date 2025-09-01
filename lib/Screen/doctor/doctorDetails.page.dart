@@ -1,12 +1,17 @@
-import 'package:flutter/cupertino.dart';
+import 'dart:convert';
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
-import 'package:shiha_health_app/Screen/appointment.page.dart';
+import 'package:shiha_health_app/Screen/doctor/controller/doctorDetails.controller.dart';
+import 'package:shiha_health_app/config/network/api.state.dart';
+import 'package:shiha_health_app/config/utils/pretty.dio.dart';
 import 'package:shiha_health_app/data/controller/doctorDetails.provider.dart';
-import 'package:shiha_health_app/data/controller/doctorsList.provider.dart';
+import 'package:shiha_health_app/data/db/userData.dart';
+import 'package:shiha_health_app/data/model/bookAppoinment.req.dart';
 
 class DoctorDetailsPage extends ConsumerStatefulWidget {
   final String userID;
@@ -16,52 +21,13 @@ class DoctorDetailsPage extends ConsumerStatefulWidget {
   ConsumerState<DoctorDetailsPage> createState() => _DoctorDetailsPageState();
 }
 
-class _DoctorDetailsPageState extends ConsumerState<DoctorDetailsPage> {
-  DateTime selectedDate = DateTime.now();
-  String? selectedTime;
-  int currentMonthOffset = 0;
-
-  List<String> timeSlots = [
-    "06:00 PM",
-    "07:00 PM",
-    "08:00 PM",
-    "09:00 PM",
-    "10:00 PM",
-    "11:00 PM",
-    "12:00 AM",
-    "01:00 AM",
-    "02:00 AM",
-    "03:00 AM",
-    "04:00 AM",
-    "05:20 AM",
-  ];
-
-  DateTime get baseMonthDate {
-    final now = DateTime.now();
-    return DateTime(now.year, now.month + currentMonthOffset);
-  }
-
-  List<DateTime> getDatesInCurrentMonth() {
-    final base = baseMonthDate;
-    final firstDay = DateTime(base.year, base.month, 1);
-    final nextMonth = DateTime(base.year, base.month + 1, 1);
-    final daysInMonth = nextMonth.difference(firstDay).inDays;
-    return List.generate(daysInMonth, (i) => firstDay.add(Duration(days: i)));
-  }
-
-  void changeMonth(int offset) {
-    setState(() {
-      currentMonthOffset += offset;
-      selectedDate = DateTime(baseMonthDate.year, baseMonthDate.month, 1);
-      selectedTime = null;
-    });
-  }
-
+class _DoctorDetailsPageState extends ConsumerState<DoctorDetailsPage>
+    with DoctorDetailsController<DoctorDetailsPage> {
   @override
   Widget build(BuildContext context) {
     final currentMonthDates = getDatesInCurrentMonth();
     final monthName = DateFormat('MMMM').format(baseMonthDate);
-    final doctorDetail = ref.watch(doctorDetailProvider(widget.userID));
+    final doctorDetail = fetchData(id: widget.userID);
     return Scaffold(
       body: SingleChildScrollView(
         child: Stack(
@@ -74,10 +40,10 @@ class _DoctorDetailsPageState extends ConsumerState<DoctorDetailsPage> {
             ),
             doctorDetail.when(
               data: (snap) {
-                final Map<String, List<String>> availableSlots = {
-                  "2025-08-01": ["10:00", "11:00", "12:00"],
-                  "2025-08-02": ["09:30", "14:00", "15:30"],
-                };
+               final availableSlots = 
+    (jsonDecode(jsonEncode(snap.doctor.availableSlots)) as Map<String, dynamic>)
+        .map((key, value) => MapEntry(key, List<String>.from(value)));
+
                 List<String> getTimeSlotsForSelectedDate() {
                   final dateKey = DateFormat('yyyy-MM-dd').format(selectedDate);
                   return availableSlots[dateKey] ?? [];
@@ -782,22 +748,15 @@ class _DoctorDetailsPageState extends ConsumerState<DoctorDetailsPage> {
                               borderRadius: BorderRadius.circular(10.r),
                             ),
                           ),
-                          onPressed: () {
-                            Navigator.push(
-                              context,
-                              CupertinoPageRoute(
-                                builder: (context) => AppointmentPage(),
-                              ),
-                            );
-                          },
-                          child: Text(
+                          onPressed: () => bookAppoinment(doctorId: snap.doctor.id, hospitalId: snap.doctor.hospitalId),
+                          child: isBTNLoding == false? Text(
                             "Book Appointment",
                             style: GoogleFonts.poppins(
                               fontSize: 16.sp,
                               fontWeight: FontWeight.w500,
                               color: Colors.white,
                             ),
-                          ),
+                          ) : CircularProgressIndicator(color: Colors.white,), 
                         ),
                       ),
                     ],

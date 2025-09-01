@@ -1,5 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:retrofit/retrofit.dart';
+import 'package:shiha_health_app/data/model/bookAppoinment.req.dart';
 import 'package:shiha_health_app/data/model/doctorDetails.model.dart';
 import 'package:shiha_health_app/data/model/doctorsList.response.dart';
 import 'package:shiha_health_app/data/model/hospitalDetails.response.dart';
@@ -42,4 +43,6 @@ abstract class APIStateNetwork {
   Future<List<DoctorsListResponse>> getDoctorsList();
   @GET("/api/doctors/{id}")
   Future<DoctorDetailResponse> getDoctorDetail(@Path('id') String id); 
+  @POST("/api/appointments")
+  Future<HttpResponse<dynamic>> bookAppontment(@Body() BookAppontmentReq body);
 }
