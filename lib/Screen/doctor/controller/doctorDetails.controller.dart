@@ -4,7 +4,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:shiha_health_app/Screen/appointment.page.dart';
+import 'package:shiha_health_app/Screen/appoinmnets/appointment.page.dart';
 import 'package:shiha_health_app/Screen/widgets/errorShowFLushBar.dart';
 import 'package:shiha_health_app/config/network/api.state.dart';
 import 'package:shiha_health_app/config/utils/pretty.dio.dart';
@@ -61,6 +61,43 @@ mixin DoctorDetailsController<T extends ConsumerStatefulWidget>
           time: selectedTime ?? "",
           status: "Scheduled",
         ),
+      );
+      Navigator.push(
+        context,
+        CupertinoPageRoute(builder: (context) => AppointmentPage()),
+      );
+      showSuccessMessage(context, "Booking succesfulliy");
+      setState(() => isBTNLoding = false);
+    } on DioException catch (e) {
+      log("Dio error: ${e.message}");
+      setState(() => isBTNLoding = false);
+      showErrorMessage("Appoinment booking faild");
+    } catch (e) {
+      // baki generic error handle karega
+      setState(() => isBTNLoding = false);
+      showErrorMessage("Appoinment booking faild");
+      log("Other error: $e");
+    }
+  }
+
+  void updateBooking({required int doctorId, required int hospitalId, required String bookingId}) async {
+    final rawData = HiveService().getData<Map<dynamic, dynamic>>(
+      key: "user",
+      boxName: HiveBoxes.userData,
+    );
+    final api = APIStateNetwork(await createDio());
+    try {
+      setState(() => isBTNLoding = true);
+      final response = await api.updateAppontment(
+        BookAppontmentReq(
+          userId: int.parse(rawData!['user']['id'].toString()),
+          doctorId: doctorId,
+          hospitalId: hospitalId,
+          date: selectedDate,
+          time: selectedTime ?? "",
+          status: "Scheduled",
+        ),
+        bookingId
       );
       Navigator.push(
         context,

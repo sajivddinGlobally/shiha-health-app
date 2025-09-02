@@ -4,7 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:shiha_health_app/Screen/ai.chat.page.dart';
-import 'package:shiha_health_app/Screen/appointment.page.dart';
+import 'package:shiha_health_app/Screen/appoinmnets/appointment.page.dart';
 import 'package:shiha_health_app/Screen/doctorList.page.dart';
 import 'package:shiha_health_app/Screen/donation.page.dart';
 import 'package:shiha_health_app/Screen/healthInsurance.page.dart';

@@ -207,7 +207,7 @@ class _DoctorsTabState extends State<DoctorsTab> {
       onTap: () {
         Navigator.push(
           context,
-          CupertinoPageRoute(builder: (context) => DoctorDetailsPage(userID: widget.data.id.toString(),)),
+          CupertinoPageRoute(builder: (context) => DoctorDetailsPage(userID: widget.data.id.toString(), hasChange: false, bookingId: null,)),
         );
       },
       child: Container(

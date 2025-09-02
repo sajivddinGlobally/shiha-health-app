@@ -7,15 +7,17 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import 'package:shiha_health_app/Screen/doctor/controller/doctorDetails.controller.dart';
-import 'package:shiha_health_app/config/network/api.state.dart';
-import 'package:shiha_health_app/config/utils/pretty.dio.dart';
-import 'package:shiha_health_app/data/controller/doctorDetails.provider.dart';
-import 'package:shiha_health_app/data/db/userData.dart';
-import 'package:shiha_health_app/data/model/bookAppoinment.req.dart';
 
 class DoctorDetailsPage extends ConsumerStatefulWidget {
   final String userID;
-  const DoctorDetailsPage({super.key, required this.userID});
+  final bool hasChange;
+  final String? bookingId;
+  const DoctorDetailsPage({
+    super.key,
+    required this.userID,
+    required this.hasChange,
+    required this.bookingId,
+  });
 
   @override
   ConsumerState<DoctorDetailsPage> createState() => _DoctorDetailsPageState();
@@ -40,9 +42,13 @@ class _DoctorDetailsPageState extends ConsumerState<DoctorDetailsPage>
             ),
             doctorDetail.when(
               data: (snap) {
-               final availableSlots = 
-    (jsonDecode(jsonEncode(snap.doctor.availableSlots)) as Map<String, dynamic>)
-        .map((key, value) => MapEntry(key, List<String>.from(value)));
+                final availableSlots =
+                    (jsonDecode(jsonEncode(snap.doctor.availableSlots))
+                            as Map<String, dynamic>)
+                        .map(
+                          (key, value) =>
+                              MapEntry(key, List<String>.from(value)),
+                        );
 
                 List<String> getTimeSlotsForSelectedDate() {
                   final dateKey = DateFormat('yyyy-MM-dd').format(selectedDate);
@@ -748,15 +754,32 @@ class _DoctorDetailsPageState extends ConsumerState<DoctorDetailsPage>
                               borderRadius: BorderRadius.circular(10.r),
                             ),
                           ),
-                          onPressed: () => bookAppoinment(doctorId: snap.doctor.id, hospitalId: snap.doctor.hospitalId),
-                          child: isBTNLoding == false? Text(
-                            "Book Appointment",
-                            style: GoogleFonts.poppins(
-                              fontSize: 16.sp,
-                              fontWeight: FontWeight.w500,
-                              color: Colors.white,
-                            ),
-                          ) : CircularProgressIndicator(color: Colors.white,), 
+                          onPressed: () {
+                            if (widget.hasChange == false) {
+                              bookAppoinment(
+                                doctorId: snap.doctor.id,
+                                hospitalId: snap.doctor.hospitalId,
+                              );
+                            } else {
+                              updateBooking(
+                                doctorId: snap.doctor.id,
+                                hospitalId: snap.doctor.hospitalId,
+                                bookingId: widget.bookingId ?? "",
+                              );
+                            }
+                          },
+                          child: isBTNLoding == false
+                              ? Text(
+                                  widget.hasChange == false
+                                      ? "Book Appointment"
+                                      : "Update Booking",
+                                  style: GoogleFonts.poppins(
+                                    fontSize: 16.sp,
+                                    fontWeight: FontWeight.w500,
+                                    color: Colors.white,
+                                  ),
+                                )
+                              : CircularProgressIndicator(color: Colors.white),
                         ),
                       ),
                     ],
@@ -771,8 +794,13 @@ class _DoctorDetailsPageState extends ConsumerState<DoctorDetailsPage>
                   ),
                 );
               },
-              loading: () =>
-                  Center(child: CircularProgressIndicator(color: Colors.white)),
+              loading: () => SizedBox(
+                height: MediaQuery.of(context).size.height,
+                width: MediaQuery.of(context).size.width,
+                child: Center(
+                  child: CircularProgressIndicator(color: Colors.white),
+                ),
+              ),
             ),
           ],
         ),
