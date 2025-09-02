@@ -10,6 +10,7 @@ import 'package:shiha_health_app/data/model/loginUserResModel.dart';
 import 'package:shiha_health_app/data/model/otpVerify.req.dart';
 import 'package:shiha_health_app/data/model/otpVerify.res.dart';
 import 'package:shiha_health_app/data/model/registerUser.req.dart';
+import 'package:shiha_health_app/data/model/selfCareTips.res.dart';
 import 'package:shiha_health_app/data/model/userAppoinmnt.res.dart';
 import 'package:shiha_health_app/data/model/userDetails.response.dart';
 import 'package:shiha_health_app/data/model/userRegister.req.dart';
@@ -50,4 +51,8 @@ abstract class APIStateNetwork {
   Future<HttpResponse<dynamic>> bookAppontment(@Body() BookAppontmentReq body);
   @PUT("/api/appointments/{id}")
   Future<HttpResponse<dynamic>> updateAppontment(@Body() BookAppontmentReq body, @Path('id') String id);
+
+  //Self Care
+  @GET("/api/self-care-tips")
+  Future<List<SelfCareTipsResponse>> fetchSelfCare();
 }

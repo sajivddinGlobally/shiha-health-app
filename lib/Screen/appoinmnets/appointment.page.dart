@@ -22,7 +22,7 @@ class _AppointmentPageState extends ConsumerState<AppointmentPage>
     return Scaffold(
       body: Stack(
         children: [
-          Image.asset(
+        Image.asset(
             "assets/homebg.png",
             width: MediaQuery.of(context).size.width,
             // height: MediaQuery.of(context).size.height,
@@ -377,36 +377,36 @@ class _AppointmentPageState extends ConsumerState<AppointmentPage>
                                             ),
                                           ),
                                           SizedBox(width: 10.w),
-                                          Expanded(
-                                            child: ElevatedButton(
-                                              style: ElevatedButton.styleFrom(
-                                                backgroundColor: Color(
-                                                  0xFF0E1329,
-                                                ),
-                                                minimumSize: Size(0.w, 39.h),
-                                                shape: RoundedRectangleBorder(
-                                                  borderRadius:
-                                                      BorderRadius.circular(
-                                                        10.r,
-                                                      ),
-                                                  side: BorderSide(
-                                                    color: Color(0xFFDA110A),
-                                                    width: 1.w,
-                                                  ),
-                                                ),
-                                              ),
-                                              onPressed: () {},
-                                              child: Text(
-                                                "Delete Appointment ",
-                                                style: GoogleFonts.poppins(
-                                                  fontSize: 13.sp,
-                                                  fontWeight: FontWeight.w500,
-                                                  color: Color(0xFFDA110A),
-                                                  letterSpacing: -0.4,
-                                                ),
-                                              ),
-                                            ),
-                                          ),
+                                          // Expanded(
+                                          //   child: ElevatedButton(
+                                          //     style: ElevatedButton.styleFrom(
+                                          //       backgroundColor: Color(
+                                          //         0xFF0E1329,
+                                          //       ),
+                                          //       minimumSize: Size(0.w, 39.h),
+                                          //       shape: RoundedRectangleBorder(
+                                          //         borderRadius:
+                                          //             BorderRadius.circular(
+                                          //               10.r,
+                                          //             ),
+                                          //         side: BorderSide(
+                                          //           color: Color(0xFFDA110A),
+                                          //           width: 1.w,
+                                          //         ),
+                                          //       ),
+                                          //     ),
+                                          //     onPressed: () {},
+                                          //     child: Text(
+                                          //       "Delete Appointment ",
+                                          //       style: GoogleFonts.poppins(
+                                          //         fontSize: 13.sp,
+                                          //         fontWeight: FontWeight.w500,
+                                          //         color: Color(0xFFDA110A),
+                                          //         letterSpacing: -0.4,
+                                          //       ),
+                                          //     ),
+                                          //   ),
+                                          // ),
                                         ],
                                       ),
                                     ],
