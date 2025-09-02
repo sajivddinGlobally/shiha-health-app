@@ -8,7 +8,6 @@ import 'package:shiha_health_app/data/model/hospitelList.respo0nse.dart';
 import 'package:shiha_health_app/data/model/loginUserModel.dart';
 import 'package:shiha_health_app/data/model/loginUserResModel.dart';
 import 'package:shiha_health_app/data/model/otpVerify.req.dart';
-import 'package:shiha_health_app/data/model/otpVerify.res.dart';
 import 'package:shiha_health_app/data/model/registerUser.req.dart';
 import 'package:shiha_health_app/data/model/selfCareTips.res.dart';
 import 'package:shiha_health_app/data/model/userAppoinmnt.res.dart';
