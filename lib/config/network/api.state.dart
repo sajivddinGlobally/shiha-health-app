@@ -3,6 +3,7 @@ import 'package:retrofit/retrofit.dart';
 import 'package:shiha_health_app/data/model/bookAppoinment.req.dart';
 import 'package:shiha_health_app/data/model/doctorDetails.model.dart';
 import 'package:shiha_health_app/data/model/doctorsList.response.dart';
+import 'package:shiha_health_app/data/model/donationList.response.dart';
 import 'package:shiha_health_app/data/model/hospitalDetails.response.dart';
 import 'package:shiha_health_app/data/model/hospitelList.respo0nse.dart';
 import 'package:shiha_health_app/data/model/loginUserModel.dart';
@@ -54,4 +55,8 @@ abstract class APIStateNetwork {
   //Self Care
   @GET("/api/self-care-tips")
   Future<List<SelfCareTipsResponse>> fetchSelfCare();
+
+  //Donation
+  @GET("/api/donation-responses")
+  Future<List<DonationListResponse>> fetchDonationResponses();
 }
