@@ -46,14 +46,15 @@ class Doctor {
     DateTime createdAt;
     DateTime updatedAt;
     String status;
-    String email;
-    String city;
-    String password;
+    dynamic email;
+    dynamic city;
+    dynamic password;
     String approvals;
     String kycStatus;
-    dynamic userId;
+    int userId;
+    dynamic medicalLicenseFile;
     dynamic user;
-    Hospital hospital;
+    dynamic hospital;
     List<dynamic> appointments;
     dynamic review;
 
@@ -77,6 +78,7 @@ class Doctor {
         required this.approvals,
         required this.kycStatus,
         required this.userId,
+        required this.medicalLicenseFile,
         required this.user,
         required this.hospital,
         required this.appointments,
@@ -103,8 +105,9 @@ class Doctor {
         approvals: json["Approvals"],
         kycStatus: json["kyc_status"],
         userId: json["user_id"],
+        medicalLicenseFile: json["medical_license_file"],
         user: json["user"],
-        hospital: Hospital.fromJson(json["hospital"]),
+        hospital: json["hospital"],
         appointments: List<dynamic>.from(json["appointments"].map((x) => x)),
         review: json["review"],
     );
@@ -129,85 +132,50 @@ class Doctor {
         "Approvals": approvals,
         "kyc_status": kycStatus,
         "user_id": userId,
+        "medical_license_file": medicalLicenseFile,
         "user": user,
-        "hospital": hospital.toJson(),
+        "hospital": hospital,
         "appointments": List<dynamic>.from(appointments.map((x) => x)),
         "review": review,
     };
 }
 
 class AvailableSlots {
-    List<String> the20250801;
+    List<String> mon;
+    List<String> tue;
+    List<dynamic> wed;
+    List<dynamic> thu;
+    List<dynamic> fri;
+    List<dynamic> sat;
+    List<dynamic> sun;
 
     AvailableSlots({
-        required this.the20250801,
+        required this.mon,
+        required this.tue,
+        required this.wed,
+        required this.thu,
+        required this.fri,
+        required this.sat,
+        required this.sun,
     });
 
     factory AvailableSlots.fromJson(Map<String, dynamic> json) => AvailableSlots(
-        the20250801: List<String>.from(json["2025-08-01"].map((x) => x)),
+        mon: List<String>.from(json["mon"].map((x) => x)),
+        tue: List<String>.from(json["tue"].map((x) => x)),
+        wed: List<dynamic>.from(json["wed"].map((x) => x)),
+        thu: List<dynamic>.from(json["thu"].map((x) => x)),
+        fri: List<dynamic>.from(json["fri"].map((x) => x)),
+        sat: List<dynamic>.from(json["sat"].map((x) => x)),
+        sun: List<dynamic>.from(json["sun"].map((x) => x)),
     );
 
     Map<String, dynamic> toJson() => {
-        "2025-08-01": List<dynamic>.from(the20250801.map((x) => x)),
-    };
-}
-
-class Hospital {
-    int id;
-    String name;
-    String location;
-    String consultationPriceRange;
-    String language;
-    double rating;
-    String servicesOffered;
-    dynamic lat;
-    dynamic lng;
-    List<dynamic> images;
-    DateTime createdAt;
-    DateTime updatedAt;
-
-    Hospital({
-        required this.id,
-        required this.name,
-        required this.location,
-        required this.consultationPriceRange,
-        required this.language,
-        required this.rating,
-        required this.servicesOffered,
-        required this.lat,
-        required this.lng,
-        required this.images,
-        required this.createdAt,
-        required this.updatedAt,
-    });
-
-    factory Hospital.fromJson(Map<String, dynamic> json) => Hospital(
-        id: json["id"],
-        name: json["name"],
-        location: json["location"],
-        consultationPriceRange: json["consultation_price_range"],
-        language: json["language"],
-        rating: json["rating"]?.toDouble(),
-        servicesOffered: json["services_offered"],
-        lat: json["lat"],
-        lng: json["lng"],
-        images: List<dynamic>.from(json["images"].map((x) => x)),
-        createdAt: DateTime.parse(json["created_at"]),
-        updatedAt: DateTime.parse(json["updated_at"]),
-    );
-
-    Map<String, dynamic> toJson() => {
-        "id": id,
-        "name": name,
-        "location": location,
-        "consultation_price_range": consultationPriceRange,
-        "language": language,
-        "rating": rating,
-        "services_offered": servicesOffered,
-        "lat": lat,
-        "lng": lng,
-        "images": List<dynamic>.from(images.map((x) => x)),
-        "created_at": createdAt.toIso8601String(),
-        "updated_at": updatedAt.toIso8601String(),
+        "mon": List<dynamic>.from(mon.map((x) => x)),
+        "tue": List<dynamic>.from(tue.map((x) => x)),
+        "wed": List<dynamic>.from(wed.map((x) => x)),
+        "thu": List<dynamic>.from(thu.map((x) => x)),
+        "fri": List<dynamic>.from(fri.map((x) => x)),
+        "sat": List<dynamic>.from(sat.map((x) => x)),
+        "sun": List<dynamic>.from(sun.map((x) => x)),
     };
 }

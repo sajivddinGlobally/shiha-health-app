@@ -7,7 +7,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:shiha_health_app/Screen/doctorList.page.dart';
 import 'package:shiha_health_app/data/controller/hospitalDetails.provider.dart';
-import 'package:shiha_health_app/data/controller/hospitalList.provider.dart';
+
 
 class HospitalDetailsPage extends ConsumerStatefulWidget {
   final String id;

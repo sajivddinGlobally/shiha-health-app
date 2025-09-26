@@ -48,7 +48,7 @@ mixin HomeController<T extends ConsumerStatefulWidget> on ConsumerState<T> {
 
   void userLogout() async {
     await HiveService().clearAll(HiveBoxes.userData);
-    showSuccessMessage(context, "Logout succes fully");
+    showSuccessMessage(context, "Logout succesfully");
     Future.delayed(Duration(seconds: 3), () {
       Navigator.pushAndRemoveUntil(
         context,

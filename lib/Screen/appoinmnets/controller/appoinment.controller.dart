@@ -33,3 +33,28 @@ mixin AppoinmentController<T extends ConsumerStatefulWidget>
     return ref.watch(appoinmentProvider(rawData!['user']['id']));
   }
 }
+
+
+
+class AppointmentSplitter {
+  final List<Datum> allAppointments;
+
+  AppointmentSplitter(this.allAppointments);
+
+  DateTime get today {
+    final now = DateTime.now();
+    return DateTime(now.year, now.month, now.day);
+  }
+
+  List<Datum> get upcoming {
+    return allAppointments
+        .where((a) => a.date.isAtSameMomentAs(today) || a.date.isAfter(today))
+        .toList();
+  }
+
+  List<Datum> get missed {
+    return allAppointments
+        .where((a) => a.date.isBefore(today))
+        .toList();
+  }
+}

@@ -17,18 +17,20 @@ class DoctorsListResponse {
     String profilePicture;
     int hospitalId;
     int consultationFees;
-    List<String>? language;
-    dynamic availableSlots;
+    List<Language>? language;
+    AvailableSlots availableSlots;
     DateTime createdAt;
     DateTime updatedAt;
-    DoctorsListResponseStatus status;
+    Status status;
     String? email;
     String? city;
     String? password;
     Approvals approvals;
     KycStatus kycStatus;
-    Hospital? hospital;
-    List<Appointment> appointments;
+    int? userId;
+    dynamic medicalLicenseFile;
+    dynamic hospital;
+    List<dynamic> appointments;
 
     DoctorsListResponse({
         required this.id,
@@ -49,6 +51,8 @@ class DoctorsListResponse {
         required this.password,
         required this.approvals,
         required this.kycStatus,
+        required this.userId,
+        required this.medicalLicenseFile,
         required this.hospital,
         required this.appointments,
     });
@@ -62,18 +66,20 @@ class DoctorsListResponse {
         profilePicture: json["profile_picture"],
         hospitalId: json["hospital_id"],
         consultationFees: json["consultation_fees"],
-        language: json["language"] == null ? [] : List<String>.from(json["language"]!.map((x) => x)),
-        availableSlots: json["available_slots"],
+        language: json["language"] == null ? [] : List<Language>.from(json["language"]!.map((x) => languageValues.map[x]!)),
+        availableSlots: AvailableSlots.fromJson(json["available_slots"]),
         createdAt: DateTime.parse(json["created_at"]),
         updatedAt: DateTime.parse(json["updated_at"]),
-        status: doctorsListResponseStatusValues.map[json["status"]]!,
+        status: statusValues.map[json["status"]]!,
         email: json["email"],
         city: json["city"],
-        password: json["password"] ??"",
+        password: json["password"],
         approvals: approvalsValues.map[json["Approvals"]]!,
         kycStatus: kycStatusValues.map[json["kyc_status"]]!,
-        hospital: json["hospital"] == null ? null : Hospital.fromJson(json["hospital"]),
-        appointments: List<Appointment>.from(json["appointments"].map((x) => Appointment.fromJson(x))),
+        userId: json["user_id"],
+        medicalLicenseFile: json["medical_license_file"],
+        hospital: json["hospital"],
+        appointments: List<dynamic>.from(json["appointments"].map((x) => x)),
     );
 
     Map<String, dynamic> toJson() => {
@@ -85,76 +91,22 @@ class DoctorsListResponse {
         "profile_picture": profilePicture,
         "hospital_id": hospitalId,
         "consultation_fees": consultationFees,
-        "language": language == null ? [] : List<dynamic>.from(language!.map((x) => x)),
-        "available_slots": availableSlots,
+        "language": language == null ? [] : List<dynamic>.from(language!.map((x) => languageValues.reverse[x])),
+        "available_slots": availableSlots.toJson(),
         "created_at": createdAt.toIso8601String(),
         "updated_at": updatedAt.toIso8601String(),
-        "status": doctorsListResponseStatusValues.reverse[status],
+        "status": statusValues.reverse[status],
         "email": email,
         "city": city,
-        "password": passwordValues.reverse[password],
+        "password": password,
         "Approvals": approvalsValues.reverse[approvals],
         "kyc_status": kycStatusValues.reverse[kycStatus],
-        "hospital": hospital?.toJson(),
-        "appointments": List<dynamic>.from(appointments.map((x) => x.toJson())),
-    };
-}
-
-class Appointment {
-    int id;
-    int userId;
-    int doctorId;
-    int hospitalId;
-    DateTime date;
-    String time;
-    AppointmentStatus status;
-    DateTime createdAt;
-    DateTime updatedAt;
-
-    Appointment({
-        required this.id,
-        required this.userId,
-        required this.doctorId,
-        required this.hospitalId,
-        required this.date,
-        required this.time,
-        required this.status,
-        required this.createdAt,
-        required this.updatedAt,
-    });
-
-    factory Appointment.fromJson(Map<String, dynamic> json) => Appointment(
-        id: json["id"],
-        userId: json["user_id"],
-        doctorId: json["doctor_id"],
-        hospitalId: json["hospital_id"],
-        date: DateTime.parse(json["date"]),
-        time: json["time"],
-        status: appointmentStatusValues.map[json["status"]]!,
-        createdAt: DateTime.parse(json["created_at"]),
-        updatedAt: DateTime.parse(json["updated_at"]),
-    );
-
-    Map<String, dynamic> toJson() => {
-        "id": id,
         "user_id": userId,
-        "doctor_id": doctorId,
-        "hospital_id": hospitalId,
-        "date": "${date.year.toString().padLeft(4, '0')}-${date.month.toString().padLeft(2, '0')}-${date.day.toString().padLeft(2, '0')}",
-        "time": time,
-        "status": appointmentStatusValues.reverse[status],
-        "created_at": createdAt.toIso8601String(),
-        "updated_at": updatedAt.toIso8601String(),
+        "medical_license_file": medicalLicenseFile,
+        "hospital": hospital,
+        "appointments": List<dynamic>.from(appointments.map((x) => x)),
     };
 }
-
-enum AppointmentStatus {
-    SCHEDULED
-}
-
-final appointmentStatusValues = EnumValues({
-    "Scheduled": AppointmentStatus.SCHEDULED
-});
 
 enum Approvals {
     APPROVED,
@@ -168,129 +120,45 @@ final approvalsValues = EnumValues({
     "Rejected": Approvals.REJECTED
 });
 
-class AvailableSlotsClass {
-    List<String> the20250801;
+class AvailableSlots {
+    List<String> mon;
+    List<String> tue;
+    List<dynamic> wed;
+    List<dynamic> thu;
+    List<dynamic> fri;
+    List<dynamic> sat;
+    List<dynamic> sun;
 
-    AvailableSlotsClass({
-        required this.the20250801,
+    AvailableSlots({
+        required this.mon,
+        required this.tue,
+        required this.wed,
+        required this.thu,
+        required this.fri,
+        required this.sat,
+        required this.sun,
     });
 
-    factory AvailableSlotsClass.fromJson(Map<String, dynamic> json) => AvailableSlotsClass(
-        the20250801: List<String>.from(json["2025-08-01"].map((x) => x)),
+    factory AvailableSlots.fromJson(Map<String, dynamic> json) => AvailableSlots(
+        mon: List<String>.from(json["mon"].map((x) => x)),
+        tue: List<String>.from(json["tue"].map((x) => x)),
+        wed: List<dynamic>.from(json["wed"].map((x) => x)),
+        thu: List<dynamic>.from(json["thu"].map((x) => x)),
+        fri: List<dynamic>.from(json["fri"].map((x) => x)),
+        sat: List<dynamic>.from(json["sat"].map((x) => x)),
+        sun: List<dynamic>.from(json["sun"].map((x) => x)),
     );
 
     Map<String, dynamic> toJson() => {
-        "2025-08-01": List<dynamic>.from(the20250801.map((x) => x)),
+        "mon": List<dynamic>.from(mon.map((x) => x)),
+        "tue": List<dynamic>.from(tue.map((x) => x)),
+        "wed": List<dynamic>.from(wed.map((x) => x)),
+        "thu": List<dynamic>.from(thu.map((x) => x)),
+        "fri": List<dynamic>.from(fri.map((x) => x)),
+        "sat": List<dynamic>.from(sat.map((x) => x)),
+        "sun": List<dynamic>.from(sun.map((x) => x)),
     };
 }
-
-class Hospital {
-    int id;
-    Name name;
-    Location location;
-    ConsultationPriceRange consultationPriceRange;
-    Language language;
-    double rating;
-    ServicesOffered servicesOffered;
-    String? lat;
-    String? lng;
-    List<String> images;
-    DateTime createdAt;
-    DateTime updatedAt;
-
-    Hospital({
-        required this.id,
-        required this.name,
-        required this.location,
-        required this.consultationPriceRange,
-        required this.language,
-        required this.rating,
-        required this.servicesOffered,
-        required this.lat,
-        required this.lng,
-        required this.images,
-        required this.createdAt,
-        required this.updatedAt,
-    });
-
-    factory Hospital.fromJson(Map<String, dynamic> json) => Hospital(
-        id: json["id"],
-        name: nameValues.map[json["name"]]!,
-        location: locationValues.map[json["location"]]!,
-        consultationPriceRange: consultationPriceRangeValues.map[json["consultation_price_range"]]!,
-        language: languageValues.map[json["language"]]!,
-        rating: json["rating"]?.toDouble(),
-        servicesOffered: servicesOfferedValues.map[json["services_offered"]]!,
-        lat: json["lat"],
-        lng: json["lng"],
-        images: List<String>.from(json["images"].map((x) => x)),
-        createdAt: DateTime.parse(json["created_at"]),
-        updatedAt: DateTime.parse(json["updated_at"]),
-    );
-
-    Map<String, dynamic> toJson() => {
-        "id": id,
-        "name": nameValues.reverse[name],
-        "location": locationValues.reverse[location],
-        "consultation_price_range": consultationPriceRangeValues.reverse[consultationPriceRange],
-        "language": languageValues.reverse[language],
-        "rating": rating,
-        "services_offered": servicesOfferedValues.reverse[servicesOffered],
-        "lat": lat,
-        "lng": lng,
-        "images": List<dynamic>.from(images.map((x) => x)),
-        "created_at": createdAt.toIso8601String(),
-        "updated_at": updatedAt.toIso8601String(),
-    };
-}
-
-enum ConsultationPriceRange {
-    THE_2001500,
-    THE_300800
-}
-
-final consultationPriceRangeValues = EnumValues({
-    "200 - 1500": ConsultationPriceRange.THE_2001500,
-    "₹300 - ₹800": ConsultationPriceRange.THE_300800
-});
-
-enum Language {
-    ENGLISH_HINDI_MARATHI,
-    HINDI_ENGLISH
-}
-
-final languageValues = EnumValues({
-    "[\"English\",\"Hindi\",\"Marathi\"]": Language.ENGLISH_HINDI_MARATHI,
-    "\"[\\\"Hindi\\\",\\\"English\\\"]\"": Language.HINDI_ENGLISH
-});
-
-enum Location {
-    DELHI,
-    MUMBAI
-}
-
-final locationValues = EnumValues({
-    "Delhi": Location.DELHI,
-    "Mumbai": Location.MUMBAI
-});
-
-enum Name {
-    APOLLO_HOSPITAL
-}
-
-final nameValues = EnumValues({
-    "Apollo Hospital": Name.APOLLO_HOSPITAL
-});
-
-enum ServicesOffered {
-    CARDIOLOGY_NEUROLOGY,
-    OPD_EMERGENCY
-}
-
-final servicesOfferedValues = EnumValues({
-    "[\"Cardiology\",\"Neurology\"]": ServicesOffered.CARDIOLOGY_NEUROLOGY,
-    "\"[\\\"OPD\\\",\\\"Emergency\\\"]\"": ServicesOffered.OPD_EMERGENCY
-});
 
 enum KycStatus {
     NOT_VERIFIED,
@@ -302,26 +170,28 @@ final kycStatusValues = EnumValues({
     "verified": KycStatus.VERIFIED
 });
 
-enum Password {
-    PASSWORD123,
-    THE_2_Y_126_C_S7_HY_P_HWG_UF_PE_H0_ZDL_KUE_R_MD3_KJ_UYSY_BR_SP_LC_UC_DU_SOAK_L0_H_JC2_C
+enum Language {
+    ENGLISH,
+    HINDI,
+    ML123456
 }
 
-final passwordValues = EnumValues({
-    "password123": Password.PASSWORD123,
-    "\u00242y\u002412\u00246cS7hyPHwgUfPeH0ZdlKueRMd3kjUysyBrSpLcUcDUSoakL0hJC2C": Password.THE_2_Y_126_C_S7_HY_P_HWG_UF_PE_H0_ZDL_KUE_R_MD3_KJ_UYSY_BR_SP_LC_UC_DU_SOAK_L0_H_JC2_C
+final languageValues = EnumValues({
+    "English": Language.ENGLISH,
+    "Hindi": Language.HINDI,
+    "ML123456": Language.ML123456
 });
 
-enum DoctorsListResponseStatus {
+enum Status {
     ACTIVE,
     INACTIVE,
     STATUS_ACTIVE
 }
 
-final doctorsListResponseStatusValues = EnumValues({
-    "active": DoctorsListResponseStatus.ACTIVE,
-    "Inactive": DoctorsListResponseStatus.INACTIVE,
-    "Active": DoctorsListResponseStatus.STATUS_ACTIVE
+final statusValues = EnumValues({
+    "active": Status.ACTIVE,
+    "Inactive": Status.INACTIVE,
+    "Active": Status.STATUS_ACTIVE
 });
 
 class EnumValues<T> {
