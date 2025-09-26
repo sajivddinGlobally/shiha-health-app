@@ -32,9 +32,15 @@ mixin AppoinmentController<T extends ConsumerStatefulWidget>
     );
     return ref.watch(appoinmentProvider(rawData!['user']['id']));
   }
+
+  Future<void> refreshInit(WidgetRef ref) async {
+    final rawData = HiveService().getData<Map<dynamic, dynamic>>(
+      key: "user",
+      boxName: HiveBoxes.userData,
+    );
+    ref.refresh(appoinmentProvider(rawData!['user']['id']));
+  }
 }
-
-
 
 class AppointmentSplitter {
   final List<Datum> allAppointments;
@@ -53,8 +59,6 @@ class AppointmentSplitter {
   }
 
   List<Datum> get missed {
-    return allAppointments
-        .where((a) => a.date.isBefore(today))
-        .toList();
+    return allAppointments.where((a) => a.date.isBefore(today)).toList();
   }
 }
