@@ -29,8 +29,7 @@ class MyApp extends StatelessWidget {
 
   // This widget is the root of your application.
   @override
-  Widget build(BuildContext context) {
-    return SafeArea(
+  Widget build(BuildContext context) => SafeArea(
       child: ScreenUtilInit(
         designSize: Size(440, 956),
         splitScreenMode: true,
@@ -47,5 +46,4 @@ class MyApp extends StatelessWidget {
         },
       ),
     );
-  }
 }

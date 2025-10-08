@@ -33,9 +33,9 @@ mixin RegisterController<T extends StatefulWidget> on State<T> {
     super.dispose();
   }
 
-  void registerUser(String userId) async{
+  void registerUser(String userId) async {
     if (formKey.currentState!.validate()) {
-      try{
+      try {
         setState(() {
           isLoading = true;
         });
@@ -53,7 +53,8 @@ mixin RegisterController<T extends StatefulWidget> on State<T> {
             bloodPressure: bloodPressureController.text,
           ),
         );
-        if (response.response.statusCode == 200 || response.response.statusCode == 201) {
+        if (response.response.statusCode == 200 ||
+            response.response.statusCode == 201) {
           // Handle successful registration
           showSuccessMessage(context, "User registered successfully");
           Future.delayed(Duration(seconds: 2), () {

@@ -4,8 +4,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:shiha_health_app/Screen/doctor/doctorDetails.page.dart';
+import 'package:shiha_health_app/Screen/doctorList/controller/doctorList.controller.dart';
 import 'package:shiha_health_app/Screen/hospitalListing.page.dart';
-import 'package:shiha_health_app/data/controller/doctorsList.provider.dart';
 import 'package:shiha_health_app/data/model/doctorsList.response.dart';
 
 class DoctorListPage extends ConsumerStatefulWidget {
@@ -15,24 +15,16 @@ class DoctorListPage extends ConsumerStatefulWidget {
   ConsumerState<DoctorListPage> createState() => _DoctorListPageState();
 }
 
-class _DoctorListPageState extends ConsumerState<DoctorListPage> {
-  bool isSearching = false;
-  String searchQuery = "";
-  TextEditingController searchController = TextEditingController();
-
+class _DoctorListPageState extends ConsumerState<DoctorListPage>
+    with DoctorListController<DoctorListPage> {
   @override
   Widget build(BuildContext context) {
-    final doctorsList = ref.watch(doctorsListProvider);
+    final doctorsList = initData();
 
     return Scaffold(
       body: doctorsList.when(
         data: (snap) {
-          // Filter based on search query
-          final filteredDoctors = snap.where((doctor) {
-            final nameMatch = doctor.fullName.toLowerCase().contains(searchQuery.toLowerCase());
-            final specialtyMatch = doctor.specialty.toLowerCase().contains(searchQuery.toLowerCase());
-            return nameMatch || specialtyMatch;
-          }).toList();
+          final filteredDoctors = searchFunction(data: snap);
 
           return Stack(
             children: [
@@ -56,17 +48,7 @@ class _DoctorListPageState extends ConsumerState<DoctorListPage> {
                             minimumSize: Size(0, 0),
                             tapTargetSize: MaterialTapTargetSize.shrinkWrap,
                           ),
-                          onPressed: () {
-                            if (isSearching) {
-                              setState(() {
-                                isSearching = false;
-                                searchQuery = "";
-                                searchController.clear();
-                              });
-                            } else {
-                              Navigator.pop(context);
-                            }
-                          },
+                          onPressed: () => clearSeaarch(),
                           icon: Icon(Icons.arrow_back_ios, color: Colors.white),
                         ),
                         SizedBox(width: 10.w),
@@ -154,12 +136,13 @@ class _DoctorListPageState extends ConsumerState<DoctorListPage> {
                             child: GridView.builder(
                               padding: EdgeInsets.only(top: 45.h),
                               itemCount: filteredDoctors.length,
-                              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                                crossAxisCount: 2,
-                                mainAxisSpacing: 15.w,
-                                crossAxisSpacing: 15.h,
-                                childAspectRatio: 0.65,
-                              ),
+                              gridDelegate:
+                                  SliverGridDelegateWithFixedCrossAxisCount(
+                                    crossAxisCount: 2,
+                                    mainAxisSpacing: 15.w,
+                                    crossAxisSpacing: 15.h,
+                                    childAspectRatio: 0.65,
+                                  ),
                               itemBuilder: (context, index) {
                                 return DoctorsTab(data: filteredDoctors[index]);
                               },
@@ -206,7 +189,13 @@ class _DoctorsTabState extends State<DoctorsTab> {
       onTap: () {
         Navigator.push(
           context,
-          CupertinoPageRoute(builder: (context) => DoctorDetailsPage(userID: widget.data.id.toString(), hasChange: false, bookingId: null,)),
+          CupertinoPageRoute(
+            builder: (context) => DoctorDetailsPage(
+              userID: widget.data.id.toString(),
+              hasChange: false,
+              bookingId: null,
+            ),
+          ),
         );
       },
       child: Container(
@@ -228,17 +217,18 @@ class _DoctorsTabState extends State<DoctorsTab> {
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-           SizedBox(
-                width: 170.w,
-                height: 170.h,
-                child: ClipRRect(
-                  borderRadius: BorderRadius.circular(10.r),
-                  child: Image.network(
-                    "http://sihahealth.globallywebsolutions.com"+widget.data.profilePicture.toString(),
-                    fit: BoxFit.cover,
-                  ),
+            SizedBox(
+              width: 170.w,
+              height: 170.h,
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(10.r),
+                child: Image.network(
+                  "http://sihahealth.globallywebsolutions.com" +
+                      widget.data.profilePicture.toString(),
+                  fit: BoxFit.cover,
                 ),
               ),
+            ),
             SizedBox(height: 12.h),
             Row(
               children: [
@@ -268,49 +258,39 @@ class _DoctorsTabState extends State<DoctorsTab> {
                     ],
                   ),
                 ),
-              //   if (index == 1 || index == 4)
-              //     Container(
-              //       margin: EdgeInsets.only(left: 6.w),
-              //       padding: EdgeInsets.only(
-              //         left: 5.w,
-              //         right: 5.w,
-              //         top: 5.h,
-              //         bottom: 5.h,
-              //       ),
-              //       decoration: BoxDecoration(
-              //         borderRadius: BorderRadius.circular(
-              //           40.r,
-              //         ),
-              //         color: Color.fromARGB(
-              //           25,
-              //           125,
-              //           255,
-              //           180,
-              //         ),
-              //       ),
-              //       child: Row(
-              //         children: [
-              //           CircleAvatar(
-              //             radius: 5.r,
-              //             backgroundColor: Color(
-              //               0xFF2ECC71,
-              //             ),
-              //           ),
-              //           SizedBox(width: 5.w),
-              //           Text(
-              //             "Active",
-              //             style: GoogleFonts.poppins(
-              //               fontSize: 10.sp,
-              //               fontWeight: FontWeight.w500,
-              //               color: Color(0xFF2ECC71),
-              //               letterSpacing: -0.3,
-              //             ),
-              //           ),
-              //         ],
-              //       ),
-              //   //   ),
-              // ],
-              ]
+
+                Container(
+                  margin: EdgeInsets.only(left: 6.w),
+                  padding: EdgeInsets.only(
+                    left: 5.w,
+                    right: 5.w,
+                    top: 5.h,
+                    bottom: 5.h,
+                  ),
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(40.r),
+                    color: Color.fromARGB(25, 125, 255, 180),
+                  ),
+                  child: Row(
+                    children: [
+                      CircleAvatar(
+                        radius: 5.r,
+                        backgroundColor: Color(0xFF2ECC71),
+                      ),
+                      SizedBox(width: 5.w),
+                      Text(
+                        "Active",
+                        style: GoogleFonts.poppins(
+                          fontSize: 10.sp,
+                          fontWeight: FontWeight.w500,
+                          color: Color(0xFF2ECC71),
+                          letterSpacing: -0.3,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
             ),
             SizedBox(height: 7.h),
             SizedBox(
@@ -343,8 +323,6 @@ class _DoctorsTabState extends State<DoctorsTab> {
   }
 }
 
-
-
 class TopCurveClipper extends CustomClipper<Path> {
   @override
   Path getClip(Size size) {
@@ -355,8 +333,10 @@ class TopCurveClipper extends CustomClipper<Path> {
 
     // Top curve
     path.quadraticBezierTo(
-      size.width / 2, 0, // control point
-      size.width, 50,    // end point
+      size.width / 2,
+      0, // control point
+      size.width,
+      50, // end point
     );
 
     // Rest rectangle

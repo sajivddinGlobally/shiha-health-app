@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:shiha_health_app/Screen/doctorList.page.dart';
+import 'package:shiha_health_app/Screen/doctorList/doctorList.page.dart';
 import 'package:shiha_health_app/data/controller/hospitalDetails.provider.dart';
 
 
@@ -51,8 +51,13 @@ class _HospitalDetailsPageState extends ConsumerState<HospitalDetailsPage> {
               ),
               hospital.when(
                 data: (snap) {
-                  List<dynamic> decoded = jsonDecode(snap.servicesOffered);
-                   List<String> listService = List<String>.from(decoded);
+                  List<dynamic> decoded = [];
+                  try{
+                    decoded = jsonDecode(snap.servicesOffered);
+                  } catch (e){
+                    decoded = [];
+                  }
+                  List<String> listService = List<String>.from(decoded);
                   return Align(
                     alignment: Alignment.topLeft,
                     child: Column(

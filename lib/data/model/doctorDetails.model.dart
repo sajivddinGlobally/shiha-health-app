@@ -9,30 +9,6 @@ DoctorDetailResponse doctorDetailResponseFromJson(String str) => DoctorDetailRes
 String doctorDetailResponseToJson(DoctorDetailResponse data) => json.encode(data.toJson());
 
 class DoctorDetailResponse {
-    String message;
-    Doctor doctor;
-    dynamic user;
-
-    DoctorDetailResponse({
-        required this.message,
-        required this.doctor,
-        required this.user,
-    });
-
-    factory DoctorDetailResponse.fromJson(Map<String, dynamic> json) => DoctorDetailResponse(
-        message: json["message"],
-        doctor: Doctor.fromJson(json["doctor"]),
-        user: json["user"],
-    );
-
-    Map<String, dynamic> toJson() => {
-        "message": message,
-        "doctor": doctor.toJson(),
-        "user": user,
-    };
-}
-
-class Doctor {
     int id;
     String fullName;
     String specialty;
@@ -52,13 +28,11 @@ class Doctor {
     String approvals;
     String kycStatus;
     int userId;
-    dynamic medicalLicenseFile;
-    dynamic user;
-    dynamic hospital;
+    String medicalLicenseFile;
+    Hospital hospital;
     List<dynamic> appointments;
-    dynamic review;
 
-    Doctor({
+    DoctorDetailResponse({
         required this.id,
         required this.fullName,
         required this.specialty,
@@ -79,13 +53,11 @@ class Doctor {
         required this.kycStatus,
         required this.userId,
         required this.medicalLicenseFile,
-        required this.user,
         required this.hospital,
         required this.appointments,
-        required this.review,
     });
 
-    factory Doctor.fromJson(Map<String, dynamic> json) => Doctor(
+    factory DoctorDetailResponse.fromJson(Map<String, dynamic> json) => DoctorDetailResponse(
         id: json["id"],
         fullName: json["full_name"],
         specialty: json["specialty"],
@@ -106,10 +78,8 @@ class Doctor {
         kycStatus: json["kyc_status"],
         userId: json["user_id"],
         medicalLicenseFile: json["medical_license_file"],
-        user: json["user"],
-        hospital: json["hospital"],
+        hospital: Hospital.fromJson(json["hospital"]),
         appointments: List<dynamic>.from(json["appointments"].map((x) => x)),
-        review: json["review"],
     );
 
     Map<String, dynamic> toJson() => {
@@ -133,10 +103,8 @@ class Doctor {
         "kyc_status": kycStatus,
         "user_id": userId,
         "medical_license_file": medicalLicenseFile,
-        "user": user,
-        "hospital": hospital,
+        "hospital": hospital.toJson(),
         "appointments": List<dynamic>.from(appointments.map((x) => x)),
-        "review": review,
     };
 }
 
@@ -177,5 +145,73 @@ class AvailableSlots {
         "fri": List<dynamic>.from(fri.map((x) => x)),
         "sat": List<dynamic>.from(sat.map((x) => x)),
         "sun": List<dynamic>.from(sun.map((x) => x)),
+    };
+}
+
+class Hospital {
+    int id;
+    String name;
+    String location;
+    String consultationPriceRange;
+    String language;
+    double rating;
+    String servicesOffered;
+    String lat;
+    String lng;
+    List<String> images;
+    String status;
+    int userId;
+    DateTime createdAt;
+    DateTime updatedAt;
+
+    Hospital({
+        required this.id,
+        required this.name,
+        required this.location,
+        required this.consultationPriceRange,
+        required this.language,
+        required this.rating,
+        required this.servicesOffered,
+        required this.lat,
+        required this.lng,
+        required this.images,
+        required this.status,
+        required this.userId,
+        required this.createdAt,
+        required this.updatedAt,
+    });
+
+    factory Hospital.fromJson(Map<String, dynamic> json) => Hospital(
+        id: json["id"],
+        name: json["name"],
+        location: json["location"],
+        consultationPriceRange: json["consultation_price_range"],
+        language: json["language"],
+        rating: json["rating"]?.toDouble(),
+        servicesOffered: json["services_offered"],
+        lat: json["lat"],
+        lng: json["lng"],
+        images: List<String>.from(json["images"].map((x) => x)),
+        status: json["status"],
+        userId: json["user_id"],
+        createdAt: DateTime.parse(json["created_at"]),
+        updatedAt: DateTime.parse(json["updated_at"]),
+    );
+
+    Map<String, dynamic> toJson() => {
+        "id": id,
+        "name": name,
+        "location": location,
+        "consultation_price_range": consultationPriceRange,
+        "language": language,
+        "rating": rating,
+        "services_offered": servicesOffered,
+        "lat": lat,
+        "lng": lng,
+        "images": List<dynamic>.from(images.map((x) => x)),
+        "status": status,
+        "user_id": userId,
+        "created_at": createdAt.toIso8601String(),
+        "updated_at": updatedAt.toIso8601String(),
     };
 }

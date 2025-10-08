@@ -28,9 +28,7 @@ abstract class APIStateNetwork {
   @POST("/api/users")
   Future<HttpResponse> registerUserInit(@Body() UserRegisterRequest body);
   @POST("/api/profiles")
-  Future<HttpResponse> registerUser(
-    @Body() RegisterModelRequest body,
-  );
+  Future<HttpResponse> registerUser(@Body() RegisterModelRequest body);
   @GET("/api/users/{id}")
   Future<UserDetailsResponse> usereDetails(@Path('id') String id);
   @GET("/api/hospitals")
@@ -40,17 +38,18 @@ abstract class APIStateNetwork {
   @GET("/api/appointments/user/{id}")
   Future<UserAppoinmentsListRes> fetchUserAppoinment(@Path('id') String id);
 
-
-
   //Doctors
   @GET("/api/doctors")
   Future<List<DoctorsListResponse>> getDoctorsList();
   @GET("/api/doctors/{id}")
-  Future<DoctorDetailResponse> getDoctorDetail(@Path('id') String id); 
+  Future<DoctorDetailResponse> getDoctorDetail(@Path('id') String id);
   @POST("/api/appointments")
   Future<HttpResponse<dynamic>> bookAppontment(@Body() BookAppontmentReq body);
   @PUT("/api/appointments/{id}")
-  Future<HttpResponse<dynamic>> updateAppontment(@Body() BookAppontmentReq body, @Path('id') String id);
+  Future<HttpResponse<dynamic>> updateAppontment(
+    @Body() BookAppontmentReq body,
+    @Path('id') String id,
+  );
 
   //Self Care
   @GET("/api/self-care-tips")

@@ -14,7 +14,8 @@ mixin LoginController<T extends ConsumerStatefulWidget> on ConsumerState<T> {
   bool isLoading = false;
 
   Future<void> login() async {
-    if (formKey.currentState!.validate() && phoneController.text.trim().isNotEmpty) {
+    if (formKey.currentState!.validate() &&
+        phoneController.text.trim().isNotEmpty) {
       try {
         setState(() {
           isLoading = true;
@@ -28,14 +29,15 @@ mixin LoginController<T extends ConsumerStatefulWidget> on ConsumerState<T> {
           isLoading = false;
         });
 
-
         if (response != null) {
           showSuccessMessage(context, response.otpCode.toString());
-          Future.delayed(Duration(seconds: 3), (){
+          Future.delayed(Duration(seconds: 3), () {
             Navigator.push(
-            context,
-            CupertinoPageRoute(builder: (context) =>  OtpPage(phone: phoneController.text,)),
-          );
+              context,
+              CupertinoPageRoute(
+                builder: (context) => OtpPage(phone: phoneController.text),
+              ),
+            );
           });
           showSuccessMessage(context, response.message);
         }
@@ -45,7 +47,7 @@ mixin LoginController<T extends ConsumerStatefulWidget> on ConsumerState<T> {
         });
         showErrorMessage("User not found");
       }
-    }else{
+    } else {
       showErrorMessage("Please enter a valid phone number");
     }
   }

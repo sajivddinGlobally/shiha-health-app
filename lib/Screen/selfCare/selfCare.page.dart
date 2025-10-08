@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -12,7 +11,8 @@ class SelfCarePage extends ConsumerStatefulWidget {
   ConsumerState<SelfCarePage> createState() => _SelfCarePageState();
 }
 
-class _SelfCarePageState extends ConsumerState<SelfCarePage> with SelfCarecontroller<SelfCarePage> {
+class _SelfCarePageState extends ConsumerState<SelfCarePage>
+    with SelfCarecontroller<SelfCarePage> {
   int tab = 0;
 
   List<Map<String, dynamic>> hospitalList = [
@@ -77,7 +77,10 @@ class _SelfCarePageState extends ConsumerState<SelfCarePage> with SelfCarecontro
                       onPressed: () {
                         Navigator.pop(context);
                       },
-                      icon: const Icon(Icons.arrow_back_ios, color: Colors.white),
+                      icon: const Icon(
+                        Icons.arrow_back_ios,
+                        color: Colors.white,
+                      ),
                     ),
                     SizedBox(width: 10.w),
                     Text(
@@ -128,8 +131,9 @@ class _SelfCarePageState extends ConsumerState<SelfCarePage> with SelfCarecontro
                             bgColor: tab == 0
                                 ? const Color(0xFF067594)
                                 : const Color(0x66067594),
-                            borderColor:
-                                tab == 0 ? Colors.white : Colors.transparent,
+                            borderColor: tab == 0
+                                ? Colors.white
+                                : Colors.transparent,
                           ),
                         ),
                         InkWell(
@@ -143,8 +147,9 @@ class _SelfCarePageState extends ConsumerState<SelfCarePage> with SelfCarecontro
                             bgColor: tab == 1
                                 ? const Color(0xFF067594)
                                 : const Color(0x66067594),
-                            borderColor:
-                                tab == 1 ? Colors.white : Colors.transparent,
+                            borderColor: tab == 1
+                                ? Colors.white
+                                : Colors.transparent,
                           ),
                         ),
                         InkWell(
@@ -158,8 +163,9 @@ class _SelfCarePageState extends ConsumerState<SelfCarePage> with SelfCarecontro
                             bgColor: tab == 2
                                 ? const Color(0xFF067594)
                                 : const Color(0x66067594),
-                            borderColor:
-                                tab == 2 ? Colors.white : Colors.transparent,
+                            borderColor: tab == 2
+                                ? Colors.white
+                                : Colors.transparent,
                           ),
                         ),
                       ],
@@ -169,83 +175,95 @@ class _SelfCarePageState extends ConsumerState<SelfCarePage> with SelfCarecontro
                 SizedBox(height: 20.h),
                 Expanded(
                   child: tab == 0
-                      ? selfCareData.when(data: (snap){
-                        return Padding(
-                          padding: EdgeInsets.symmetric(horizontal: 20.w),
-                          child: GridView.builder(
-                            padding: EdgeInsets.zero,
-                            itemCount: snap.length,
-                            gridDelegate:
-                                SliverGridDelegateWithFixedCrossAxisCount(
-                              crossAxisCount: 2,
-                              mainAxisSpacing: 15.w,
-                              crossAxisSpacing: 15.h,
-                              childAspectRatio: 0.75,
-                            ),
-                            itemBuilder: (context, index) {
-                              final item = snap[index];
-                              return Container(
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Stack(
+                      ? selfCareData.when(
+                          data: (snap) {
+                            return Padding(
+                              padding: EdgeInsets.symmetric(horizontal: 20.w),
+                              child: GridView.builder(
+                                padding: EdgeInsets.zero,
+                                itemCount: snap.length,
+                                gridDelegate:
+                                    SliverGridDelegateWithFixedCrossAxisCount(
+                                      crossAxisCount: 2,
+                                      mainAxisSpacing: 15.w,
+                                      crossAxisSpacing: 15.h,
+                                      childAspectRatio: 0.75,
+                                    ),
+                                itemBuilder: (context, index) {
+                                  final item = snap[index];
+                                  return Container(
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
                                       children: [
-                                        InkWell(
-                                          onTap: () {},
-                                          child: SizedBox(
-                                            width: double.infinity,
-                                            height: 120.h,
-                                            child: ClipRRect(
-                                              borderRadius:
-                                                  BorderRadius.circular(10.r),
-                                              child: Image.asset(
-                                                hospitalList[0]['image']
-                                                    .toString(),
-                                                fit: BoxFit.cover,
+                                        Stack(
+                                          children: [
+                                            InkWell(
+                                              onTap: () {},
+                                              child: SizedBox(
+                                                width: double.infinity,
+                                                height: 120.h,
+                                                child: ClipRRect(
+                                                  borderRadius:
+                                                      BorderRadius.circular(
+                                                        10.r,
+                                                      ),
+                                                  child: Image.asset(
+                                                    hospitalList[0]['image']
+                                                        .toString(),
+                                                    fit: BoxFit.cover,
+                                                  ),
+                                                ),
                                               ),
                                             ),
-                                          ),
+                                            Positioned.fill(
+                                              child: Icon(
+                                                Icons.play_circle_fill_outlined,
+                                                size: 40.sp,
+                                                color: const Color(0xFF2ECC71),
+                                              ),
+                                            ),
+                                          ],
                                         ),
-                                        Positioned.fill(
-                                          child: Icon(
-                                            Icons.play_circle_fill_outlined,
-                                            size: 40.sp,
-                                            color: const Color(0xFF2ECC71),
+                                        SizedBox(height: 10.h),
+                                        Expanded(
+                                          child: Text(
+                                            item.description,
+                                            maxLines: 3,
+                                            overflow: TextOverflow.ellipsis,
+                                            style: GoogleFonts.poppins(
+                                              fontSize: 13.sp,
+                                              fontWeight: FontWeight.w400,
+                                              color: const Color(0xFFB0BABF),
+                                            ),
                                           ),
                                         ),
                                       ],
                                     ),
-                                    SizedBox(height: 10.h),
-                                    Expanded(
-                                      child: Text(
-                                        item.description,
-                                        maxLines: 3,
-                                        overflow: TextOverflow.ellipsis,
-                                        style: GoogleFonts.poppins(
-                                          fontSize: 13.sp,
-                                          fontWeight: FontWeight.w400,
-                                          color: const Color(0xFFB0BABF),
-                                        ),
-                                      ),
-                                    ),
-                                  ],
+                                  );
+                                },
+                              ),
+                            );
+                          },
+                          error: (err, stack) {
+                            return Center(
+                              child: Text(
+                                "$err, $stack",
+                                style: GoogleFonts.montserrat(
+                                  color: Colors.white,
                                 ),
-                              );
-                            },
+                              ),
+                            );
+                          },
+                          loading: () => Center(
+                            child: CircularProgressIndicator(
+                              color: Colors.white,
+                            ),
                           ),
-                        );
-                      }, error: (err, stack) {
-                        return Center(
-                          child: Text("$err, $stack", style: GoogleFonts.montserrat(color: Colors.white),),
-                        );
-                      }, loading: () => Center(
-                        child: CircularProgressIndicator(
-                          color: Colors.white,
-                        ),
-                      ))
+                        )
                       : tab == 1
-                          ? const RemindScreen()
-                          : const SelfScreen(),
+                      ? const RemindScreen()
+                      : const SelfScreen(),
                 ),
               ],
             ),
@@ -280,10 +298,7 @@ class MyWidget extends StatelessWidget {
       ),
       child: Text(
         name,
-        style: GoogleFonts.poppins(
-          fontSize: 12.sp,
-          color: Colors.white,
-        ),
+        style: GoogleFonts.poppins(fontSize: 12.sp, color: Colors.white),
       ),
     );
   }
@@ -368,8 +383,7 @@ class _SelfScreenState extends State<SelfScreen> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Padding(
-                  padding:
-                      EdgeInsets.only(left: 18.w, right: 18.w, top: 15.h),
+                  padding: EdgeInsets.only(left: 18.w, right: 18.w, top: 15.h),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
