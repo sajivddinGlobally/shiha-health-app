@@ -436,210 +436,214 @@ class _DoctorDetailsPageState extends ConsumerState<DoctorDetailsPage>
                           ),
                         ),
                       ),
-                      Container(
-                        margin: EdgeInsets.only(
-                          top: 15.h,
-                          left: 20.w,
-                          right: 20.w,
-                        ),
-                        padding: EdgeInsets.only(
-                          left: 14.w,
-                          right: 14.w,
-                          top: 15.h,
-                          bottom: 12.h,
-                        ),
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(20.r),
-                          color: Color.fromARGB(255, 5, 49, 75),
-                          border: Border(
-                            top: BorderSide(color: Colors.white, width: 0.85.w),
-                            right: BorderSide(
-                              color: Colors.white,
-                              width: 0.85.w,
-                            ),
-                          ),
-                        ),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Text(
-                                  monthName,
-                                  style: GoogleFonts.poppins(
-                                    fontSize: 14.sp,
-                                    fontWeight: FontWeight.w500,
-                                    color: Colors.white,
-                                    letterSpacing: -0.2,
-                                  ),
-                                ),
-                                Row(
-                                  children: [
-                                    IconButton(
-                                      style: IconButton.styleFrom(
-                                        minimumSize: Size(0, 0),
-                                        padding: EdgeInsets.zero,
-                                        tapTargetSize:
-                                            MaterialTapTargetSize.shrinkWrap,
-                                      ),
-                                      onPressed: () => changeMonth(-1),
-                                      icon: const Icon(
-                                        Icons.chevron_left,
-                                        color: Colors.white,
-                                      ),
-                                    ),
-                                    IconButton(
-                                      style: IconButton.styleFrom(
-                                        minimumSize: Size(0, 0),
-                                        padding: EdgeInsets.zero,
-                                        tapTargetSize:
-                                            MaterialTapTargetSize.shrinkWrap,
-                                      ),
-                                      onPressed: () => changeMonth(1),
-                                      icon: const Icon(
-                                        Icons.chevron_right,
-                                        color: Colors.white,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ],
-                            ),
-                            SizedBox(height: 16.h),
-                            // Horizontal date list
-                            SizedBox(
-                              height: 60.h,
-                              child: ListView.builder(
-                                scrollDirection: Axis.horizontal,
-                                padding: EdgeInsets.zero,
-                                itemCount: currentMonthDates.length,
-                                itemBuilder: (context, index) {
-                                  final date = currentMonthDates[index];
-                                  final isSelected =
-                                      DateFormat('yyyy-MM-dd').format(date) ==
-                                      DateFormat(
-                                        'yyyy-MM-dd',
-                                      ).format(selectedDate);
-
-                                  return GestureDetector(
-                                    onTap: () {
-                                      setState(() {
-                                        selectedDate = date;
-                                      });
-                                    },
-                                    child: Padding(
-                                      padding: EdgeInsets.only(right: 20.w),
-                                      child: Column(
-                                        children: [
-                                          Text(
-                                            DateFormat('E')
-                                                .format(date)
-                                                .toUpperCase(), // MON, TUE...
-                                            style: GoogleFonts.poppins(
-                                              fontSize: 13.sp,
-                                              fontWeight: FontWeight.w600,
-                                              color: isSelected
-                                                  ? Color(0xFF067594)
-                                                  : Color(0xFFB0BABF),
-                                            ),
-                                          ),
-                                          SizedBox(height: 8.h),
-                                          Text(
-                                            date.day.toString(),
-                                            style: GoogleFonts.poppins(
-                                              fontSize: 18.sp,
-                                              fontWeight: FontWeight.w600,
-                                              color: isSelected
-                                                  ? Color(0xFF067594)
-                                                  : Color(0xFFB0BABF),
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                  );
-                                },
-                              ),
-                            ),
-                            Divider(color: Colors.white30),
-                            SizedBox(height: 15.h),
-                            // Time slots
-                            GridView.builder(
-                              itemCount: getTimeSlotsForSelectedDate().length,
-                              padding: EdgeInsets.zero,
-                              shrinkWrap: true,
-                              physics: NeverScrollableScrollPhysics(),
-                              gridDelegate:
-                                  SliverGridDelegateWithFixedCrossAxisCount(
-                                    crossAxisCount: 6,
-                                    childAspectRatio: 1,
-                                    mainAxisSpacing: 9.h,
-                                    crossAxisSpacing: 8.w,
-                                  ),
-                              itemBuilder: (context, index) {
-                                final time =
-                                    getTimeSlotsForSelectedDate()[index];
-                                final isSelected = selectedTime == time;
-                                return Column(
-                                  children: [
-                                    GestureDetector(
-                                      onTap: () {
-                                        setState(() {
-                                          selectedTime = time;
-                                        });
-                                      },
-                                      child: Container(
-                                        padding: EdgeInsets.symmetric(
-                                          horizontal: 10.w,
-                                          vertical: 8.h,
-                                        ),
-                                        decoration: BoxDecoration(
-                                          color: isSelected
-                                              ? Color(0xFF067594)
-                                              : Color.fromARGB(
-                                                  20,
-                                                  255,
-                                                  255,
-                                                  255,
-                                                ),
-                                          borderRadius: BorderRadius.circular(
-                                            15.r,
-                                          ),
-                                        ),
-                                        alignment: Alignment.center,
-                                        child: Text(
-                                          time,
-                                          textAlign: TextAlign.center,
-                                          style: GoogleFonts.poppins(
-                                            fontSize: 13.sp,
-                                            fontWeight: FontWeight.w500,
-                                            color: isSelected
-                                                ? Colors.white
-                                                : Color.fromARGB(
-                                                    153,
-                                                    255,
-                                                    255,
-                                                    255,
-                                                  ),
-                                            letterSpacing: -0.3,
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                                  ],
-                                );
-                              },
-                            ),
-                          ],
-                        ),
-                      ),
+                      // Container(
+                      //   margin: EdgeInsets.only(
+                      //     top: 15.h,
+                      //     left: 20.w,
+                      //     right: 20.w,
+                      //   ),
+                      //   padding: EdgeInsets.only(
+                      //     left: 14.w,
+                      //     right: 14.w,
+                      //     top: 15.h,
+                      //     bottom: 12.h,
+                      //   ),
+                      //   decoration: BoxDecoration(
+                      //     borderRadius: BorderRadius.circular(20.r),
+                      //     color: Color.fromARGB(255, 5, 49, 75),
+                      //     border: Border(
+                      //       top: BorderSide(color: Colors.white, width: 0.85.w),
+                      //       right: BorderSide(
+                      //         color: Colors.white,
+                      //         width: 0.85.w,
+                      //       ),
+                      //     ),
+                      //   ),
+                      //   child: Column(
+                      //     crossAxisAlignment: CrossAxisAlignment.start,
+                      //     children: [
+                      //       Row(
+                      //         mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      //         children: [
+                      //           Text(
+                      //             monthName,
+                      //             style: GoogleFonts.poppins(
+                      //               fontSize: 14.sp,
+                      //               fontWeight: FontWeight.w500,
+                      //               color: Colors.white,
+                      //               letterSpacing: -0.2,
+                      //             ),
+                      //           ),
+                      //           Row(
+                      //             children: [
+                      //               IconButton(
+                      //                 style: IconButton.styleFrom(
+                      //                   minimumSize: Size(0, 0),
+                      //                   padding: EdgeInsets.zero,
+                      //                   tapTargetSize:
+                      //                       MaterialTapTargetSize.shrinkWrap,
+                      //                 ),
+                      //                 onPressed: () => changeMonth(-1),
+                      //                 icon: const Icon(
+                      //                   Icons.chevron_left,
+                      //                   color: Colors.white,
+                      //                 ),
+                      //               ),
+                      //               IconButton(
+                      //                 style: IconButton.styleFrom(
+                      //                   minimumSize: Size(0, 0),
+                      //                   padding: EdgeInsets.zero,
+                      //                   tapTargetSize:
+                      //                       MaterialTapTargetSize.shrinkWrap,
+                      //                 ),
+                      //                 onPressed: () => changeMonth(1),
+                      //                 icon: const Icon(
+                      //                   Icons.chevron_right,
+                      //                   color: Colors.white,
+                      //                 ),
+                      //               ),
+                      //             ],
+                      //           ),
+                      //         ],
+                      //       ),
+                      //       SizedBox(height: 16.h),
+                      //       // Horizontal date list
+                      //       SizedBox(
+                      //         height: 60.h,
+                      //         child: ListView.builder(
+                      //           scrollDirection: Axis.horizontal,
+                      //           padding: EdgeInsets.zero,
+                      //           itemCount: currentMonthDates.length,
+                      //           itemBuilder: (context, index) {
+                      //             final date = currentMonthDates[index];
+                      //             final isSelected =
+                      //                 DateFormat('yyyy-MM-dd').format(date) ==
+                      //                 DateFormat(
+                      //                   'yyyy-MM-dd',
+                      //                 ).format(selectedDate);
+                      //
+                      //             return GestureDetector(
+                      //               onTap: () {
+                      //                 setState(() {
+                      //                   selectedDate = date;
+                      //                 });
+                      //               },
+                      //               child: Padding(
+                      //                 padding: EdgeInsets.only(right: 20.w),
+                      //                 child: Column(
+                      //                   children: [
+                      //                     Text(
+                      //                       DateFormat('E')
+                      //                           .format(date)
+                      //                           .toUpperCase(), // MON, TUE...
+                      //                       style: GoogleFonts.poppins(
+                      //                         fontSize: 13.sp,
+                      //                         fontWeight: FontWeight.w600,
+                      //                         color: isSelected
+                      //                             ? Color(0xFF067594)
+                      //                             : Color(0xFFB0BABF),
+                      //                       ),
+                      //                     ),
+                      //                     SizedBox(height: 8.h),
+                      //                     Text(
+                      //                       date.day.toString(),
+                      //                       style: GoogleFonts.poppins(
+                      //                         fontSize: 18.sp,
+                      //                         fontWeight: FontWeight.w600,
+                      //                         color: isSelected
+                      //                             ? Color(0xFF067594)
+                      //                             : Color(0xFFB0BABF),
+                      //                       ),
+                      //                     ),
+                      //                   ],
+                      //                 ),
+                      //               ),
+                      //             );
+                      //           },
+                      //         ),
+                      //       ),
+                      //       Divider(color: Colors.white30),
+                      //       SizedBox(height: 15.h),
+                      //       // Time slots
+                      //       GridView.builder(
+                      //         itemCount: getTimeSlotsForSelectedDate().length,
+                      //         padding: EdgeInsets.zero,
+                      //         shrinkWrap: true,
+                      //         physics: NeverScrollableScrollPhysics(),
+                      //         gridDelegate:
+                      //             SliverGridDelegateWithFixedCrossAxisCount(
+                      //               crossAxisCount: 6,
+                      //               childAspectRatio: 1,
+                      //               mainAxisSpacing: 9.h,
+                      //               crossAxisSpacing: 8.w,
+                      //             ),
+                      //         itemBuilder: (context, index) {
+                      //           final time =
+                      //               getTimeSlotsForSelectedDate()[index];
+                      //           final isSelected = selectedTime == time;
+                      //           return Column(
+                      //             children: [
+                      //               GestureDetector(
+                      //                 onTap: () {
+                      //                   setState(() {
+                      //                     selectedTime = time;
+                      //                   });
+                      //                 },
+                      //                 child: Container(
+                      //                   padding: EdgeInsets.symmetric(
+                      //                     horizontal: 10.w,
+                      //                     vertical: 8.h,
+                      //                   ),
+                      //                   decoration: BoxDecoration(
+                      //                     color: isSelected
+                      //                         ? Color(0xFF067594)
+                      //                         : Color.fromARGB(
+                      //                             20,
+                      //                             255,
+                      //                             255,
+                      //                             255,
+                      //                           ),
+                      //                     borderRadius: BorderRadius.circular(
+                      //                       15.r,
+                      //                     ),
+                      //                   ),
+                      //                   alignment: Alignment.center,
+                      //                   child: Text(
+                      //                     time,
+                      //                     textAlign: TextAlign.center,
+                      //                     style: GoogleFonts.poppins(
+                      //                       fontSize: 13.sp,
+                      //                       fontWeight: FontWeight.w500,
+                      //                       color: isSelected
+                      //                           ? Colors.white
+                      //                           : Color.fromARGB(
+                      //                               153,
+                      //                               255,
+                      //                               255,
+                      //                               255,
+                      //                             ),
+                      //                       letterSpacing: -0.3,
+                      //                     ),
+                      //                   ),
+                      //                 ),
+                      //               ),
+                      //             ],
+                      //           );
+                      //         },
+                      //       ),
+                      //     ],
+                      //   ),
+                      // ),
                       SlotPicker(
                         availableSlots:
                             availableSlots, // from your API snap.availableSlots
                         initialDate: DateTime.now(),
                         onSlotSelected: (date, time) {
                           print("Selected Date: $date, Time: $time");
+                          setState(() {
+                            selectedDate = date;
+                            selectedTime = time;
+                          });
                         },
                       ),
                       SizedBox(height: 30.h),
@@ -1344,9 +1348,9 @@ class _SlotPickerState extends State<SlotPicker> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Padding(
-            padding: EdgeInsets.only(left: 20.w, right: 20.w),
+            padding: EdgeInsets.only(left: 0.w, right: 20.w),
             child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              mainAxisAlignment: MainAxisAlignment.start,
               children: [
                 Text(
                   monthName,
@@ -1359,6 +1363,7 @@ class _SlotPickerState extends State<SlotPicker> {
               ],
             ),
           ),
+          SizedBox(height: 10,),
           SizedBox(
             height: 60.h,
             child: ListView.builder(
@@ -1420,7 +1425,7 @@ class _SlotPickerState extends State<SlotPicker> {
               shrinkWrap: true,
               physics: NeverScrollableScrollPhysics(),
               gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 6,
+                crossAxisCount: 5,
                 childAspectRatio: 1,
                 mainAxisSpacing: 9.h,
                 crossAxisSpacing: 8.w,

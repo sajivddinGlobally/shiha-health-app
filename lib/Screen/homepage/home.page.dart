@@ -1153,13 +1153,13 @@ class _HomePageState extends ConsumerState<HomePage>
                     );
                   },
                   error: (err, stack) {
-                    return Center(child: Text("$err, $stack"));
+                    return Center(child: Text("$err, $stack", style: TextStyle(color: Colors.white),));
                   },
                   loading: () => Center(child: CircularProgressIndicator()),
                 );
               },
               error: (err, stack) {
-                return Center(child: Text("$err"));
+                return Center(child: Text("$err, $stack", style: TextStyle(color: Colors.white),));
               },
               loading: () => SizedBox(
                 height: MediaQuery.of(context).size.height,

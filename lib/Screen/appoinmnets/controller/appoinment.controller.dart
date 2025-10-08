@@ -28,7 +28,7 @@ mixin AppoinmentController<T extends ConsumerStatefulWidget>
     final rawData = HiveService().getData<Map<dynamic, dynamic>>(
       key: "user",
       boxName: HiveBoxes.userData,
-    );
+    );   
     return ref.watch(appoinmentProvider(rawData!['user']['id']));
   }
 

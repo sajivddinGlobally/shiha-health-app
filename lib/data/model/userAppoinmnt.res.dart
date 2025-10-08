@@ -110,12 +110,13 @@ class Doctor {
     DateTime createdAt;
     DateTime updatedAt;
     String status;
-    String email;
-    String city;
-    String password;
+    dynamic email;
+    dynamic city;
+    dynamic password;
     String approvals;
     String kycStatus;
-    dynamic userId;
+    int userId;
+    String medicalLicenseFile;
 
     Doctor({
         required this.id,
@@ -137,6 +138,7 @@ class Doctor {
         required this.approvals,
         required this.kycStatus,
         required this.userId,
+        required this.medicalLicenseFile,
     });
 
     factory Doctor.fromJson(Map<String, dynamic> json) => Doctor(
@@ -159,6 +161,7 @@ class Doctor {
         approvals: json["Approvals"],
         kycStatus: json["kyc_status"],
         userId: json["user_id"],
+        medicalLicenseFile: json["medical_license_file"],
     );
 
     Map<String, dynamic> toJson() => {
@@ -181,22 +184,27 @@ class Doctor {
         "Approvals": approvals,
         "kyc_status": kycStatus,
         "user_id": userId,
+        "medical_license_file": medicalLicenseFile,
     };
 }
 
 class AvailableSlots {
-    List<String> the20250801;
+    List<String> mon;
+    List<String> tue;
 
     AvailableSlots({
-        required this.the20250801,
+        required this.mon,
+        required this.tue,
     });
 
     factory AvailableSlots.fromJson(Map<String, dynamic> json) => AvailableSlots(
-        the20250801: List<String>.from(json["2025-08-01"].map((x) => x)),
+        mon: List<String>.from(json["mon"].map((x) => x)),
+        tue: List<String>.from(json["tue"].map((x) => x)),
     );
 
     Map<String, dynamic> toJson() => {
-        "2025-08-01": List<dynamic>.from(the20250801.map((x) => x)),
+        "mon": List<dynamic>.from(mon.map((x) => x)),
+        "tue": List<dynamic>.from(tue.map((x) => x)),
     };
 }
 
@@ -212,7 +220,7 @@ class Hospital {
     String lng;
     String images;
     String status;
-    dynamic userId;
+    int userId;
     DateTime createdAt;
     DateTime updatedAt;
 
@@ -287,6 +295,7 @@ class User {
     dynamic bookings;
     dynamic language;
     dynamic timezone;
+    dynamic hospitalId;
 
     User({
         required this.id,
@@ -307,6 +316,7 @@ class User {
         required this.bookings,
         required this.language,
         required this.timezone,
+        required this.hospitalId,
     });
 
     factory User.fromJson(Map<String, dynamic> json) => User(
@@ -328,6 +338,7 @@ class User {
         bookings: json["bookings"],
         language: json["language"],
         timezone: json["timezone"],
+        hospitalId: json["hospital_id"],
     );
 
     Map<String, dynamic> toJson() => {
@@ -349,6 +360,7 @@ class User {
         "bookings": bookings,
         "language": language,
         "timezone": timezone,
+        "hospital_id": hospitalId,
     };
 }
 
