@@ -25,686 +25,424 @@ class _AppointmentPageState extends ConsumerState<AppointmentPage>
           Image.asset(
             "assets/homebg.png",
             width: MediaQuery.of(context).size.width,
-            // height: MediaQuery.of(context).size.height,
             fit: BoxFit.fill,
           ),
           appointsAsync.when(
             data: (snap) {
-              final appointments = snap.data; // <- यह आपकी List<Datum> होगी
+              final appointments = snap.data;
               final splitter = AppointmentSplitter(appointments);
-              if (splitter.upcoming.isEmpty) {
+              final upcomingList = splitter.upcoming;
+              final missedList = splitter.missed;
+
+              if (upcomingList.isEmpty && tab == 0) {
                 return Center(
                   child: Text(
                     snap.message,
                     style: GoogleFonts.inter(
                       fontSize: 20.sp,
                       fontWeight: FontWeight.w500,
-                      color: Colors.white38
+                      color: Colors.white38,
                     ),
                   ),
                 );
               }
-              final upcomingList = splitter.upcoming;
-              final missedList = splitter.missed;
 
               return Align(
                 alignment: Alignment.topLeft,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    SizedBox(height: 30.h),
-                    Row(
-                      children: [
-                        SizedBox(width: 20.w),
-                        IconButton(
-                          style: IconButton.styleFrom(
-                            padding: EdgeInsets.zero,
-                            minimumSize: Size(0, 0),
-                            tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                child: SafeArea(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      SizedBox(height: 30.h),
+                      Row(
+                        children: [
+                          SizedBox(width: 20.w),
+                          IconButton(
+                            style: IconButton.styleFrom(
+                              padding: EdgeInsets.zero,
+                              minimumSize: Size(0, 0),
+                              tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                            ),
+                            onPressed: () {
+                              Navigator.pop(context);
+                            },
+                            icon:
+                            Icon(Icons.arrow_back_ios, color: Colors.white),
                           ),
-                          onPressed: () {
-                            Navigator.pop(context);
+                          SizedBox(width: 10.w),
+                          Text(
+                            "Appointment",
+                            style: GoogleFonts.poppins(
+                              fontSize: 18.sp,
+                              fontWeight: FontWeight.w500,
+                              color: Colors.white,
+                            ),
+                          ),
+                          Spacer(),
+                          IconButton(
+                            style: IconButton.styleFrom(
+                              padding: EdgeInsets.zero,
+                              minimumSize: Size(0, 0),
+                              tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                            ),
+                            onPressed: () {},
+                            icon: Icon(Icons.search, color: Colors.white),
+                          ),
+                          SizedBox(width: 20.w),
+                        ],
+                      ),
+                      SizedBox(height: 20.h),
+                      Container(
+                        margin: EdgeInsets.only(left: 20.w, right: 20.w),
+                        width: 400.w,
+                        height: 45.h,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(10.r),
+                          border: Border(
+                            top: BorderSide(color: Colors.white, width: 1.w),
+                            right: BorderSide(color: Colors.white, width: 1.w),
+                          ),
+                          color: Color(0xFF0A4D80),
+                        ),
+                        child: Padding(
+                          padding: EdgeInsets.only(
+                            left: 5.w,
+                            top: 5.h,
+                            bottom: 5.h,
+                          ),
+                          child: Row(
+                            children: [
+                              InkWell(
+                                onTap: () {
+                                  setState(() {
+                                    tab = 0;
+                                  });
+                                },
+                                child: Container(
+                                  width: 195.w,
+                                  height: MediaQuery.of(context).size.height,
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(12.r),
+                                    color: tab == 0
+                                        ? Color(0xFF067594)
+                                        : Color(0x66067594),
+                                    border: Border(
+                                      top: BorderSide(
+                                        color: Colors.white,
+                                        width: 1.w,
+                                      ),
+                                    ),
+                                  ),
+                                  child: Center(
+                                    child: Text(
+                                      "Upcoming ",
+                                      style: GoogleFonts.poppins(
+                                        fontSize: 12.sp,
+                                        fontWeight: FontWeight.w500,
+                                        color: Colors.white,
+                                        letterSpacing: -0.4,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              InkWell(
+                                onTap: () {
+                                  setState(() {
+                                    tab = 1;
+                                  });
+                                },
+                                child: Container(
+                                  width: 195.w,
+                                  height: MediaQuery.of(context).size.height,
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(12.r),
+                                    color: tab == 1
+                                        ? Color(0xFF067594)
+                                        : Color(0x66067594),
+                                    border: Border(
+                                      top: BorderSide(
+                                        color: tab == 0
+                                            ? Colors.white
+                                            : Colors.transparent,
+                                        width: 1.w,
+                                      ),
+                                    ),
+                                  ),
+                                  child: Center(
+                                    child: Text(
+                                      "Missed",
+                                      style: GoogleFonts.poppins(
+                                        fontSize: 12.sp,
+                                        fontWeight: FontWeight.w500,
+                                        color: Colors.white,
+                                        letterSpacing: -0.4,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                      SizedBox(height: 10.h),
+
+                      // IMPORTANT: constrain the ListView by wrapping it with Expanded.
+                      Expanded(
+                        child: RefreshIndicator(
+                          color: Colors.white,
+                          backgroundColor: const Color(0xFF0A4D80),
+                          onRefresh: () async {
+                            await refreshInit(ref);
                           },
-                          icon: Icon(Icons.arrow_back_ios, color: Colors.white),
-                        ),
-                        SizedBox(width: 10.w),
-                        Text(
-                          "Appointment",
-                          style: GoogleFonts.poppins(
-                            fontSize: 18.sp,
-                            fontWeight: FontWeight.w500,
-                            color: Colors.white,
-                          ),
-                        ),
-                        Spacer(),
-                        IconButton(
-                          style: IconButton.styleFrom(
+                          // ListView must have a bounded height (Expanded gives it)
+                          child: ListView.builder(
                             padding: EdgeInsets.zero,
-                            minimumSize: Size(0, 0),
-                            tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                            itemCount: tab == 0
+                                ? upcomingList.length
+                                : missedList.length,
+                            itemBuilder: (context, index) {
+                              final item = tab == 0
+                                  ? upcomingList[index]
+                                  : missedList[index];
+
+                              return Container(
+                                margin: EdgeInsets.only(
+                                  left: 20.w,
+                                  right: 20.w,
+                                  top: 15.h,
+                                ),
+                                padding: EdgeInsets.only(
+                                  left: 12.w,
+                                  right: 12.w,
+                                  top: 12.h,
+                                  bottom: 12.h,
+                                ),
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(20.r),
+                                  color: Color(0xFF0E1329),
+                                  border: Border(
+                                    top: BorderSide(
+                                      color: Colors.white,
+                                      width: 1.w,
+                                    ),
+                                    right: BorderSide(
+                                      color: Colors.white,
+                                      width: 1.w,
+                                    ),
+                                  ),
+                                ),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Row(
+                                      children: [
+                                        Container(
+                                          width: 52.w,
+                                          height: 52.h,
+                                          decoration: BoxDecoration(
+                                            shape: BoxShape.circle,
+                                            image: DecorationImage(
+                                              image: AssetImage(
+                                                "assets/robot.png",
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                        SizedBox(width: 12.w),
+                                        Column(
+                                          crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                          children: [
+                                            Text(
+                                              item.doctor.fullName,
+                                              style: GoogleFonts.poppins(
+                                                fontSize: 14.sp,
+                                                fontWeight: FontWeight.w500,
+                                                color: Color(0xFFFFFFFF),
+                                                letterSpacing: -0.3,
+                                              ),
+                                            ),
+                                            Text(
+                                              "${item.doctor.specialty} (${item.doctor.experienceYears} Years experience)",
+                                              style: GoogleFonts.poppins(
+                                                fontSize: 12.sp,
+                                                fontWeight: FontWeight.w500,
+                                                color: Color(0xFFB0BABF),
+                                                letterSpacing: -0.3,
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                        if (tab == 1) ...[
+                                          Spacer(),
+                                          Container(
+                                            width: 66.w,
+                                            height: 28.h,
+                                            decoration: BoxDecoration(
+                                              borderRadius:
+                                              BorderRadius.circular(40.r),
+                                              color: Color.fromARGB(25, 218, 17, 10),
+                                            ),
+                                            child: Center(
+                                              child: Text(
+                                                "Missed",
+                                                style: GoogleFonts.poppins(
+                                                  fontSize: 12.sp,
+                                                  fontWeight: FontWeight.w500,
+                                                  color: Color(0xFFDA110A),
+                                                  letterSpacing: -0.3,
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                        ],
+                                      ],
+                                    ),
+                                    SizedBox(height: 12.h),
+                                    Container(
+                                      padding: EdgeInsets.only(
+                                        top: 12.h,
+                                        bottom: 12.h,
+                                        left: 16.w,
+                                        right: 16.w,
+                                      ),
+                                      decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(
+                                          10.r,
+                                        ),
+                                        color: Color.fromARGB(255, 27, 32, 54),
+                                      ),
+                                      child: Row(
+                                        children: [
+                                          Icon(
+                                            Icons.calendar_today_outlined,
+                                            color: Color(0xFF067594),
+                                            size: 20.sp,
+                                          ),
+                                          SizedBox(width: 8.w),
+                                          Text(
+                                            DateFormat("dd MMM").format(item.date),
+                                            style: GoogleFonts.poppins(
+                                              fontSize: 13.sp,
+                                              fontWeight: FontWeight.w500,
+                                              color: Color(0xFF067594),
+                                            ),
+                                          ),
+                                          Spacer(),
+                                          Container(
+                                            width: 1.w,
+                                            height: 17.h,
+                                            decoration: BoxDecoration(
+                                              borderRadius:
+                                              BorderRadius.circular(5.r),
+                                              color: Color(0xFF8D93AA),
+                                            ),
+                                          ),
+                                          Spacer(),
+                                          Icon(
+                                            Icons.access_alarm,
+                                            color: Color(0xFF067594),
+                                            size: 20.sp,
+                                          ),
+                                          SizedBox(width: 8.w),
+                                          Text(
+                                            // parse safely; if already in proper format, adjust accordingly
+                                            DateFormat("hh:mm a").format(
+                                              DateFormat("HH:mm:ss").parse(item.time),
+                                            ),
+                                            style: GoogleFonts.poppins(
+                                              fontSize: 13.sp,
+                                              fontWeight: FontWeight.w500,
+                                              color: Color(0xFF067594),
+                                            ),
+                                          ),
+                                          Spacer(),
+                                          Container(
+                                            width: 1.w,
+                                            height: 17.h,
+                                            decoration: BoxDecoration(
+                                              borderRadius:
+                                              BorderRadius.circular(5.r),
+                                              color: Color(0xFF8D93AA),
+                                            ),
+                                          ),
+                                          Spacer(),
+                                          Icon(
+                                            Icons.location_on_outlined,
+                                            color: Color(0xFF067594),
+                                            size: 20.sp,
+                                          ),
+                                          SizedBox(width: 8.w),
+                                          Expanded(
+                                            child: Text(
+                                              item.hospital.name,
+                                              overflow: TextOverflow.ellipsis,
+                                              style: GoogleFonts.poppins(
+                                                fontSize: 13.sp,
+                                                fontWeight: FontWeight.w500,
+                                                color: Color(0xFF067594),
+                                              ),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                    SizedBox(height: 15.h),
+                                    Row(
+                                      children: [
+                                        Expanded(
+                                          child: ElevatedButton(
+                                            style: ElevatedButton.styleFrom(
+                                              backgroundColor: Color(0xFF0E1329),
+                                              minimumSize: Size(0.w, 39.h),
+                                              shape: RoundedRectangleBorder(
+                                                borderRadius:
+                                                BorderRadius.circular(10.r),
+                                                side: BorderSide(
+                                                  color: Color(0xFF2ECC71),
+                                                  width: 1.w,
+                                                ),
+                                              ),
+                                            ),
+                                            onPressed: () {
+                                              Navigator.push(
+                                                context,
+                                                CupertinoPageRoute(
+                                                  builder: (context) =>
+                                                      DoctorDetailsPage(
+                                                        userID:
+                                                        item.doctor.id.toString(),
+                                                        hasChange: true,
+                                                        bookingId: item.id.toString(),
+                                                      ),
+                                                ),
+                                              );
+                                            },
+                                            child: Text(
+                                              "Change Appointment",
+                                              style: GoogleFonts.poppins(
+                                                fontSize: 12.sp,
+                                                fontWeight: FontWeight.w500,
+                                                color: Color(0xFF2ECC71),
+                                                letterSpacing: -0.4,
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                        SizedBox(width: 10.w),
+                                      ],
+                                    ),
+                                  ],
+                                ),
+                              );
+                            },
                           ),
-                          onPressed: () {},
-                          icon: Icon(Icons.search, color: Colors.white),
-                        ),
-                        SizedBox(width: 20.w),
-                      ],
-                    ),
-                    SizedBox(height: 20.h),
-                    Container(
-                      margin: EdgeInsets.only(left: 20.w, right: 20.w),
-                      width: 400.w,
-                      height: 45.h,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(10.r),
-                        border: Border(
-                          top: BorderSide(color: Colors.white, width: 1.w),
-                          right: BorderSide(color: Colors.white, width: 1.w),
-                        ),
-                        color: Color(0xFF0A4D80),
-                      ),
-                      child: Padding(
-                        padding: EdgeInsets.only(
-                          left: 5.w,
-                          top: 5.h,
-                          bottom: 5.h,
-                        ),
-                        child: Row(
-                          children: [
-                            InkWell(
-                              onTap: () {
-                                setState(() {
-                                  tab = 0;
-                                });
-                              },
-                              child: Container(
-                                width: 195.w,
-                                height: MediaQuery.of(context).size.height,
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(12.r),
-                                  color: tab == 0
-                                      ? Color(0xFF067594)
-                                      : Color(0x66067594),
-                                  border: Border(
-                                    top: BorderSide(
-                                      color: Colors.white,
-                                      width: 1.w,
-                                    ),
-                                  ),
-                                ),
-                                child: Center(
-                                  child: Text(
-                                    "Upcoming ",
-                                    style: GoogleFonts.poppins(
-                                      fontSize: 12.sp,
-                                      fontWeight: FontWeight.w500,
-                                      color: Colors.white,
-                                      letterSpacing: -0.4,
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            ),
-                            InkWell(
-                              onTap: () {
-                                setState(() {
-                                  tab = 1;
-                                });
-                              },
-                              child: Container(
-                                width: 195.w,
-                                height: MediaQuery.of(context).size.height,
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(12.r),
-                                  color: tab == 1
-                                      ? Color(0xFF067594)
-                                      : Color(0x66067594),
-                                  border: Border(
-                                    top: BorderSide(
-                                      color: tab == 0
-                                          ? Colors.white
-                                          : Colors.transparent,
-                                      width: 1.w,
-                                    ),
-                                  ),
-                                ),
-                                child: Center(
-                                  child: Text(
-                                    "Missed",
-                                    style: GoogleFonts.poppins(
-                                      fontSize: 12.sp,
-                                      fontWeight: FontWeight.w500,
-                                      color: Colors.white,
-                                      letterSpacing: -0.4,
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ],
                         ),
                       ),
-                    ),
-                    SizedBox(height: 10.h),
-                    //  upcoming appointment
-                    RefreshIndicator(
-                      color: Colors.white,
-                      backgroundColor: const Color(0xFF0A4D80),
-                      onRefresh: () async {
-                        refreshInit(ref);
-                      },
-                      child: tab == 0
-                          ? ListView.builder(
-                              padding: EdgeInsets.zero,
-                              itemCount: upcomingList.length,
-                              itemBuilder: (context, index) {
-                                final item = snap.data[index];
-                                return Container(
-                                  margin: EdgeInsets.only(
-                                    left: 20.w,
-                                    right: 20.w,
-                                    top: 15.h,
-                                  ),
-                                  padding: EdgeInsets.only(
-                                    left: 12.w,
-                                    right: 12.w,
-                                    top: 12.h,
-                                    bottom: 12.h,
-                                  ),
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(20.r),
-                                    color: Color(0xFF0E1329),
-                                    border: Border(
-                                      top: BorderSide(
-                                        color: Colors.white,
-                                        width: 1.w,
-                                      ),
-                                      right: BorderSide(
-                                        color: Colors.white,
-                                        width: 1.w,
-                                      ),
-                                    ),
-                                  ),
-                                  child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      Row(
-                                        children: [
-                                          Container(
-                                            width: 52.w,
-                                            height: 52.h,
-                                            decoration: BoxDecoration(
-                                              shape: BoxShape.circle,
-                                              image: DecorationImage(
-                                                image: AssetImage(
-                                                  "assets/robot.png",
-                                                ),
-                                              ),
-                                            ),
-                                          ),
-                                          SizedBox(width: 12.w),
-                                          Column(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                            children: [
-                                              Text(
-                                                item.doctor.fullName,
-                                                style: GoogleFonts.poppins(
-                                                  fontSize: 14.sp,
-                                                  fontWeight: FontWeight.w500,
-                                                  color: Color(0xFFFFFFFF),
-                                                  letterSpacing: -0.3,
-                                                ),
-                                              ),
-                                              Text(
-                                                "${item.doctor.specialty} (${item.doctor.experienceYears} Years experience)",
-                                                style: GoogleFonts.poppins(
-                                                  fontSize: 12.sp,
-                                                  fontWeight: FontWeight.w500,
-                                                  color: Color(0xFFB0BABF),
-                                                  letterSpacing: -0.3,
-                                                ),
-                                              ),
-                                            ],
-                                          ),
-                                        ],
-                                      ),
-                                      SizedBox(height: 12.h),
-                                      Container(
-                                        padding: EdgeInsets.only(
-                                          top: 12.h,
-                                          bottom: 12.h,
-                                          left: 16.w,
-                                          right: 16.w,
-                                        ),
-                                        decoration: BoxDecoration(
-                                          borderRadius: BorderRadius.circular(
-                                            10.r,
-                                          ),
-                                          color: Color.fromARGB(
-                                            255,
-                                            27,
-                                            32,
-                                            54,
-                                          ),
-                                        ),
-                                        child: Row(
-                                          children: [
-                                            Icon(
-                                              Icons.calendar_today_outlined,
-                                              color: Color(0xFF067594),
-                                              size: 20.sp,
-                                            ),
-                                            SizedBox(width: 8.w),
-                                            Text(
-                                              DateFormat(
-                                                "dd MMM",
-                                              ).format(item.date),
-                                              style: GoogleFonts.poppins(
-                                                fontSize: 13.sp,
-                                                fontWeight: FontWeight.w500,
-                                                color: Color(0xFF067594),
-                                              ),
-                                            ),
-                                            Spacer(),
-                                            Container(
-                                              width: 1.w,
-                                              height: 17.h,
-                                              decoration: BoxDecoration(
-                                                borderRadius:
-                                                    BorderRadius.circular(5.r),
-                                                color: Color(0xFF8D93AA),
-                                              ),
-                                            ),
-                                            Spacer(),
-                                            Icon(
-                                              Icons.access_alarm,
-                                              color: Color(0xFF067594),
-                                              size: 20.sp,
-                                            ),
-                                            SizedBox(width: 8.w),
-                                            Text(
-                                              DateFormat("hh:mm a").format(
-                                                DateFormat(
-                                                  "HH:mm:ss",
-                                                ).parse(item.time),
-                                              ),
-                                              style: GoogleFonts.poppins(
-                                                fontSize: 13.sp,
-                                                fontWeight: FontWeight.w500,
-                                                color: Color(0xFF067594),
-                                              ),
-                                            ),
-                                            Spacer(),
-                                            Container(
-                                              width: 1.w,
-                                              height: 17.h,
-                                              decoration: BoxDecoration(
-                                                borderRadius:
-                                                    BorderRadius.circular(5.r),
-                                                color: Color(0xFF8D93AA),
-                                              ),
-                                            ),
-                                            Spacer(),
-                                            Icon(
-                                              Icons.location_on_outlined,
-                                              color: Color(0xFF067594),
-                                              size: 20.sp,
-                                            ),
-                                            SizedBox(width: 8.w),
-                                            Text(
-                                              item.hospital.name,
-                                              style: GoogleFonts.poppins(
-                                                fontSize: 13.sp,
-                                                fontWeight: FontWeight.w500,
-                                                color: Color(0xFF067594),
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                      SizedBox(height: 15.h),
-                                      Row(
-                                        children: [
-                                          Expanded(
-                                            child: ElevatedButton(
-                                              style: ElevatedButton.styleFrom(
-                                                backgroundColor: Color(
-                                                  0xFF0E1329,
-                                                ),
-                                                minimumSize: Size(0.w, 39.h),
-                                                shape: RoundedRectangleBorder(
-                                                  borderRadius:
-                                                      BorderRadius.circular(
-                                                        10.r,
-                                                      ),
-                                                  side: BorderSide(
-                                                    color: Color(0xFF2ECC71),
-                                                    width: 1.w,
-                                                  ),
-                                                ),
-                                              ),
-                                              onPressed: () {
-                                                Navigator.push(
-                                                  context,
-                                                  CupertinoPageRoute(
-                                                    builder: (context) =>
-                                                        DoctorDetailsPage(
-                                                          userID: item.doctor.id
-                                                              .toString(),
-                                                          hasChange: true,
-                                                          bookingId: item.id
-                                                              .toString(),
-                                                        ),
-                                                  ),
-                                                );
-                                              },
-                                              child: Text(
-                                                "Change Appointment",
-                                                style: GoogleFonts.poppins(
-                                                  fontSize: 12.sp,
-                                                  fontWeight: FontWeight.w500,
-                                                  color: Color(0xFF2ECC71),
-                                                  letterSpacing: -0.4,
-                                                ),
-                                              ),
-                                            ),
-                                          ),
-                                          SizedBox(width: 10.w),
-                                          // Expanded(
-                                          //   child: ElevatedButton(
-                                          //     style: ElevatedButton.styleFrom(
-                                          //       backgroundColor: Color(
-                                          //         0xFF0E1329,
-                                          //       ),
-                                          //       minimumSize: Size(0.w, 39.h),
-                                          //       shape: RoundedRectangleBorder(
-                                          //         borderRadius:
-                                          //             BorderRadius.circular(
-                                          //               10.r,
-                                          //             ),
-                                          //         side: BorderSide(
-                                          //           color: Color(0xFFDA110A),
-                                          //           width: 1.w,
-                                          //         ),
-                                          //       ),
-                                          //     ),
-                                          //     onPressed: () {},
-                                          //     child: Text(
-                                          //       "Delete Appointment ",
-                                          //       style: GoogleFonts.poppins(
-                                          //         fontSize: 13.sp,
-                                          //         fontWeight: FontWeight.w500,
-                                          //         color: Color(0xFFDA110A),
-                                          //         letterSpacing: -0.4,
-                                          //       ),
-                                          //     ),
-                                          //   ),
-                                          // ),
-                                        ],
-                                      ),
-                                    ],
-                                  ),
-                                );
-                              },
-                            )
-                          : ListView.builder(
-                              padding: EdgeInsets.zero,
-                              itemCount: missedList.length,
-                              itemBuilder: (context, index) {
-                                final item = snap.data[index];
-                                return Container(
-                                  margin: EdgeInsets.only(
-                                    left: 20.w,
-                                    right: 20.w,
-                                    top: 15.h,
-                                  ),
-                                  padding: EdgeInsets.only(
-                                    left: 12.w,
-                                    right: 12.w,
-                                    top: 12.h,
-                                    bottom: 12.h,
-                                  ),
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(20.r),
-                                    color: Color(0xFF0E1329),
-                                    border: Border(
-                                      top: BorderSide(
-                                        color: Colors.white,
-                                        width: 1.w,
-                                      ),
-                                      right: BorderSide(
-                                        color: Colors.white,
-                                        width: 1.w,
-                                      ),
-                                    ),
-                                  ),
-                                  child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      Row(
-                                        children: [
-                                          Container(
-                                            width: 52.w,
-                                            height: 52.h,
-                                            decoration: BoxDecoration(
-                                              shape: BoxShape.circle,
-                                              image: DecorationImage(
-                                                image: AssetImage(
-                                                  "assets/robot.png",
-                                                ),
-                                              ),
-                                            ),
-                                          ),
-                                          SizedBox(width: 12.w),
-                                          Column(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                            children: [
-                                              Text(
-                                                item.doctor.fullName,
-                                                style: GoogleFonts.poppins(
-                                                  fontSize: 14.sp,
-                                                  fontWeight: FontWeight.w500,
-                                                  color: Color(0xFFFFFFFF),
-                                                  letterSpacing: -0.3,
-                                                ),
-                                              ),
-                                              Text(
-                                                "${item.doctor.specialty} (${item.doctor.experienceYears} Years experience)",
-                                                style: GoogleFonts.poppins(
-                                                  fontSize: 12.sp,
-                                                  fontWeight: FontWeight.w500,
-                                                  color: Color(0xFFB0BABF),
-                                                  letterSpacing: -0.3,
-                                                ),
-                                              ),
-                                            ],
-                                          ),
-                                        ],
-                                      ),
-                                      SizedBox(height: 12.h),
-                                      Container(
-                                        padding: EdgeInsets.only(
-                                          top: 12.h,
-                                          bottom: 12.h,
-                                          left: 16.w,
-                                          right: 16.w,
-                                        ),
-                                        decoration: BoxDecoration(
-                                          borderRadius: BorderRadius.circular(
-                                            10.r,
-                                          ),
-                                          color: Color.fromARGB(
-                                            255,
-                                            27,
-                                            32,
-                                            54,
-                                          ),
-                                        ),
-                                        child: Row(
-                                          children: [
-                                            Icon(
-                                              Icons.calendar_today_outlined,
-                                              color: Color(0xFF067594),
-                                              size: 20.sp,
-                                            ),
-                                            SizedBox(width: 8.w),
-                                            Text(
-                                              DateFormat(
-                                                "dd MMM",
-                                              ).format(item.date),
-                                              style: GoogleFonts.poppins(
-                                                fontSize: 13.sp,
-                                                fontWeight: FontWeight.w500,
-                                                color: Color(0xFF067594),
-                                              ),
-                                            ),
-                                            Spacer(),
-                                            Container(
-                                              width: 1.w,
-                                              height: 17.h,
-                                              decoration: BoxDecoration(
-                                                borderRadius:
-                                                    BorderRadius.circular(5.r),
-                                                color: Color(0xFF8D93AA),
-                                              ),
-                                            ),
-                                            Spacer(),
-                                            Icon(
-                                              Icons.access_alarm,
-                                              color: Color(0xFF067594),
-                                              size: 20.sp,
-                                            ),
-                                            SizedBox(width: 8.w),
-                                            Text(
-                                              DateFormat("hh:mm a").format(
-                                                DateFormat(
-                                                  "HH:mm:ss",
-                                                ).parse(item.time),
-                                              ),
-                                              style: GoogleFonts.poppins(
-                                                fontSize: 13.sp,
-                                                fontWeight: FontWeight.w500,
-                                                color: Color(0xFF067594),
-                                              ),
-                                            ),
-                                            Spacer(),
-                                            Container(
-                                              width: 1.w,
-                                              height: 17.h,
-                                              decoration: BoxDecoration(
-                                                borderRadius:
-                                                    BorderRadius.circular(5.r),
-                                                color: Color(0xFF8D93AA),
-                                              ),
-                                            ),
-                                            Spacer(),
-                                            Icon(
-                                              Icons.location_on_outlined,
-                                              color: Color(0xFF067594),
-                                              size: 20.sp,
-                                            ),
-                                            SizedBox(width: 8.w),
-                                            Text(
-                                              item.hospital.name,
-                                              style: GoogleFonts.poppins(
-                                                fontSize: 13.sp,
-                                                fontWeight: FontWeight.w500,
-                                                color: Color(0xFF067594),
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                      SizedBox(height: 15.h),
-                                      Row(
-                                        children: [
-                                          Expanded(
-                                            child: ElevatedButton(
-                                              style: ElevatedButton.styleFrom(
-                                                backgroundColor: Color(
-                                                  0xFF0E1329,
-                                                ),
-                                                minimumSize: Size(0.w, 39.h),
-                                                shape: RoundedRectangleBorder(
-                                                  borderRadius:
-                                                      BorderRadius.circular(
-                                                        10.r,
-                                                      ),
-                                                  side: BorderSide(
-                                                    color: Color(0xFF2ECC71),
-                                                    width: 1.w,
-                                                  ),
-                                                ),
-                                              ),
-                                              onPressed: () {
-                                                Navigator.push(
-                                                  context,
-                                                  CupertinoPageRoute(
-                                                    builder: (context) =>
-                                                        DoctorDetailsPage(
-                                                          userID: item.doctor.id
-                                                              .toString(),
-                                                          hasChange: true,
-                                                          bookingId: item.id
-                                                              .toString(),
-                                                        ),
-                                                  ),
-                                                );
-                                              },
-                                              child: Text(
-                                                "Change Appointment",
-                                                style: GoogleFonts.poppins(
-                                                  fontSize: 12.sp,
-                                                  fontWeight: FontWeight.w500,
-                                                  color: Color(0xFF2ECC71),
-                                                  letterSpacing: -0.4,
-                                                ),
-                                              ),
-                                            ),
-                                          ),
-                                          SizedBox(width: 10.w),
-                                          // Expanded(
-                                          //   child: ElevatedButton(
-                                          //     style: ElevatedButton.styleFrom(
-                                          //       backgroundColor: Color(
-                                          //         0xFF0E1329,
-                                          //       ),
-                                          //       minimumSize: Size(0.w, 39.h),
-                                          //       shape: RoundedRectangleBorder(
-                                          //         borderRadius:
-                                          //             BorderRadius.circular(
-                                          //               10.r,
-                                          //             ),
-                                          //         side: BorderSide(
-                                          //           color: Color(0xFFDA110A),
-                                          //           width: 1.w,
-                                          //         ),
-                                          //       ),
-                                          //     ),
-                                          //     onPressed: () {},
-                                          //     child: Text(
-                                          //       "Delete Appointment ",
-                                          //       style: GoogleFonts.poppins(
-                                          //         fontSize: 13.sp,
-                                          //         fontWeight: FontWeight.w500,
-                                          //         color: Color(0xFFDA110A),
-                                          //         letterSpacing: -0.4,
-                                          //       ),
-                                          //     ),
-                                          //   ),
-                                          // ),
-                                        ],
-                                      ),
-                                    ],
-                                  ),
-                                );
-                              },
-                            ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
               );
             },
@@ -725,7 +463,11 @@ class MissedAppointment extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Expanded(
+    // Note: keep this widget self-contained — do NOT return Expanded here if you plan
+    // to place it directly inside a Column. If you need to use it inside Column,
+    // wrap it with Expanded there. Here we return a constrained ListView inside a SizedBox.
+    return SizedBox(
+      height: 400.h,
       child: ListView.builder(
         padding: EdgeInsets.zero,
         itemCount: 4,

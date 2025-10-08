@@ -30,7 +30,7 @@ class DoctorDetailResponse {
     int userId;
     String medicalLicenseFile;
     Hospital hospital;
-    List<dynamic> appointments;
+    List<Appointment> appointments;
 
     DoctorDetailResponse({
         required this.id,
@@ -79,7 +79,7 @@ class DoctorDetailResponse {
         userId: json["user_id"],
         medicalLicenseFile: json["medical_license_file"],
         hospital: Hospital.fromJson(json["hospital"]),
-        appointments: List<dynamic>.from(json["appointments"].map((x) => x)),
+        appointments: List<Appointment>.from(json["appointments"].map((x) => Appointment.fromJson(x))),
     );
 
     Map<String, dynamic> toJson() => {
@@ -104,7 +104,55 @@ class DoctorDetailResponse {
         "user_id": userId,
         "medical_license_file": medicalLicenseFile,
         "hospital": hospital.toJson(),
-        "appointments": List<dynamic>.from(appointments.map((x) => x)),
+        "appointments": List<dynamic>.from(appointments.map((x) => x.toJson())),
+    };
+}
+
+class Appointment {
+    int id;
+    int userId;
+    int doctorId;
+    int hospitalId;
+    DateTime date;
+    String time;
+    String status;
+    DateTime createdAt;
+    DateTime updatedAt;
+
+    Appointment({
+        required this.id,
+        required this.userId,
+        required this.doctorId,
+        required this.hospitalId,
+        required this.date,
+        required this.time,
+        required this.status,
+        required this.createdAt,
+        required this.updatedAt,
+    });
+
+    factory Appointment.fromJson(Map<String, dynamic> json) => Appointment(
+        id: json["id"],
+        userId: json["user_id"],
+        doctorId: json["doctor_id"],
+        hospitalId: json["hospital_id"],
+        date: DateTime.parse(json["date"]),
+        time: json["time"],
+        status: json["status"],
+        createdAt: DateTime.parse(json["created_at"]),
+        updatedAt: DateTime.parse(json["updated_at"]),
+    );
+
+    Map<String, dynamic> toJson() => {
+        "id": id,
+        "user_id": userId,
+        "doctor_id": doctorId,
+        "hospital_id": hospitalId,
+        "date": "${date.year.toString().padLeft(4, '0')}-${date.month.toString().padLeft(2, '0')}-${date.day.toString().padLeft(2, '0')}",
+        "time": time,
+        "status": status,
+        "created_at": createdAt.toIso8601String(),
+        "updated_at": updatedAt.toIso8601String(),
     };
 }
 

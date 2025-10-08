@@ -395,7 +395,7 @@ class _HospitalDetailsPageState extends ConsumerState<HospitalDetailsPage> {
                   );
                 },
                 error: (err, stack) {
-                  return Center(child: Text("$err"));
+                  return Center(child: Text("$err, $stack", style: TextStyle(color: Colors.white),));
                 },
                 loading: () => SizedBox(
                   height: MediaQuery.of(context).size.height,

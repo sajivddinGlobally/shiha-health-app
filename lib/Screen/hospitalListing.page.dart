@@ -174,7 +174,7 @@ class _HospitalListingPageState extends ConsumerState<HospitalListingPage> {
                 ),
               );
             },
-            error: (err, stack) => Center(child: Text("$err")),
+            error: (err, stack) => Center(child: Text("$err, $stack", style: TextStyle(color: Colors.white),)),
             loading: () => Center(
               child: CircularProgressIndicator(color: Colors.white),
             ),

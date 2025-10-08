@@ -14,11 +14,13 @@ class HospitalListResponse {
     String location;
     String consultationPriceRange;
     String language;
-    double? rating;
+    double rating;
     String servicesOffered;
-    String? lat;
-    String? lng;
+    String lat;
+    String lng;
     List<String> images;
+    String status;
+    int userId;
     DateTime createdAt;
     DateTime updatedAt;
     List<Doctor> doctors;
@@ -34,6 +36,8 @@ class HospitalListResponse {
         required this.lat,
         required this.lng,
         required this.images,
+        required this.status,
+        required this.userId,
         required this.createdAt,
         required this.updatedAt,
         required this.doctors,
@@ -50,6 +54,8 @@ class HospitalListResponse {
         lat: json["lat"],
         lng: json["lng"],
         images: List<String>.from(json["images"].map((x) => x)),
+        status: json["status"],
+        userId: json["user_id"],
         createdAt: DateTime.parse(json["created_at"]),
         updatedAt: DateTime.parse(json["updated_at"]),
         doctors: List<Doctor>.from(json["doctors"].map((x) => Doctor.fromJson(x))),
@@ -66,6 +72,8 @@ class HospitalListResponse {
         "lat": lat,
         "lng": lng,
         "images": List<dynamic>.from(images.map((x) => x)),
+        "status": status,
+        "user_id": userId,
         "created_at": createdAt.toIso8601String(),
         "updated_at": updatedAt.toIso8601String(),
         "doctors": List<dynamic>.from(doctors.map((x) => x.toJson())),
@@ -74,28 +82,28 @@ class HospitalListResponse {
 
 class Doctor {
     int id;
-    int? userId;
     String fullName;
     String specialty;
     int experienceYears;
     double rating;
-    String profilePicture;
+    String? profilePicture;
     int hospitalId;
-    int? consultationFees;
-    dynamic language;
-    dynamic availableSlots;
+    int consultationFees;
+    List<String> language;
+    AvailableSlots availableSlots;
     DateTime createdAt;
     DateTime updatedAt;
-    int approvalStatus;
-    String? qualifications;
-    String? medicalLicenseNumber;
+    String status;
+    dynamic email;
+    dynamic city;
+    dynamic password;
+    String approvals;
+    String kycStatus;
+    int userId;
     String? medicalLicenseFile;
-    String? consultationFee;
-    int? reviewsId;
 
     Doctor({
         required this.id,
-        required this.userId,
         required this.fullName,
         required this.specialty,
         required this.experienceYears,
@@ -107,17 +115,18 @@ class Doctor {
         required this.availableSlots,
         required this.createdAt,
         required this.updatedAt,
-        required this.approvalStatus,
-        required this.qualifications,
-        required this.medicalLicenseNumber,
+        required this.status,
+        required this.email,
+        required this.city,
+        required this.password,
+        required this.approvals,
+        required this.kycStatus,
+        required this.userId,
         required this.medicalLicenseFile,
-        required this.consultationFee,
-        required this.reviewsId,
     });
 
     factory Doctor.fromJson(Map<String, dynamic> json) => Doctor(
         id: json["id"],
-        userId: json["user_id"],
         fullName: json["full_name"],
         specialty: json["specialty"],
         experienceYears: json["experience_years"],
@@ -125,21 +134,22 @@ class Doctor {
         profilePicture: json["profile_picture"],
         hospitalId: json["hospital_id"],
         consultationFees: json["consultation_fees"],
-        language: json["language"],
-        availableSlots: json["available_slots"],
+        language: List<String>.from(json["language"].map((x) => x)),
+        availableSlots: AvailableSlots.fromJson(json["available_slots"]),
         createdAt: DateTime.parse(json["created_at"]),
         updatedAt: DateTime.parse(json["updated_at"]),
-        approvalStatus: json["approval_status"],
-        qualifications: json["qualifications"],
-        medicalLicenseNumber: json["medical_license_number"],
+        status: json["status"],
+        email: json["email"],
+        city: json["city"],
+        password: json["password"],
+        approvals: json["Approvals"],
+        kycStatus: json["kyc_status"],
+        userId: json["user_id"],
         medicalLicenseFile: json["medical_license_file"],
-        consultationFee: json["consultation_fee"],
-        reviewsId: json["reviews_id"],
     );
 
     Map<String, dynamic> toJson() => {
         "id": id,
-        "user_id": userId,
         "full_name": fullName,
         "specialty": specialty,
         "experience_years": experienceYears,
@@ -147,15 +157,37 @@ class Doctor {
         "profile_picture": profilePicture,
         "hospital_id": hospitalId,
         "consultation_fees": consultationFees,
-        "language": language,
-        "available_slots": availableSlots,
+        "language": List<dynamic>.from(language.map((x) => x)),
+        "available_slots": availableSlots.toJson(),
         "created_at": createdAt.toIso8601String(),
         "updated_at": updatedAt.toIso8601String(),
-        "approval_status": approvalStatus,
-        "qualifications": qualifications,
-        "medical_license_number": medicalLicenseNumber,
+        "status": status,
+        "email": email,
+        "city": city,
+        "password": password,
+        "Approvals": approvals,
+        "kyc_status": kycStatus,
+        "user_id": userId,
         "medical_license_file": medicalLicenseFile,
-        "consultation_fee": consultationFee,
-        "reviews_id": reviewsId,
+    };
+}
+
+class AvailableSlots {
+    List<String> mon;
+    List<String> tue;
+
+    AvailableSlots({
+        required this.mon,
+        required this.tue,
+    });
+
+    factory AvailableSlots.fromJson(Map<String, dynamic> json) => AvailableSlots(
+        mon: List<String>.from(json["mon"].map((x) => x)),
+        tue: List<String>.from(json["tue"].map((x) => x)),
+    );
+
+    Map<String, dynamic> toJson() => {
+        "mon": List<dynamic>.from(mon.map((x) => x)),
+        "tue": List<dynamic>.from(tue.map((x) => x)),
     };
 }
