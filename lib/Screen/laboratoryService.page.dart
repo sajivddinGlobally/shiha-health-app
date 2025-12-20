@@ -265,7 +265,8 @@ class _LaboratoryServicePageState extends State<LaboratoryServicePage> {
                                 Navigator.push(
                                   context,
                                   CupertinoPageRoute(
-                                    builder: (context) => HospitalDetailsPage(id: '1',),
+                                    builder: (context) =>
+                                        HospitalDetailsPage(id: '11'),
                                   ),
                                 );
                               },

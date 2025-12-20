@@ -37,8 +37,8 @@ class _HospitalListingPageState extends ConsumerState<HospitalListingPage> {
               final filteredList = snap.where((hospital) {
                 final name = (hospital.name ?? "").toLowerCase();
                 final location = (hospital.location ?? "").toLowerCase();
-                final fees =
-                    (hospital.consultationPriceRange ?? "").toLowerCase();
+                final fees = (hospital.consultationPriceRange ?? "")
+                    .toLowerCase();
 
                 return name.contains(searchQuery.toLowerCase()) ||
                     location.contains(searchQuery.toLowerCase()) ||
@@ -158,11 +158,11 @@ class _HospitalListingPageState extends ConsumerState<HospitalListingPage> {
                                 itemCount: filteredList.length,
                                 gridDelegate:
                                     SliverGridDelegateWithFixedCrossAxisCount(
-                                  crossAxisCount: 2,
-                                  mainAxisSpacing: 15.h,
-                                  crossAxisSpacing: 15.w,
-                                  childAspectRatio: 0.80,
-                                ),
+                                      crossAxisCount: 2,
+                                      mainAxisSpacing: 15.h,
+                                      crossAxisSpacing: 15.w,
+                                      childAspectRatio: 0.80,
+                                    ),
                                 itemBuilder: (context, index) {
                                   final hospital = filteredList[index];
                                   return buildHospitalCard(hospital);
@@ -174,10 +174,14 @@ class _HospitalListingPageState extends ConsumerState<HospitalListingPage> {
                 ),
               );
             },
-            error: (err, stack) => Center(child: Text("$err, $stack", style: TextStyle(color: Colors.white),)),
-            loading: () => Center(
-              child: CircularProgressIndicator(color: Colors.white),
+            error: (err, stack) => Center(
+              child: Text(
+                "$err, $stack",
+                style: TextStyle(color: Colors.white),
+              ),
             ),
+            loading: () =>
+                Center(child: CircularProgressIndicator(color: Colors.white)),
           ),
         ],
       ),
@@ -213,7 +217,7 @@ class _HospitalListingPageState extends ConsumerState<HospitalListingPage> {
                 width: double.infinity,
                 height: 100.h,
                 errorBuilder: (context, error, stackTrace) =>
-                    Icon(Icons.broken_image, size: 40.sp),
+                    Icon(Icons.broken_image, size: 40.sp, color: Colors.white),
               ),
             ),
           ),
@@ -232,8 +236,11 @@ class _HospitalListingPageState extends ConsumerState<HospitalListingPage> {
                   child: Row(
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      Icon(Icons.location_on,
-                          color: Color(0xFF067594), size: 14.sp),
+                      Icon(
+                        Icons.location_on,
+                        color: Color(0xFF067594),
+                        size: 14.sp,
+                      ),
                       Flexible(
                         child: Text(
                           hospital.location ?? "",
@@ -346,8 +353,11 @@ class buildFilter extends StatelessWidget {
             ),
           ),
           SizedBox(width: 5.w),
-          Icon(Icons.keyboard_arrow_down_outlined,
-              color: Colors.white, size: 20.sp),
+          Icon(
+            Icons.keyboard_arrow_down_outlined,
+            color: Colors.white,
+            size: 20.sp,
+          ),
         ],
       ),
     );

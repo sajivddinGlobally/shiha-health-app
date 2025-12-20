@@ -1,5 +1,4 @@
 import 'dart:developer';
-
 import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:pretty_dio_logger/pretty_dio_logger.dart';
@@ -40,13 +39,13 @@ createDio() {
         } catch (e) {
           // Safely ignore if response.data is not a map
         }
-        handler.next(response); 
+        handler.next(response);
       },
       onError: (DioException e, handler) async {
         if (e.response?.statusCode == 401) {
           log("Token expired, refreshing...");
         }
-        handler.next(e); 
+        handler.next(e);
       },
     ),
   );

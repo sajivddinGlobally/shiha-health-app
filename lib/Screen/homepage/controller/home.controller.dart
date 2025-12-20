@@ -29,14 +29,15 @@ mixin HomeController<T extends ConsumerStatefulWidget> on ConsumerState<T> {
             : null;
         log(data.toString());
         userName = data!['user']['full_name'];
+        email = data['user']['email'] ?? "No Email";
         id = data['user']['id'].toString();
       });
     });
   }
 
-  AsyncValue<UserDetailsResponse> fetchUserDetails() {
-    return ref.watch(userDetailProvider(id));
-  }
+  // AsyncValue<UserDetailsResponse> fetchUserDetails() {
+  //   return ref.watch(userDetailProvider(id));
+  // }
 
   AsyncValue<UserAppoinmentsListRes> fetchInit() {
     final rawData = HiveService().getData<Map<dynamic, dynamic>>(

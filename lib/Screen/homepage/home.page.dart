@@ -1,3 +1,4 @@
+import 'dart:developer';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -14,7 +15,8 @@ import 'package:shiha_health_app/Screen/homepage/controller/home.controller.dart
 import 'package:shiha_health_app/Screen/hospitalListing.page.dart';
 import 'package:shiha_health_app/Screen/laboratoryService.page.dart';
 import 'package:shiha_health_app/Screen/selfCare/selfCare.page.dart';
-
+import 'package:shiha_health_app/data/controller/userDetails.provider.dart';
+import 'package:shiha_health_app/data/db/userData.dart';
 
 class HomePage extends ConsumerStatefulWidget {
   const HomePage({super.key});
@@ -30,14 +32,86 @@ class _HomePageState extends ConsumerState<HomePage>
 
   @override
   void initState() {
-
     super.initState();
     fetchLocalDota();
   }
 
+  Future<void> showLogoutDialog(BuildContext context) {
+    return showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (context) {
+        return Dialog(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(20),
+          ),
+          child: Padding(
+            padding: const EdgeInsets.all(20),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                const Text(
+                  "Logout",
+                  style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
+                ),
+                const SizedBox(height: 15),
+                const Text(
+                  "Are you sure you want to logout?",
+                  textAlign: TextAlign.center,
+                  style: TextStyle(fontSize: 16, color: Colors.black54),
+                ),
+                const SizedBox(height: 25),
+
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    // Cancel Button
+                    ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.grey.shade300,
+                        foregroundColor: Colors.black,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                      ),
+                      onPressed: () {
+                        Navigator.pop(context);
+                      },
+                      child: const Text("No"),
+                    ),
+
+                    // Logout Button
+                    ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.red,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                      ),
+                      onPressed: () {
+                        userLogout();
+                        Navigator.pop(context);
+                      },
+                      child: const Text("Yes"),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ),
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
-    final userDetails = fetchUserDetails();
+    final rawData = HiveService().getData<Map<dynamic, dynamic>>(
+      key: "user",
+      boxName: HiveBoxes.userData,
+    );
+    final userDetails = ref.watch(userDetailProvider(rawData!['user']['id']));
+    // final userDetails = fetchUserDetails();
     final appoinment = fetchInit();
     return Scaffold(
       key: _scaffoldKey,
@@ -55,294 +129,352 @@ class _HomePageState extends ConsumerState<HomePage>
 
               Align(
                 alignment: Alignment.topLeft,
-                child: Padding(
-                  padding: EdgeInsets.only(left: 20.w, right: 20.w, top: 30.h),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        "SiHHA",
-                        style: GoogleFonts.poppins(
-                          fontSize: 36.sp,
-                          fontWeight: FontWeight.w500,
-                          color: Colors.white,
-                        ),
-                      ),
-                      Divider(color: Colors.white38),
-                      SizedBox(height: 20.h),
-                      Text(
-                        "MAIN MENU",
-                        style: GoogleFonts.poppins(
-                          fontSize: 14.sp,
-                          fontWeight: FontWeight.w500,
-                          color: Color(0xFFB0BABF),
-                          letterSpacing: 1.5,
-                        ),
-                      ),
-                      SizedBox(height: 10.h),
-                      ListTile(
-                        dense: true,
-                        contentPadding: EdgeInsets.zero,
-                        leading: Icon(
-                          Icons.home_outlined,
-                          size: 30.sp,
-                          color: Colors.white60,
-                        ),
-                        title: Text(
-                          "Home",
-                          style: GoogleFonts.poppins(
-                            fontSize: 18.sp,
-                            fontWeight: FontWeight.w500,
-                            color: Color(0xFFB0BABF),
-                          ),
-                        ),
-                      ),
-                      ListTile(
-                        onTap: () {
-                          Navigator.push(
-                            context,
-                            CupertinoPageRoute(
-                              builder: (context) => AppointmentPage(),
-                            ),
-                          );
-                        },
-                        dense: true,
-                        contentPadding: EdgeInsets.zero,
-                        leading: Icon(
-                          Icons.calendar_today_outlined,
-                          size: 28.sp,
-                          color: Colors.white60,
-                        ),
-                        title: Text(
-                          "Appointments",
-                          style: GoogleFonts.poppins(
-                            fontSize: 18.sp,
-                            fontWeight: FontWeight.w500,
-                            color: Color(0xFFB0BABF),
-                          ),
-                        ),
-                      ),
-                      ListTile(
-                        onTap: () {
-                          Navigator.push(
-                            context,
-                            CupertinoPageRoute(
-                              builder: (context) => HealthInsurancePage(),
-                            ),
-                          );
-                        },
-                        dense: true,
-                        contentPadding: EdgeInsets.zero,
-                        leading: Icon(
-                          Icons.description,
-                          size: 30.sp,
-                          color: Colors.white60,
-                        ),
-                        title: Text(
-                          "Insurance",
-                          style: GoogleFonts.poppins(
-                            fontSize: 18.sp,
-                            fontWeight: FontWeight.w500,
-                            color: Color(0xFFB0BABF),
-                          ),
-                        ),
-                      ),
-                      ListTile(
-                        dense: true, // space ko kam karega
-                        contentPadding: EdgeInsets.zero,
-                        leading: Icon(
-                          Icons.person_outline,
-                          size: 30.sp,
-                          color: Colors.white60,
-                        ),
-                        title: Text(
-                          "Profile",
-                          style: GoogleFonts.poppins(
-                            fontSize: 18.sp,
-                            fontWeight: FontWeight.w500,
-                            color: Color(0xFFB0BABF),
-                          ),
-                        ),
-                      ),
-                      ListTile(
-                        onTap: () {
-                          Navigator.push(
-                            context,
-                            CupertinoPageRoute(
-                              builder: (context) => LaboratoryServicePage(),
-                            ),
-                          );
-                        },
-                        dense: true,
-                        contentPadding: EdgeInsets.zero,
-                        leading: Icon(
-                          Icons.device_thermostat_outlined,
-                          size: 30.sp,
-                          color: Colors.white60,
-                        ),
-                        title: Text(
-                          "Laboratory",
-                          style: GoogleFonts.poppins(
-                            fontSize: 18.sp,
-                            fontWeight: FontWeight.w500,
-                            color: Color(0xFFB0BABF),
-                          ),
-                        ),
-                      ),
-                      ListTile(
-                        dense: true,
-                        contentPadding: EdgeInsets.zero,
-                        leading: Icon(
-                          Icons.map_outlined,
-                          size: 30.sp,
-                          color: Colors.white60,
-                        ),
-                        title: Text(
-                          "International",
-                          style: GoogleFonts.poppins(
-                            fontSize: 18.sp,
-                            fontWeight: FontWeight.w500,
-                            color: Color(0xFFB0BABF),
-                          ),
-                        ),
-                      ),
-                      ListTile(
-                        onTap: () {
-                          Navigator.push(
-                            context,
-                            CupertinoPageRoute(
-                              builder: (context) => SelfCarePage(),
-                            ),
-                          );
-                        },
-                        dense: true,
-                        contentPadding: EdgeInsets.zero,
-                        leading: Icon(
-                          Icons.favorite_border,
-                          size: 30.sp,
-                          color: Colors.white60,
-                        ),
-                        title: Text(
-                          "Self Care",
-                          style: GoogleFonts.poppins(
-                            fontSize: 18.sp,
-                            fontWeight: FontWeight.w500,
-                            color: Color(0xFFB0BABF),
-                          ),
-                        ),
-                      ),
-                      SizedBox(height: 10.h),
-                      Divider(color: Colors.white38, height: 1),
-                      SizedBox(height: 20.h),
-                      Text(
-                        "Settings",
-                        style: GoogleFonts.poppins(
-                          fontSize: 14.sp,
-                          fontWeight: FontWeight.w500,
-                          color: Color(0xFFB0BABF),
-                          letterSpacing: 2,
-                        ),
-                      ),
-                      SizedBox(height: 10.h),
-                      ListTile(
-                        dense: true,
-                        contentPadding: EdgeInsets.zero,
-                        leading: Icon(
-                          Icons.headphones,
-                          size: 30.sp,
-                          color: Colors.white60,
-                        ),
-                        title: Text(
-                          "Support",
-                          style: GoogleFonts.poppins(
-                            fontSize: 18.sp,
-                            fontWeight: FontWeight.w500,
-                            color: Color(0xFFB0BABF),
-                          ),
-                        ),
-                      ),
-                      ListTile(
-                        dense: true,
-                        contentPadding: EdgeInsets.zero,
-                        leading: Icon(
-                          Icons.settings,
-                          size: 30.sp,
-                          color: Colors.white60,
-                        ),
-                        title: Text(
-                          "Settings",
-                          style: GoogleFonts.poppins(
-                            fontSize: 18.sp,
-                            fontWeight: FontWeight.w500,
-                            color: Color(0xFFB0BABF),
-                          ),
-                        ),
-                      ),
-                      ListTile(
-                        onTap: () => userLogout(),
-                        dense: true,
-                        contentPadding: EdgeInsets.zero,
-                        leading: Icon(
-                          Icons.logout_outlined,
-                          size: 30.sp,
-                          color: Colors.white60,
-                        ),
-                        title: Text(
-                          "Logout",
-                          style: GoogleFonts.poppins(
-                            fontSize: 18.sp,
-                            fontWeight: FontWeight.w500,
-                            color: Color(0xFFB0BABF),
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-              Positioned(
-                bottom: 20.h,
-                child: Row(
-                  children: [
-                    Container(
-                      margin: EdgeInsets.only(left: 20.w),
-                      width: 44.w,
-                      height: 44.h,
-                      decoration: BoxDecoration(
-                        shape: BoxShape.circle,
-                        // border: Border.all(color: Colors.white, width: 1.w),
-                        image: DecorationImage(
-                          image: AssetImage("assets/profile.png"),
-                        ),
-                      ),
+                child: SingleChildScrollView(
+                  child: Padding(
+                    padding: EdgeInsets.only(
+                      left: 20.w,
+                      right: 20.w,
+                      top: 30.h,
                     ),
-                    SizedBox(width: 10.w),
-                    Column(
+                    child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          userName,
+                          "SiHHA",
                           style: GoogleFonts.poppins(
-                            fontSize: 15.sp,
+                            fontSize: 36.sp,
                             fontWeight: FontWeight.w500,
                             color: Colors.white,
-                            letterSpacing: -0.5,
                           ),
                         ),
+                        Divider(color: Colors.white38),
+                        SizedBox(height: 20.h),
                         Text(
-                          "sharam21@gmail.com",
+                          "MAIN MENU",
                           style: GoogleFonts.poppins(
-                            fontSize: 12.sp,
-                            fontWeight: FontWeight.w400,
-                            color: Color.fromARGB(178, 255, 255, 255),
-                            letterSpacing: -0.4,
+                            fontSize: 14.sp,
+                            fontWeight: FontWeight.w500,
+                            color: Color(0xFFB0BABF),
+                            letterSpacing: 1.5,
                           ),
+                        ),
+                        SizedBox(height: 10.h),
+                        ListTile(
+                          onTap: () {
+                            Navigator.pop(context);
+                          },
+                          dense: true,
+                          contentPadding: EdgeInsets.zero,
+                          leading: Icon(
+                            Icons.home_outlined,
+                            size: 30.sp,
+                            color: Colors.white60,
+                          ),
+                          title: Text(
+                            "Home",
+                            style: GoogleFonts.poppins(
+                              fontSize: 18.sp,
+                              fontWeight: FontWeight.w500,
+                              color: Color(0xFFB0BABF),
+                            ),
+                          ),
+                        ),
+                        ListTile(
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              CupertinoPageRoute(
+                                builder: (context) => AppointmentPage(),
+                              ),
+                            );
+                          },
+                          dense: true,
+                          contentPadding: EdgeInsets.zero,
+                          leading: Icon(
+                            Icons.calendar_today_outlined,
+                            size: 28.sp,
+                            color: Colors.white60,
+                          ),
+                          title: Text(
+                            "Appointments",
+                            style: GoogleFonts.poppins(
+                              fontSize: 18.sp,
+                              fontWeight: FontWeight.w500,
+                              color: Color(0xFFB0BABF),
+                            ),
+                          ),
+                        ),
+                        ListTile(
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              CupertinoPageRoute(
+                                builder: (context) => HealthInsurancePage(),
+                              ),
+                            );
+                          },
+                          dense: true,
+                          contentPadding: EdgeInsets.zero,
+                          leading: Icon(
+                            Icons.description,
+                            size: 30.sp,
+                            color: Colors.white60,
+                          ),
+                          title: Text(
+                            "Insurance",
+                            style: GoogleFonts.poppins(
+                              fontSize: 18.sp,
+                              fontWeight: FontWeight.w500,
+                              color: Color(0xFFB0BABF),
+                            ),
+                          ),
+                        ),
+                        ListTile(
+                          dense: true, // space ko kam karega
+                          contentPadding: EdgeInsets.zero,
+                          leading: Icon(
+                            Icons.person_outline,
+                            size: 30.sp,
+                            color: Colors.white60,
+                          ),
+                          title: Text(
+                            "Profile",
+                            style: GoogleFonts.poppins(
+                              fontSize: 18.sp,
+                              fontWeight: FontWeight.w500,
+                              color: Color(0xFFB0BABF),
+                            ),
+                          ),
+                        ),
+                        ListTile(
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              CupertinoPageRoute(
+                                builder: (context) => LaboratoryServicePage(),
+                              ),
+                            );
+                          },
+                          dense: true,
+                          contentPadding: EdgeInsets.zero,
+                          leading: Icon(
+                            Icons.device_thermostat_outlined,
+                            size: 30.sp,
+                            color: Colors.white60,
+                          ),
+                          title: Text(
+                            "Laboratory",
+                            style: GoogleFonts.poppins(
+                              fontSize: 18.sp,
+                              fontWeight: FontWeight.w500,
+                              color: Color(0xFFB0BABF),
+                            ),
+                          ),
+                        ),
+                        ListTile(
+                          dense: true,
+                          contentPadding: EdgeInsets.zero,
+                          leading: Icon(
+                            Icons.map_outlined,
+                            size: 30.sp,
+                            color: Colors.white60,
+                          ),
+                          title: Text(
+                            "International",
+                            style: GoogleFonts.poppins(
+                              fontSize: 18.sp,
+                              fontWeight: FontWeight.w500,
+                              color: Color(0xFFB0BABF),
+                            ),
+                          ),
+                        ),
+                        ListTile(
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              CupertinoPageRoute(
+                                builder: (context) => SelfCarePage(),
+                              ),
+                            );
+                          },
+                          dense: true,
+                          contentPadding: EdgeInsets.zero,
+                          leading: Icon(
+                            Icons.favorite_border,
+                            size: 30.sp,
+                            color: Colors.white60,
+                          ),
+                          title: Text(
+                            "Self Care",
+                            style: GoogleFonts.poppins(
+                              fontSize: 18.sp,
+                              fontWeight: FontWeight.w500,
+                              color: Color(0xFFB0BABF),
+                            ),
+                          ),
+                        ),
+                        SizedBox(height: 10.h),
+                        Divider(color: Colors.white38, height: 1),
+                        SizedBox(height: 20.h),
+                        Text(
+                          "Settings",
+                          style: GoogleFonts.poppins(
+                            fontSize: 14.sp,
+                            fontWeight: FontWeight.w500,
+                            color: Color(0xFFB0BABF),
+                            letterSpacing: 2,
+                          ),
+                        ),
+                        SizedBox(height: 10.h),
+                        ListTile(
+                          dense: true,
+                          contentPadding: EdgeInsets.zero,
+                          leading: Icon(
+                            Icons.headphones,
+                            size: 30.sp,
+                            color: Colors.white60,
+                          ),
+                          title: Text(
+                            "Support",
+                            style: GoogleFonts.poppins(
+                              fontSize: 18.sp,
+                              fontWeight: FontWeight.w500,
+                              color: Color(0xFFB0BABF),
+                            ),
+                          ),
+                        ),
+                        ListTile(
+                          dense: true,
+                          contentPadding: EdgeInsets.zero,
+                          leading: Icon(
+                            Icons.settings,
+                            size: 30.sp,
+                            color: Colors.white60,
+                          ),
+                          title: Text(
+                            "Settings",
+                            style: GoogleFonts.poppins(
+                              fontSize: 18.sp,
+                              fontWeight: FontWeight.w500,
+                              color: Color(0xFFB0BABF),
+                            ),
+                          ),
+                        ),
+                        ListTile(
+                          onTap: () {
+                            showLogoutDialog(context);
+                          },
+                          dense: true,
+                          contentPadding: EdgeInsets.zero,
+                          leading: Icon(
+                            Icons.logout_outlined,
+                            size: 30.sp,
+                            color: Colors.white60,
+                          ),
+                          title: Text(
+                            "Logout",
+                            style: GoogleFonts.poppins(
+                              fontSize: 18.sp,
+                              fontWeight: FontWeight.w500,
+                              color: Color(0xFFB0BABF),
+                            ),
+                          ),
+                        ),
+                        Row(
+                          children: [
+                            Container(
+                              margin: EdgeInsets.only(top: 20.h, bottom: 20.h),
+                              width: 44.w,
+                              height: 44.h,
+                              decoration: BoxDecoration(
+                                shape: BoxShape.circle,
+                                border: Border.all(
+                                  color: Colors.white38,
+                                  width: 1.w,
+                                ),
+                                image: DecorationImage(
+                                  image: NetworkImage(
+                                    "https://cdn-icons-png.flaticon.com/512/149/149071.png",
+                                  ),
+                                ),
+                              ),
+                            ),
+                            SizedBox(width: 10.w),
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  userName,
+                                  style: GoogleFonts.poppins(
+                                    fontSize: 15.sp,
+                                    fontWeight: FontWeight.w500,
+                                    color: Colors.white,
+                                    letterSpacing: -0.5,
+                                  ),
+                                ),
+                                // Text(
+                                //   // "sharam21@gmail.com",
+                                //   email,
+                                //   style: GoogleFonts.poppins(
+                                //     fontSize: 12.sp,
+                                //     fontWeight: FontWeight.w400,
+                                //     color: Color.fromARGB(178, 255, 255, 255),
+                                //     letterSpacing: -0.4,
+                                //   ),
+                                // ),
+                              ],
+                            ),
+                          ],
                         ),
                       ],
                     ),
-                  ],
+                  ),
                 ),
               ),
+              // Positioned(
+              //   bottom: 20.h,
+              //   child: Row(
+              //     children: [
+              //       Container(
+              //         margin: EdgeInsets.only(left: 20.w),
+              //         width: 44.w,
+              //         height: 44.h,
+              //         decoration: BoxDecoration(
+              //           shape: BoxShape.circle,
+              //           // border: Border.all(color: Colors.white, width: 1.w),
+              //           image: DecorationImage(
+              //             image: AssetImage("assets/profile.png"),
+              //           ),
+              //         ),
+              //       ),
+              //       SizedBox(width: 10.w),
+              //       Column(
+              //         crossAxisAlignment: CrossAxisAlignment.start,
+              //         children: [
+              //           Text(
+              //             userName,
+              //             style: GoogleFonts.poppins(
+              //               fontSize: 15.sp,
+              //               fontWeight: FontWeight.w500,
+              //               color: Colors.white,
+              //               letterSpacing: -0.5,
+              //             ),
+              //           ),
+              //           Text(
+              //             // "sharam21@gmail.com",
+              //             email,
+              //             style: GoogleFonts.poppins(
+              //               fontSize: 12.sp,
+              //               fontWeight: FontWeight.w400,
+              //               color: Color.fromARGB(178, 255, 255, 255),
+              //               letterSpacing: -0.4,
+              //             ),
+              //           ),
+              //         ],
+              //       ),
+              //     ],
+              //   ),
+              // ),
             ],
           ),
         ),
@@ -523,17 +655,17 @@ class _HomePageState extends ConsumerState<HomePage>
                               children: [
                                 hearbuild(
                                   "Heart\nRate",
-                                  "${snap.profile.heartRate}",
+                                  "${snap.profile!.heartRate}",
                                   'bpm',
                                 ),
                                 hearbuild(
                                   "Blood\nPressure",
-                                  '${snap.profile.bloodPressure}\n',
+                                  '${snap.profile!.bloodPressure}\n',
                                   "mg/hg",
                                 ),
                                 hearbuild(
                                   "Your\nWeight",
-                                  "${snap.profile.weightKg}",
+                                  "${snap.profile!.weightKg}",
                                   "kg",
                                 ),
                                 hearbuild("Last\nCheckup", "2", "Week ago"),
@@ -846,239 +978,261 @@ class _HomePageState extends ConsumerState<HomePage>
                           ),
                           SizedBox(height: 15.h),
                           if (tab == 0) ...[
-                            SizedBox(
-                              height: 185.h,
-                              child: ListView.builder(
-                                itemCount: appoinmentSnap.data.length,
-                                scrollDirection: Axis.horizontal,
-                                padding: EdgeInsets.zero,
-                                itemBuilder: (context, index) {
-                                  final item = appoinmentSnap.data[index];
-                                  return Container(
-                                    margin: EdgeInsets.only(left: 20.w),
-                                    padding: EdgeInsets.only(
-                                      left: 15.w,
-                                      right: 15.w,
-                                      top: 15.h,
-                                      //bottom: 10.h,
-                                    ),
-                                    decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(20.r),
-                                      color: Color(0xFF0E1329),
-                                      border: Border.all(
-                                        color: Color.fromARGB(
-                                          51,
-                                          255,
-                                          255,
-                                          255,
-                                        ),
-                                        width: 1.w,
+                            if ((appoinmentSnap.data?.isEmpty ?? true))
+                              Center(
+                                child: Text(
+                                  "No Booking available",
+                                  style: GoogleFonts.poppins(
+                                    fontSize: 15.sp,
+                                    fontWeight: FontWeight.w300,
+                                    color: Colors.white,
+                                  ),
+                                ),
+                              )
+                            else
+                              SizedBox(
+                                height: 185.h,
+                                child: ListView.builder(
+                                  itemCount: appoinmentSnap.data.length,
+                                  scrollDirection: Axis.horizontal,
+                                  padding: EdgeInsets.zero,
+                                  itemBuilder: (context, index) {
+                                    final item = appoinmentSnap.data[index];
+                                    return Container(
+                                      margin: EdgeInsets.only(left: 20.w),
+                                      padding: EdgeInsets.only(
+                                        left: 15.w,
+                                        right: 15.w,
+                                        top: 15.h,
+                                        //bottom: 10.h,
                                       ),
-                                    ),
-                                    child: Column(
-                                      children: [
-                                        Row(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: [
-                                            ClipRRect(
-                                              borderRadius:
-                                                  BorderRadius.circular(10.r),
-                                              child: Image.asset(
-                                                "assets/checkup.png",
-                                                width: 80.w,
-                                                height: 90.h,
-                                                fit: BoxFit.cover,
-                                              ),
-                                            ),
-                                            SizedBox(width: 15.w),
-                                            Column(
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.start,
-                                              // mainAxisAlignment: MainAxisAlignment.center,
-                                              children: [
-                                                Row(
-                                                  children: [
-                                                    Container(
-                                                      padding: EdgeInsets.only(
-                                                        top: 5.h,
-                                                        bottom: 5.h,
-                                                        left: 8.w,
-                                                        right: 8.w,
-                                                      ),
-                                                      decoration: BoxDecoration(
-                                                        borderRadius:
-                                                            BorderRadius.circular(
-                                                              40.r,
-                                                            ),
-                                                        color: Color.fromARGB(
-                                                          25,
-                                                          29,
-                                                          206,
-                                                          6,
-                                                        ),
-                                                      ),
-                                                      child: Row(
-                                                        children: [
-                                                          Container(
-                                                            // width: 10.w,
-                                                            // height: 10.h,
-                                                            decoration:
-                                                                BoxDecoration(
-                                                                  shape: BoxShape
-                                                                      .circle,
-                                                                  color: Color(
-                                                                    0xFF1DCE06,
-                                                                  ),
-                                                                ),
-                                                            child: Icon(
-                                                              Icons.done,
-                                                              size: 15.sp,
-                                                            ),
-                                                          ),
-                                                          SizedBox(width: 6.w),
-                                                          Text(
-                                                            item.status,
-                                                            style:
-                                                                GoogleFonts.poppins(
-                                                                  fontSize:
-                                                                      10.sp,
-                                                                  fontWeight:
-                                                                      FontWeight
-                                                                          .w500,
-                                                                  color: Color(
-                                                                    0xFF1DCE06,
-                                                                  ),
-                                                                ),
-                                                          ),
-                                                        ],
-                                                      ),
-                                                    ),
-                                                    SizedBox(width: 8.w),
-                                                    Container(
-                                                      padding: EdgeInsets.only(
-                                                        top: 5.h,
-                                                        bottom: 5.h,
-                                                        left: 8.w,
-                                                        right: 8.w,
-                                                      ),
-                                                      decoration: BoxDecoration(
-                                                        borderRadius:
-                                                            BorderRadius.circular(
-                                                              40.r,
-                                                            ),
-                                                        color: Color.fromARGB(
-                                                          25,
-                                                          29,
-                                                          206,
-                                                          6,
-                                                        ),
-                                                      ),
-                                                      child: Row(
-                                                        children: [
-                                                          Icon(
-                                                            Icons
-                                                                .calendar_today,
-                                                            size: 15.sp,
-                                                            color: Color(
-                                                              0xFF067594,
-                                                            ),
-                                                          ),
-                                                          SizedBox(width: 6.w),
-                                                          Text(
-                                                            DateFormat(
-                                                              "d MMMM yyyy",
-                                                            ).format(item.date),
-                                                            style:
-                                                                GoogleFonts.poppins(
-                                                                  fontSize:
-                                                                      10.sp,
-                                                                  fontWeight:
-                                                                      FontWeight
-                                                                          .w500,
-                                                                  color: Color(
-                                                                    0xFF067594,
-                                                                  ),
-                                                                ),
-                                                          ),
-                                                        ],
-                                                      ),
-                                                    ),
-                                                  ],
+                                      decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(
+                                          20.r,
+                                        ),
+                                        color: Color(0xFF0E1329),
+                                        border: Border.all(
+                                          color: Color.fromARGB(
+                                            51,
+                                            255,
+                                            255,
+                                            255,
+                                          ),
+                                          width: 1.w,
+                                        ),
+                                      ),
+                                      child: Column(
+                                        children: [
+                                          Row(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              ClipRRect(
+                                                borderRadius:
+                                                    BorderRadius.circular(10.r),
+                                                child: Image.asset(
+                                                  "assets/checkup.png",
+                                                  width: 80.w,
+                                                  height: 90.h,
+                                                  fit: BoxFit.cover,
                                                 ),
-                                                SizedBox(height: 6.h),
-                                                SizedBox(
-                                                  width: 200.w,
-                                                  child: Text(
-                                                    "${item.doctor.fullName} – ${item.hospital.name}",
+                                              ),
+                                              SizedBox(width: 15.w),
+                                              Column(
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.start,
+                                                // mainAxisAlignment: MainAxisAlignment.center,
+                                                children: [
+                                                  Row(
+                                                    children: [
+                                                      Container(
+                                                        padding:
+                                                            EdgeInsets.only(
+                                                              top: 5.h,
+                                                              bottom: 5.h,
+                                                              left: 8.w,
+                                                              right: 8.w,
+                                                            ),
+                                                        decoration: BoxDecoration(
+                                                          borderRadius:
+                                                              BorderRadius.circular(
+                                                                40.r,
+                                                              ),
+                                                          color: Color.fromARGB(
+                                                            25,
+                                                            29,
+                                                            206,
+                                                            6,
+                                                          ),
+                                                        ),
+                                                        child: Row(
+                                                          children: [
+                                                            Container(
+                                                              // width: 10.w,
+                                                              // height: 10.h,
+                                                              decoration:
+                                                                  BoxDecoration(
+                                                                    shape: BoxShape
+                                                                        .circle,
+                                                                    color: Color(
+                                                                      0xFF1DCE06,
+                                                                    ),
+                                                                  ),
+                                                              child: Icon(
+                                                                Icons.done,
+                                                                size: 15.sp,
+                                                              ),
+                                                            ),
+                                                            SizedBox(
+                                                              width: 6.w,
+                                                            ),
+                                                            Text(
+                                                              item.status,
+                                                              style: GoogleFonts.poppins(
+                                                                fontSize: 10.sp,
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .w500,
+                                                                color: Color(
+                                                                  0xFF1DCE06,
+                                                                ),
+                                                              ),
+                                                            ),
+                                                          ],
+                                                        ),
+                                                      ),
+                                                      SizedBox(width: 8.w),
+                                                      Container(
+                                                        padding:
+                                                            EdgeInsets.only(
+                                                              top: 5.h,
+                                                              bottom: 5.h,
+                                                              left: 8.w,
+                                                              right: 8.w,
+                                                            ),
+                                                        decoration: BoxDecoration(
+                                                          borderRadius:
+                                                              BorderRadius.circular(
+                                                                40.r,
+                                                              ),
+                                                          color: Color.fromARGB(
+                                                            25,
+                                                            29,
+                                                            206,
+                                                            6,
+                                                          ),
+                                                        ),
+                                                        child: Row(
+                                                          children: [
+                                                            Icon(
+                                                              Icons
+                                                                  .calendar_today,
+                                                              size: 15.sp,
+                                                              color: Color(
+                                                                0xFF067594,
+                                                              ),
+                                                            ),
+                                                            SizedBox(
+                                                              width: 6.w,
+                                                            ),
+                                                            Text(
+                                                              DateFormat(
+                                                                "d MMMM yyyy",
+                                                              ).format(
+                                                                item.date,
+                                                              ),
+                                                              style: GoogleFonts.poppins(
+                                                                fontSize: 10.sp,
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .w500,
+                                                                color: Color(
+                                                                  0xFF067594,
+                                                                ),
+                                                              ),
+                                                            ),
+                                                          ],
+                                                        ),
+                                                      ),
+                                                    ],
+                                                  ),
+                                                  SizedBox(height: 6.h),
+                                                  SizedBox(
+                                                    width: 200.w,
+                                                    child: Text(
+                                                      "${item.doctor.fullName} – ${item.hospital.name}",
+                                                      style:
+                                                          GoogleFonts.poppins(
+                                                            fontSize: 14.sp,
+                                                            fontWeight:
+                                                                FontWeight.w500,
+                                                            color: Color(
+                                                              0xFFFFFFFF,
+                                                            ),
+                                                            letterSpacing: -0.4,
+                                                          ),
+                                                    ),
+                                                  ),
+                                                  Text(
+                                                    item.hospital.location,
                                                     style: GoogleFonts.poppins(
-                                                      fontSize: 14.sp,
+                                                      fontSize: 11.sp,
                                                       fontWeight:
                                                           FontWeight.w500,
-                                                      color: Color(0xFFFFFFFF),
-                                                      letterSpacing: -0.4,
+                                                      color: Colors.white38,
                                                     ),
                                                   ),
+                                                ],
+                                              ),
+                                            ],
+                                          ),
+                                          SizedBox(height: 10.h),
+                                          ElevatedButton(
+                                            style: ElevatedButton.styleFrom(
+                                              backgroundColor: Colors
+                                                  .transparent, // 👈 background hata diya
+                                              elevation: 0,
+                                              minimumSize: Size(285.w, 36.h),
+                                              shape: RoundedRectangleBorder(
+                                                borderRadius:
+                                                    BorderRadius.circular(10.r),
+                                                side: BorderSide(
+                                                  color: Color(0xFF067594),
+                                                  width: 1.w,
                                                 ),
-                                                Text(
-                                                  item.hospital.location,
-                                                  style: GoogleFonts.poppins(
-                                                    fontSize: 11.sp,
-                                                    fontWeight: FontWeight.w500,
-                                                    color: Colors.white38,
-                                                  ),
-                                                ),
-                                              ],
+                                              ),
                                             ),
-                                          ],
-                                        ),
-                                        SizedBox(height: 10.h),
-                                        ElevatedButton(
-                                          style: ElevatedButton.styleFrom(
-                                            backgroundColor: Colors
-                                                .transparent, // 👈 background hata diya
-                                            elevation: 0,
-                                            minimumSize: Size(285.w, 36.h),
-                                            shape: RoundedRectangleBorder(
-                                              borderRadius:
-                                                  BorderRadius.circular(10.r),
-                                              side: BorderSide(
+                                            onPressed: () {
+                                              Navigator.push(
+                                                context,
+                                                CupertinoPageRoute(
+                                                  builder: (context) =>
+                                                      DoctorDetailsPage(
+                                                        userID: item.doctor.id
+                                                            .toString(),
+                                                        hasChange: true,
+                                                        bookingId: item.id
+                                                            .toString(),
+                                                      ),
+                                                ),
+                                              );
+                                            },
+                                            child: Text(
+                                              "Reschedule",
+                                              style: GoogleFonts.poppins(
+                                                fontSize: 12.sp,
+                                                fontWeight: FontWeight.w500,
                                                 color: Color(0xFF067594),
-                                                width: 1.w,
+                                                letterSpacing: -0.3,
                                               ),
                                             ),
                                           ),
-                                          onPressed: () {
-                                            Navigator.push(
-                                              context,
-                                              CupertinoPageRoute(
-                                                builder: (context) =>
-                                                    DoctorDetailsPage(
-                                                      userID: item.doctor.id
-                                                          .toString(),
-                                                      hasChange: true,
-                                                      bookingId: item.id
-                                                          .toString(),
-                                                    ),
-                                              ),
-                                            );
-                                          },
-                                          child: Text(
-                                            "Reschedule",
-                                            style: GoogleFonts.poppins(
-                                              fontSize: 12.sp,
-                                              fontWeight: FontWeight.w500,
-                                              color: Color(0xFF067594),
-                                              letterSpacing: -0.3,
-                                            ),
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  );
-                                },
+                                        ],
+                                      ),
+                                    );
+                                  },
+                                ),
                               ),
-                            ),
                           ] else ...[
                             SizedBox(
                               height: 185.h,
@@ -1153,13 +1307,23 @@ class _HomePageState extends ConsumerState<HomePage>
                     );
                   },
                   error: (err, stack) {
-                    return Center(child: Text("$err, $stack", style: TextStyle(color: Colors.white),));
+                    log(stack.toString());
+                    return Center(
+                      child: Text("$err", style: TextStyle(color: Colors.red)),
+                    );
                   },
                   loading: () => Center(child: CircularProgressIndicator()),
                 );
               },
               error: (err, stack) {
-                return Center(child: Text("$err, $stack", style: TextStyle(color: Colors.white),));
+                log(stack.toString());
+                log(err.toString());
+                return Center(
+                  child: Text(
+                    "$err, $stack",
+                    style: TextStyle(color: Colors.white),
+                  ),
+                );
               },
               loading: () => SizedBox(
                 height: MediaQuery.of(context).size.height,

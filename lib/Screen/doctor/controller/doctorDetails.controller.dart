@@ -80,7 +80,11 @@ mixin DoctorDetailsController<T extends ConsumerStatefulWidget>
     }
   }
 
-  void updateBooking({required int doctorId, required int hospitalId, required String bookingId}) async {
+  void updateBooking({
+    required int doctorId,
+    required int hospitalId,
+    required String bookingId,
+  }) async {
     final rawData = HiveService().getData<Map<dynamic, dynamic>>(
       key: "user",
       boxName: HiveBoxes.userData,
@@ -97,7 +101,7 @@ mixin DoctorDetailsController<T extends ConsumerStatefulWidget>
           time: selectedTime ?? "",
           status: "Scheduled",
         ),
-        bookingId
+        bookingId,
       );
       Navigator.push(
         context,
@@ -116,5 +120,4 @@ mixin DoctorDetailsController<T extends ConsumerStatefulWidget>
       log("Other error: $e");
     }
   }
-
 }

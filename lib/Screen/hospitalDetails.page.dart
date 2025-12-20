@@ -1,5 +1,7 @@
 import 'dart:convert';
+import 'dart:developer';
 
+import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -7,7 +9,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:shiha_health_app/Screen/doctorList/doctorList.page.dart';
 import 'package:shiha_health_app/data/controller/hospitalDetails.provider.dart';
-
+import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
 class HospitalDetailsPage extends ConsumerStatefulWidget {
   final String id;
@@ -34,6 +36,9 @@ class _HospitalDetailsPageState extends ConsumerState<HospitalDetailsPage> {
 
   Set<String> selectinterested = {}; // Store selected items
 
+  final CarouselSliderController _controller = CarouselSliderController();
+  int _current = 0;
+
   @override
   Widget build(BuildContext context) {
     final hospital = ref.watch(hospitalDetailsProvider(widget.id));
@@ -52,9 +57,9 @@ class _HospitalDetailsPageState extends ConsumerState<HospitalDetailsPage> {
               hospital.when(
                 data: (snap) {
                   List<dynamic> decoded = [];
-                  try{
+                  try {
                     decoded = jsonDecode(snap.servicesOffered);
-                  } catch (e){
+                  } catch (e) {
                     decoded = [];
                   }
                   List<String> listService = List<String>.from(decoded);
@@ -93,17 +98,70 @@ class _HospitalDetailsPageState extends ConsumerState<HospitalDetailsPage> {
                           ],
                         ),
                         SizedBox(height: 15.h),
-                        SizedBox(
-                          width: MediaQuery.of(context).size.width,
-                          height: 248.h,
-                          child: ClipRRect(
-                            borderRadius: BorderRadius.circular(10.r),
-                            child: Image.network(
-                              "http://sihahealth.globallywebsolutions.com${snap.images[0]}",
-                              fit: BoxFit.cover,
+                        // SizedBox(
+                        //   width: MediaQuery.of(context).size.width,
+                        //   height: 248.h,
+                        //   child: ClipRRect(
+                        //     borderRadius: BorderRadius.circular(10.r),
+                        //     child: Image.network(
+                        //       // "http://sihahealth.globallywebsolutions.com${snap.images[0]}",
+                        //       snap.images.first,
+                        //       fit: BoxFit.cover,
+                        //       errorBuilder: (context, error, stackTrace) {
+                        //         return Image.network(
+                        //           "https://media.istockphoto.com/id/1147544810/vector/no-thumbnail-image-vector-graphic.jpg?s=170667a&w=0&k=20&c=COegVoyRhdLm8NElVpTb5hV0JAFa9ZCIDPNjCrCce00=",
+                        //           width: MediaQuery.of(context).size.width,
+                        //           height: 248.h,
+                        //           fit: BoxFit.cover,
+                        //         );
+                        //       },
+                        //     ),
+                        //   ),
+                        // ),
+                        Column(
+                          children: [
+                            CarouselSlider(
+                              carouselController: _controller,
+                              options: CarouselOptions(
+                                height: 250.h,
+                                autoPlay: true,
+                                viewportFraction: 1,
+                                enlargeCenterPage: true,
+                                onPageChanged: (index, reason) {
+                                  setState(() {
+                                    _current = index;
+                                  });
+                                },
+                              ),
+                              items: snap.images.map((img) {
+                                final encodedUrl = Uri.encodeFull(img);
+                                return ClipRRect(
+                                  borderRadius: BorderRadius.circular(10.r),
+                                  child: Image.network(
+                                    encodedUrl,
+                                    width: 350.w,
+                                    height: 248.h,
+                                    fit: BoxFit.cover,
+                                  ),
+                                );
+                              }).toList(),
                             ),
-                          ),
+                            SizedBox(height: 10.h),
+                            SmoothPageIndicator(
+                              controller: PageController(initialPage: _current),
+                              count: snap.images.length,
+                              effect: WormEffect(
+                                dotHeight: 10.h,
+                                dotWidth: 10.w,
+                                activeDotColor: Colors.blue,
+                              ),
+                              onDotClicked: (index) {
+                                _controller.animateToPage(index);
+                              },
+                            ),
+                          ],
                         ),
+
                         SizedBox(height: 20.h),
                         Row(
                           children: [
@@ -395,7 +453,11 @@ class _HospitalDetailsPageState extends ConsumerState<HospitalDetailsPage> {
                   );
                 },
                 error: (err, stack) {
-                  return Center(child: Text("$err, $stack", style: TextStyle(color: Colors.white),));
+                  log(stack.toString());
+                  log(err.toString());
+                  return Center(
+                    child: Text("$err,", style: TextStyle(color: Colors.white)),
+                  );
                 },
                 loading: () => SizedBox(
                   height: MediaQuery.of(context).size.height,

@@ -13,7 +13,8 @@ class SplashPage extends StatefulWidget {
   State<SplashPage> createState() => _SplashPageState();
 }
 
-class _SplashPageState extends State<SplashPage> with SplashController<SplashPage> {
+class _SplashPageState extends State<SplashPage>
+    with SplashController<SplashPage> {
   @override
   void initState() {
     // TODO: implement initState
@@ -42,14 +43,14 @@ class _SplashPageState extends State<SplashPage> with SplashController<SplashPag
                       0.4,
                     ), // Optional dim overlay
                     child: SizedBox(
-                        width: MediaQuery.of(context).size.width,
-                        height: MediaQuery.of(context).size.height,
-                        child: Image.asset(
-                          "assets/mp4/dna.gif",
-                          fit: BoxFit.cover,
-                          // ya BoxFit.contain
-                        ),
+                      width: MediaQuery.of(context).size.width,
+                      height: MediaQuery.of(context).size.height,
+                      child: Image.asset(
+                        "assets/mp4/dna.gif",
+                        fit: BoxFit.cover,
+                        // ya BoxFit.contain
                       ),
+                    ),
                   ),
                 ),
               ),
@@ -70,12 +71,10 @@ class _SplashPageState extends State<SplashPage> with SplashController<SplashPag
             ),
             Image.asset(
               "assets/vectors/Vector.png",
-
               width: MediaQuery.of(context).size.width,
               height: 110.h,
               fit: BoxFit.cover,
             ),
-
             Align(
               alignment: Alignment.topCenter,
               child: Column(
@@ -108,118 +107,114 @@ class _SplashPageState extends State<SplashPage> with SplashController<SplashPag
                 ],
               ),
             ),
-            if(userData == null)...[
+            if (userData == null) ...[
               Align(
-              alignment: Alignment.bottomCenter,
-              child: Container(
-                margin: EdgeInsets.only(bottom: 30.h),
-                padding: EdgeInsets.all(1.w), // Border thickness
-                decoration: BoxDecoration(
-                  gradient: LinearGradient(
-                    colors: [
-                      Color.fromARGB(0, 255, 255, 255),
-                      Color.fromARGB(255, 255, 255, 255),
-                    ],
-                    begin: Alignment.topLeft,
-                    end: Alignment.topRight,
-                  ),
-                  borderRadius: BorderRadius.circular(30.r),
-                ),
+                alignment: Alignment.bottomCenter,
                 child: Container(
-                  width: 400.w,
-                  height: 240.h,
+                  margin: EdgeInsets.only(bottom: 30.h),
+                  padding: EdgeInsets.all(1.w), // Border thickness
                   decoration: BoxDecoration(
-                    color: Color(0xFF0E1329),
+                    gradient: LinearGradient(
+                      colors: [
+                        Color.fromARGB(0, 255, 255, 255),
+                        Color.fromARGB(255, 255, 255, 255),
+                      ],
+                      begin: Alignment.topLeft,
+                      end: Alignment.topRight,
+                    ),
                     borderRadius: BorderRadius.circular(30.r),
                   ),
-                  child: Padding(
-                    padding: EdgeInsets.only(
-                      left: 25.w,
-                      right: 25.w,
-                      top: 25.h,
-                      bottom: 20.h,
+                  child: Container(
+                    width: 400.w,
+                    height: 240.h,
+                    decoration: BoxDecoration(
+                      color: Color(0xFF0E1329),
+                      borderRadius: BorderRadius.circular(30.r),
                     ),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        Text.rich(
-                          TextSpan(
-                            children: [
-                              TextSpan(
-                                text: "Welcome to ",
-                                style: GoogleFonts.poppins(
-                                  fontSize: 22.sp,
-                                  fontWeight: FontWeight.w400,
-                                  color: Colors.white,
+                    child: Padding(
+                      padding: EdgeInsets.only(
+                        left: 25.w,
+                        right: 25.w,
+                        top: 25.h,
+                        bottom: 20.h,
+                      ),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Text.rich(
+                            TextSpan(
+                              children: [
+                                TextSpan(
+                                  text: "Welcome to ",
+                                  style: GoogleFonts.poppins(
+                                    fontSize: 22.sp,
+                                    fontWeight: FontWeight.w400,
+                                    color: Colors.white,
+                                  ),
                                 ),
-                              ),
-                              TextSpan(
-                                text: "Siha Health",
-                                style: GoogleFonts.poppins(
-                                  fontSize: 22.sp,
-                                  fontWeight: FontWeight.w600,
-                                  color: Color(0xFFFFFFFF),
-                                  letterSpacing: -1,
+                                TextSpan(
+                                  text: "Siha Health",
+                                  style: GoogleFonts.poppins(
+                                    fontSize: 22.sp,
+                                    fontWeight: FontWeight.w600,
+                                    color: Color(0xFFFFFFFF),
+                                    letterSpacing: -1,
+                                  ),
                                 ),
-                              ),
-                            ],
-                          ),
-                        ),
-                        SizedBox(height: 10.h),
-                        Text(
-                          "Your complete health companion, designed to help you track your fitness goals, monitor your nutrition, and manage your wellness journey.",
-                          style: GoogleFonts.poppins(
-                            fontSize: 14.sp,
-                            fontWeight: FontWeight.w400,
-                            color: Colors.white,
-                            letterSpacing: -0.4,
-                          ),
-                          textAlign: TextAlign.center,
-                        ),
-                        SizedBox(height: 20.h),
-                        ElevatedButton(
-                          style: ElevatedButton.styleFrom(
-                            minimumSize: Size(400.w, 50.h),
-                            backgroundColor: Color(0xFF067594),
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(10.r),
+                              ],
                             ),
                           ),
-                          onPressed: () {
-                            Navigator.push(
-                              context,
-                              CupertinoPageRoute(
-                                builder: (context) => LoginPage(),
-                              ),
-                            );
-                          },
-                          child: Text(
-                            "Get Started",
+                          SizedBox(height: 10.h),
+                          Text(
+                            "Your complete health companion, designed to help you track your fitness goals, monitor your nutrition, and manage your wellness journey.",
                             style: GoogleFonts.poppins(
                               fontSize: 14.sp,
-                              fontWeight: FontWeight.w500,
+                              fontWeight: FontWeight.w400,
                               color: Colors.white,
-                              letterSpacing: -1,
+                              letterSpacing: -0.4,
+                            ),
+                            textAlign: TextAlign.center,
+                          ),
+                          SizedBox(height: 20.h),
+                          ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                              minimumSize: Size(400.w, 50.h),
+                              backgroundColor: Color(0xFF067594),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(10.r),
+                              ),
+                            ),
+                            onPressed: () {
+                              Navigator.push(
+                                context,
+                                CupertinoPageRoute(
+                                  builder: (context) => LoginPage(),
+                                ),
+                              );
+                            },
+                            child: Text(
+                              "Get Started",
+                              style: GoogleFonts.poppins(
+                                fontSize: 14.sp,
+                                fontWeight: FontWeight.w500,
+                                color: Colors.white,
+                                letterSpacing: -1,
+                              ),
                             ),
                           ),
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
                   ),
                 ),
               ),
-            )
             ],
-            
           ],
         ),
       ),
     );
   }
 }
-
-
-
 
 class InwardCurveClipper extends CustomClipper<Path> {
   @override

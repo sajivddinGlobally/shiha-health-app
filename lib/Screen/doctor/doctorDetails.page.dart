@@ -7,6 +7,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import 'package:shiha_health_app/Screen/doctor/controller/doctorDetails.controller.dart';
+import 'package:shiha_health_app/Screen/widgets/errorShowFLushBar.dart';
 
 class DoctorDetailsPage extends ConsumerStatefulWidget {
   final String userID;
@@ -54,6 +55,27 @@ class _DoctorDetailsPageState extends ConsumerState<DoctorDetailsPage>
                   final dateKey = DateFormat('yyyy-MM-dd').format(selectedDate);
                   return availableSlots[dateKey] ?? [];
                 }
+
+                List<String> parseLanguages(dynamic langValue) {
+                  if (langValue == null) return [];
+
+                  // Step 1: String me convert karo
+                  String raw = langValue.toString();
+
+                  // Step 2: Brackets remove karo
+                  raw = raw.replaceAll('[', '').replaceAll(']', '');
+
+                  // Step 3: Split by comma
+                  List<String> list = raw.split(',');
+
+                  // Step 4: Trim and remove empty values
+                  return list
+                      .map((e) => e.trim())
+                      .where((e) => e.isNotEmpty)
+                      .toList();
+                }
+
+                final languages = parseLanguages(snap.language);
 
                 return Align(
                   alignment: Alignment.topLeft,
@@ -247,12 +269,13 @@ class _DoctorDetailsPageState extends ConsumerState<DoctorDetailsPage>
                                   TextSpan(
                                     children: [
                                       TextSpan(
-                                        text: snap.hospital == null
-                                            ? " "
-                                            : snap
-                                                      .hospital
-                                                      .consultationPriceRange +
-                                                  " ",
+                                        // text: snap.hospital == null
+                                        //     ? " "
+                                        //     : snap
+                                        //               .hospital
+                                        //               .consultationPriceRange +
+                                        //           " ",
+                                        text: snap.consultationFees.toString(),
                                         style: GoogleFonts.poppins(
                                           fontSize: 18.sp,
                                           fontWeight: FontWeight.w500,
@@ -379,7 +402,10 @@ class _DoctorDetailsPageState extends ConsumerState<DoctorDetailsPage>
                                 ),
                                 SizedBox(height: 7.h),
                                 Text(
-                                  "Somalian",
+                                  // "Somalian",
+                                  languages.isEmpty
+                                      ? "N/A"
+                                      : languages.join(","),
                                   style: GoogleFonts.poppins(
                                     fontSize: 14.sp,
                                     fontWeight: FontWeight.w500,
@@ -767,6 +793,10 @@ class _DoctorDetailsPageState extends ConsumerState<DoctorDetailsPage>
                             ),
                           ),
                           onPressed: () {
+                            if (selectedTime == null || selectedTime!.isEmpty) {
+                              showErrorMessage("Please select a time slot");
+                              return;
+                            }
                             if (widget.hasChange == false) {
                               bookAppoinment(
                                 doctorId: snap.id,
@@ -799,6 +829,7 @@ class _DoctorDetailsPageState extends ConsumerState<DoctorDetailsPage>
                 );
               },
               error: (err, stack) {
+                log(stack.toString());
                 return Center(
                   child: Text(
                     "$err, $stack",
@@ -1363,7 +1394,7 @@ class _SlotPickerState extends State<SlotPicker> {
               ],
             ),
           ),
-          SizedBox(height: 10,),
+          SizedBox(height: 10),
           SizedBox(
             height: 60.h,
             child: ListView.builder(
@@ -1419,52 +1450,66 @@ class _SlotPickerState extends State<SlotPicker> {
           SizedBox(height: 15.h),
           Padding(
             padding: EdgeInsets.symmetric(horizontal: 20.w),
-            child: GridView.builder(
-              itemCount: slots.length,
-              padding: EdgeInsets.zero,
-              shrinkWrap: true,
-              physics: NeverScrollableScrollPhysics(),
-              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 5,
-                childAspectRatio: 1,
-                mainAxisSpacing: 9.h,
-                crossAxisSpacing: 8.w,
-              ),
-              itemBuilder: (context, index) {
-                final time = slots[index];
-                final isSelected = selectedTime == time;
-                return GestureDetector(
-                  onTap: () {
-                    setState(() => selectedTime = time);
-                    widget.onSlotSelected(selectedDate, selectedTime);
-                  },
-                  child: Container(
-                    padding: EdgeInsets.symmetric(
-                      horizontal: 10.w,
-                      vertical: 8.h,
-                    ),
-                    decoration: BoxDecoration(
-                      color: isSelected
-                          ? Color(0xFF067594)
-                          : Color.fromARGB(20, 255, 255, 255),
-                      borderRadius: BorderRadius.circular(15.r),
-                    ),
-                    alignment: Alignment.center,
-                    child: Text(
-                      time,
-                      textAlign: TextAlign.center,
-                      style: GoogleFonts.poppins(
-                        fontSize: 13.sp,
-                        fontWeight: FontWeight.w500,
-                        color: isSelected
-                            ? Colors.white
-                            : Color.fromARGB(153, 255, 255, 255),
+            child: slots.isEmpty
+                ? Center(
+                    child: Padding(
+                      padding: EdgeInsets.symmetric(vertical: 10.h),
+                      child: Text(
+                        "No slots available for this day",
+                        style: GoogleFonts.poppins(
+                          fontSize: 14.sp,
+                          fontWeight: FontWeight.w400,
+                          color: Colors.white,
+                        ),
                       ),
                     ),
+                  )
+                : GridView.builder(
+                    itemCount: slots.length,
+                    padding: EdgeInsets.zero,
+                    shrinkWrap: true,
+                    physics: NeverScrollableScrollPhysics(),
+                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: 5,
+                      childAspectRatio: 1,
+                      mainAxisSpacing: 9.h,
+                      crossAxisSpacing: 8.w,
+                    ),
+                    itemBuilder: (context, index) {
+                      final time = slots[index];
+                      final isSelected = selectedTime == time;
+                      return GestureDetector(
+                        onTap: () {
+                          setState(() => selectedTime = time);
+                          widget.onSlotSelected(selectedDate, selectedTime);
+                        },
+                        child: Container(
+                          padding: EdgeInsets.symmetric(
+                            horizontal: 10.w,
+                            vertical: 8.h,
+                          ),
+                          decoration: BoxDecoration(
+                            color: isSelected
+                                ? Color(0xFF067594)
+                                : Color.fromARGB(20, 255, 255, 255),
+                            borderRadius: BorderRadius.circular(15.r),
+                          ),
+                          alignment: Alignment.center,
+                          child: Text(
+                            time,
+                            textAlign: TextAlign.center,
+                            style: GoogleFonts.poppins(
+                              fontSize: 13.sp,
+                              fontWeight: FontWeight.w500,
+                              color: isSelected
+                                  ? Colors.white
+                                  : Color.fromARGB(153, 255, 255, 255),
+                            ),
+                          ),
+                        ),
+                      );
+                    },
                   ),
-                );
-              },
-            ),
           ),
         ],
       ),

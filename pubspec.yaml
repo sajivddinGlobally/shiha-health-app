@@ -52,6 +52,10 @@ dependencies:
   network_info_plus: ^6.1.4
   another_flushbar: ^1.12.30
   image: ^4.5.4
+  url_launcher: ^6.3.2
+  carousel_slider: ^5.1.1
+  smooth_page_indicator: ^1.2.1
+  youtube_player_flutter: ^9.1.3
  
 
 dev_dependencies:

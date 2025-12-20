@@ -1,4 +1,3 @@
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -7,10 +6,6 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:intl_phone_field/intl_phone_field.dart';
 import 'package:shiha_health_app/Screen/loginpage/widgets/login_controller.dart';
 
-
-
-
-  
 class LoginPage extends ConsumerStatefulWidget {
   const LoginPage({super.key});
 
@@ -18,8 +13,8 @@ class LoginPage extends ConsumerStatefulWidget {
   ConsumerState<LoginPage> createState() => _LoginPageState();
 }
 
-class _LoginPageState extends ConsumerState<LoginPage> with LoginController<LoginPage>{
-
+class _LoginPageState extends ConsumerState<LoginPage>
+    with LoginController<LoginPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -134,7 +129,6 @@ class _LoginPageState extends ConsumerState<LoginPage> with LoginController<Logi
                           Divider(color: Colors.white24, height: 1.h),
                           SizedBox(height: 20.h),
                           IntlPhoneField(
-                         
                             decoration: InputDecoration(
                               contentPadding: EdgeInsets.only(
                                 left: 18.w,
@@ -161,11 +155,11 @@ class _LoginPageState extends ConsumerState<LoginPage> with LoginController<Logi
                             ),
                             initialCountryCode: "SO",
                             onChanged: (phone) {
-                            setState(() {
+                              setState(() {
                                 phoneController.text = phone.completeNumber;
-                            });
+                              });
                             },
-                            validator: (value){
+                            validator: (value) {
                               if (value == null || value.number.isEmpty) {
                                 return 'Please enter your phone number';
                               }
@@ -182,13 +176,13 @@ class _LoginPageState extends ConsumerState<LoginPage> with LoginController<Logi
                                 side: BorderSide(),
                               ),
                             ),
-                            onPressed: isLoading
-                                ? null
-                                : () => login(),
+                            onPressed: isLoading ? null : () => login(),
                             child: isLoading == true
-                                ? Center(child: CircularProgressIndicator(
-                                  color: Colors.white,
-                                ))
+                                ? Center(
+                                    child: CircularProgressIndicator(
+                                      color: Colors.white,
+                                    ),
+                                  )
                                 : Text(
                                     "Login",
                                     style: GoogleFonts.poppins(

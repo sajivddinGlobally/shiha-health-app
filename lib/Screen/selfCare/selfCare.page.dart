@@ -1,8 +1,14 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:intl/intl.dart';
 import 'package:shiha_health_app/Screen/selfCare/controller/selfCare.controller.dart';
+import 'package:shiha_health_app/Screen/selfCare/selfCareDetails.page.dart';
+import 'package:shiha_health_app/data/controller/reminderController.dart';
+import 'package:shiha_health_app/data/controller/userDetails.provider.dart';
+import 'package:shiha_health_app/data/db/userData.dart';
 
 class SelfCarePage extends ConsumerStatefulWidget {
   const SelfCarePage({super.key});
@@ -68,20 +74,20 @@ class _SelfCarePageState extends ConsumerState<SelfCarePage>
                 Row(
                   children: [
                     SizedBox(width: 20.w),
-                    IconButton(
-                      style: IconButton.styleFrom(
-                        padding: EdgeInsets.zero,
-                        minimumSize: const Size(0, 0),
-                        tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                      ),
-                      onPressed: () {
-                        Navigator.pop(context);
-                      },
-                      icon: const Icon(
-                        Icons.arrow_back_ios,
-                        color: Colors.white,
-                      ),
-                    ),
+                    // IconButton(
+                    //   style: IconButton.styleFrom(
+                    //     padding: EdgeInsets.zero,
+                    //     minimumSize: const Size(0, 0),
+                    //     tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                    //   ),
+                    //   onPressed: () {
+                    //     Navigator.pop(context);
+                    //   },
+                    //   icon: const Icon(
+                    //     Icons.arrow_back_ios,
+                    //     color: Colors.white,
+                    //   ),
+                    // ),
                     SizedBox(width: 10.w),
                     Text(
                       "Self Care",
@@ -199,7 +205,17 @@ class _SelfCarePageState extends ConsumerState<SelfCarePage>
                                         Stack(
                                           children: [
                                             InkWell(
-                                              onTap: () {},
+                                              onTap: () {
+                                                // Navigator.push(
+                                                //   context,
+                                                //   CupertinoPageRoute(
+                                                //     builder: (context) =>
+                                                //         SelfCareDetailsPage(
+                                                //           id: snap[index].id.toString()
+                                                //         ),
+                                                //   ),
+                                                // );
+                                              },
                                               child: SizedBox(
                                                 width: double.infinity,
                                                 height: 120.h,
@@ -306,32 +322,121 @@ class MyWidget extends StatelessWidget {
 
 //////////////
 
-class RemindScreen extends StatefulWidget {
+class RemindScreen extends ConsumerStatefulWidget {
   const RemindScreen({super.key});
 
   @override
-  State<RemindScreen> createState() => _RemindScreenState();
+  ConsumerState<RemindScreen> createState() => _RemindScreenState();
 }
 
-class _RemindScreenState extends State<RemindScreen> {
+class _RemindScreenState extends ConsumerState<RemindScreen> {
+  String formatTime(String time24) {
+    final parts = time24.split(":");
+    int hour = int.parse(parts[0]);
+    int minute = int.parse(parts[1]);
+
+    final date = DateTime(2025, 1, 1, hour, minute);
+    return DateFormat('hh:mm a').format(date); // => 06:00 PM
+  }
+
   @override
   Widget build(BuildContext context) {
-    return const Center(
-      child: Text("Reminder Screen", style: TextStyle(color: Colors.white)),
+    final reminderProvider = ref.watch(reminderController);
+    return reminderProvider.when(
+      data: (data) {
+        return ListView.builder(
+          shrinkWrap: true,
+          physics: NeverScrollableScrollPhysics(),
+          padding: EdgeInsets.zero,
+          itemCount: data.length,
+          itemBuilder: (context, index) {
+            final item = data[index];
+            return Container(
+              margin: EdgeInsets.symmetric(horizontal: 20.w, vertical: 8.h),
+              padding: EdgeInsets.all(16),
+              decoration: BoxDecoration(
+                color: const Color(0xFF0E1329),
+                borderRadius: BorderRadius.circular(16),
+              ),
+              child: Row(
+                children: [
+                  // CHECKBOX
+                  Container(
+                    height: 22.h,
+                    width: 22.w,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(5),
+                      border: Border.all(color: Colors.white, width: 1.2),
+                      color: item.completed == 1
+                          ? Colors.blue
+                          : Colors.transparent,
+                    ),
+                    child: item.completed == 1
+                        ? Icon(Icons.check, size: 16, color: Colors.white)
+                        : null,
+                  ),
+
+                  SizedBox(width: 12),
+
+                  // TITLE
+                  Expanded(
+                    child: Text(
+                      item.title ?? "N/A",
+                      style: GoogleFonts.poppins(
+                        color: Colors.white,
+                        fontSize: 16.sp,
+                        decoration: item.completed == 1
+                            ? TextDecoration.lineThrough
+                            : TextDecoration.none,
+                      ),
+                    ),
+                  ),
+
+                  // TIME
+                  Row(
+                    children: [
+                      Icon(Icons.access_time, color: Colors.white70, size: 18),
+                      SizedBox(width: 4),
+                      Text(
+                        formatTime(item.time.toString()),
+                        style: TextStyle(color: Colors.white70, fontSize: 14),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            );
+          },
+        );
+      },
+      error: (error, stackTrace) {
+        return Center(
+          child: Text(
+            error.toString(),
+            style: GoogleFonts.poppins(
+              fontSize: 16.sp,
+              fontWeight: FontWeight.w400,
+              color: Colors.white,
+            ),
+          ),
+        );
+      },
+      loading: () =>
+          Center(child: CircularProgressIndicator(color: Colors.white)),
     );
   }
 }
 
 //////////////
 
-class SelfScreen extends StatefulWidget {
+class SelfScreen extends ConsumerStatefulWidget {
   const SelfScreen({super.key});
 
   @override
-  State<SelfScreen> createState() => _SelfScreenState();
+  ConsumerState<SelfScreen> createState() => _SelfScreenState();
 }
 
-class _SelfScreenState extends State<SelfScreen> {
+class _SelfScreenState extends ConsumerState<SelfScreen> {
   List<Map<String, dynamic>> careList = [
     {"name": "Heart Rate", "re": "80", "image": "assets/rate.png", "b": "bpm"},
     {
@@ -356,11 +461,16 @@ class _SelfScreenState extends State<SelfScreen> {
   ];
   @override
   Widget build(BuildContext context) {
+    final rawData = HiveService().getData<Map<dynamic, dynamic>>(
+      key: "user",
+      boxName: HiveBoxes.userData,
+    );
+    final userDetails = ref.watch(userDetailProvider(rawData!['user']['id']));
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: 20.w),
       child: GridView.builder(
-        shrinkWrap: true,
-        physics: const NeverScrollableScrollPhysics(),
+        // shrinkWrap: true,
+        // physics: const NeverScrollableScrollPhysics(),
         padding: EdgeInsets.zero,
         itemCount: careList.length,
         gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(

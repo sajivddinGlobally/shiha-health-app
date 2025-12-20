@@ -223,9 +223,17 @@ class _DoctorsTabState extends State<DoctorsTab> {
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(10.r),
                 child: Image.network(
-                  "http://sihahealth.globallywebsolutions.com" +
-                      widget.data.profilePicture.toString(),
+                  // "http://sihahealth.globallywebsolutions.com" +
+                  widget.data.profilePicture.toString(),
                   fit: BoxFit.cover,
+                  errorBuilder: (context, error, stackTrace) {
+                    return Image.network(
+                      "https://img.freepik.com/vecteurs-premium/vecteur-icone-image-par-defaut-page-image-manquante-pour-conception-site-web-application-mobile-aucune-photo-disponible_87543-11093.jpg",
+                      width: 170.w,
+                      height: 170.h,
+                      fit: BoxFit.cover,
+                    );
+                  },
                 ),
               ),
             ),
