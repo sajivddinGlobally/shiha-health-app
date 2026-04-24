@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -157,7 +159,10 @@ class _DoctorListPageState extends ConsumerState<DoctorListPage>
             ],
           );
         },
-        error: (err, stack) => Center(child: Text("$err, $stack")),
+        error: (err, stack) {
+          log(stack.toString());
+          return Center(child: Text("$err"));
+        },
         loading: () => Container(
           height: MediaQuery.of(context).size.height,
           width: MediaQuery.of(context).size.width,

@@ -142,6 +142,22 @@ class _HospitalDetailsPageState extends ConsumerState<HospitalDetailsPage> {
                                     width: 350.w,
                                     height: 248.h,
                                     fit: BoxFit.cover,
+                                    errorBuilder:
+                                        (context, error, stackTrace) =>
+                                            Container(
+                                              decoration: BoxDecoration(
+                                                color: Colors.grey,
+                                              ),
+                                              width: 350.w,
+                                              height: 248.h,
+                                              child: Center(
+                                                child: Icon(
+                                                  Icons.no_sim_sharp,
+                                                  size: 40.sp,
+                                                  color: Colors.white,
+                                                ),
+                                              ),
+                                            ),
                                   ),
                                 );
                               }).toList(),

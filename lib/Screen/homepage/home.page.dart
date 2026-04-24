@@ -545,6 +545,7 @@ class _HomePageState extends ConsumerState<HomePage>
                                 height: 45.h,
                                 decoration: BoxDecoration(
                                   shape: BoxShape.circle,
+
                                   // gradient: LinearGradient(
                                   //   begin: Alignment.bottomRight,
                                   //   end: Alignment.topRight,
@@ -905,15 +906,6 @@ class _HomePageState extends ConsumerState<HomePage>
                                 ),
                               ),
                               color: Color(0xFF0A4D80),
-                              // gradient: LinearGradient(
-                              //   begin: Alignment(0.05, 0.03),
-                              //   end: Alignment(0.95, 0.90),
-                              //   colors: [
-                              //     const Color(0xFF0084FF),
-                              //     const Color(0xFF339CFF),
-                              //     const Color(0xFF0084FF),
-                              //   ],
-                              // ),
                             ),
                             child: Padding(
                               padding: EdgeInsets.only(

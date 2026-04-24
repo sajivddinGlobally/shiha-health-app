@@ -35,13 +35,11 @@ mixin OtpController<T extends StatefulWidget> on State<T> {
             await saveData(response: loginResponse);
             showSuccessMessage(context, "Login successful");
 
-            Future.delayed(Duration(seconds: 2), () {
-              Navigator.pushAndRemoveUntil(
-                context,
-                CupertinoPageRoute(builder: (context) => BottomNavigation()),
-                (route) => false,
-              );
-            });
+            Navigator.pushAndRemoveUntil(
+              context,
+              CupertinoPageRoute(builder: (context) => BottomNavigation()),
+              (route) => false,
+            );
           }
         } on DioException catch (e) {
           setState(() {

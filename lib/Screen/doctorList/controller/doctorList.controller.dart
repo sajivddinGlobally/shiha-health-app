@@ -24,7 +24,7 @@ mixin DoctorListController<T extends ConsumerStatefulWidget>
         searchQuery.toLowerCase(),
       );
       return nameMatch || specialtyMatch;
-    }).toList();
+  }).toList();
   }
 
   void clearSeaarch() {

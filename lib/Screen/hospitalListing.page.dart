@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -174,12 +176,13 @@ class _HospitalListingPageState extends ConsumerState<HospitalListingPage> {
                 ),
               );
             },
-            error: (err, stack) => Center(
-              child: Text(
-                "$err, $stack",
-                style: TextStyle(color: Colors.white),
-              ),
-            ),
+            error: (err, stack) {
+              log(stack.toString());
+              log(err.toString());
+              return Center(
+                child: Text("$err", style: TextStyle(color: Colors.white)),
+              );
+            },
             loading: () =>
                 Center(child: CircularProgressIndicator(color: Colors.white)),
           ),
@@ -216,8 +219,18 @@ class _HospitalListingPageState extends ConsumerState<HospitalListingPage> {
                 fit: BoxFit.cover,
                 width: double.infinity,
                 height: 100.h,
-                errorBuilder: (context, error, stackTrace) =>
-                    Icon(Icons.broken_image, size: 40.sp, color: Colors.white),
+                errorBuilder: (context, error, stackTrace) => AspectRatio(
+                  aspectRatio: 1.3,
+                  child: Container(
+                    decoration: BoxDecoration(color: Colors.grey),
+                    width: double.infinity,
+                    child: Icon(
+                      Icons.no_sim_sharp,
+                      size: 40.sp,
+                      color: Colors.white,
+                    ),
+                  ),
+                ),
               ),
             ),
           ),

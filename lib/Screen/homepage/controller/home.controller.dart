@@ -50,12 +50,10 @@ mixin HomeController<T extends ConsumerStatefulWidget> on ConsumerState<T> {
   void userLogout() async {
     await HiveService().clearAll(HiveBoxes.userData);
     showSuccessMessage(context, "Logout succesfully");
-    Future.delayed(Duration(seconds: 3), () {
-      Navigator.pushAndRemoveUntil(
-        context,
-        CupertinoPageRoute(builder: (context) => SplashPage()),
-        (route) => false,
-      );
-    });
+    Navigator.pushAndRemoveUntil(
+      context,
+      CupertinoPageRoute(builder: (context) => SplashPage()),
+      (route) => false,
+    );
   }
 }

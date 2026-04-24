@@ -55,7 +55,7 @@ class DoctorDetailResponse {
     required this.kycStatus,
     this.userId,
     this.medicalLicenseFile,
-     this.hospital,
+    this.hospital,
     required this.appointments,
   });
 
@@ -65,7 +65,12 @@ class DoctorDetailResponse {
         fullName: json["full_name"],
         specialty: json["specialty"],
         experienceYears: json["experience_years"],
-        rating: json["rating"]?.toDouble(),
+        // rating: json["rating"]?.toDouble(),
+        rating: (json["rating"] is int)
+            ? (json["rating"] as int).toDouble()
+            : (json["rating"] is double)
+            ? json["rating"]
+            : 0.0,
         profilePicture: json["profile_picture"],
         hospitalId: json["hospital_id"],
         consultationFees: json["consultation_fees"],
@@ -85,7 +90,7 @@ class DoctorDetailResponse {
         // userId: json["user_id"],
         userId: json["user_id"] != null ? json["user_id"] as int : null,
         medicalLicenseFile: json["medical_license_file"].toString(),
-       // hospital: Hospital.fromJson(json["hospital"]),
+        // hospital: Hospital.fromJson(json["hospital"]),
         hospital: json["hospital"] != null
             ? Hospital.fromJson(json["hospital"])
             : null,

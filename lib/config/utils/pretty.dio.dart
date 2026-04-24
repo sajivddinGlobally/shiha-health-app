@@ -15,7 +15,7 @@ createDio() {
       responseBody: true,
       responseHeader: true,
       error: true,
-      compact: false, // Makes logs more readable
+      compact: false,
       maxWidth: 90,
     ),
   );
