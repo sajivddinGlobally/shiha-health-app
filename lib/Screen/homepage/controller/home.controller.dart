@@ -39,13 +39,13 @@ mixin HomeController<T extends ConsumerStatefulWidget> on ConsumerState<T> {
   //   return ref.watch(userDetailProvider(id));
   // }
 
-  AsyncValue<UserAppoinmentsListRes> fetchInit() {
-    final rawData = HiveService().getData<Map<dynamic, dynamic>>(
-      key: "user",
-      boxName: HiveBoxes.userData,
-    );
-    return ref.watch(appoinmentProvider(rawData!['user']['id']));
-  }
+  // AsyncValue<UserAppoinmentsListRes> fetchInit() {
+  //   final rawData = HiveService().getData<Map<dynamic, dynamic>>(
+  //     key: "user",
+  //     boxName: HiveBoxes.userData,
+  //   );
+  //   return ref.watch(appoinmentProvider(rawData!['user']['id']));
+  // }
 
   void userLogout() async {
     await HiveService().clearAll(HiveBoxes.userData);

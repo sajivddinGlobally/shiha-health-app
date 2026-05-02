@@ -15,6 +15,7 @@ import 'package:shiha_health_app/Screen/homepage/controller/home.controller.dart
 import 'package:shiha_health_app/Screen/hospitalListing.page.dart';
 import 'package:shiha_health_app/Screen/laboratoryService.page.dart';
 import 'package:shiha_health_app/Screen/selfCare/selfCare.page.dart';
+import 'package:shiha_health_app/data/controller/appoinmnet.provider.dart';
 import 'package:shiha_health_app/data/controller/userDetails.provider.dart';
 import 'package:shiha_health_app/data/db/userData.dart';
 
@@ -112,7 +113,8 @@ class _HomePageState extends ConsumerState<HomePage>
     );
     final userDetails = ref.watch(userDetailProvider(rawData!['user']['id']));
     // final userDetails = fetchUserDetails();
-    final appoinment = fetchInit();
+    // final appoinment = fetchInit();
+    final appoinment = ref.watch(appoinmentProvider(rawData!['user']['id']));
     return Scaffold(
       key: _scaffoldKey,
       drawer: SizedBox(
@@ -985,11 +987,11 @@ class _HomePageState extends ConsumerState<HomePage>
                               SizedBox(
                                 height: 185.h,
                                 child: ListView.builder(
-                                  itemCount: appoinmentSnap.data.length,
+                                  itemCount: appoinmentSnap.data!.length,
                                   scrollDirection: Axis.horizontal,
                                   padding: EdgeInsets.zero,
                                   itemBuilder: (context, index) {
-                                    final item = appoinmentSnap.data[index];
+                                    final item = appoinmentSnap.data![index];
                                     return Container(
                                       margin: EdgeInsets.only(left: 20.w),
                                       padding: EdgeInsets.only(
@@ -1079,7 +1081,7 @@ class _HomePageState extends ConsumerState<HomePage>
                                                               width: 6.w,
                                                             ),
                                                             Text(
-                                                              item.status,
+                                                              item.status ?? "",
                                                               style: GoogleFonts.poppins(
                                                                 fontSize: 10.sp,
                                                                 fontWeight:
@@ -1152,7 +1154,7 @@ class _HomePageState extends ConsumerState<HomePage>
                                                   SizedBox(
                                                     width: 200.w,
                                                     child: Text(
-                                                      "${item.doctor.fullName} – ${item.hospital.name}",
+                                                      "${item.doctor!.fullName} – ${item.hospital!.name}",
                                                       style:
                                                           GoogleFonts.poppins(
                                                             fontSize: 14.sp,
@@ -1166,7 +1168,8 @@ class _HomePageState extends ConsumerState<HomePage>
                                                     ),
                                                   ),
                                                   Text(
-                                                    item.hospital.location,
+                                                    item.hospital!.location ??
+                                                        "",
                                                     style: GoogleFonts.poppins(
                                                       fontSize: 11.sp,
                                                       fontWeight:
@@ -1200,7 +1203,7 @@ class _HomePageState extends ConsumerState<HomePage>
                                                 CupertinoPageRoute(
                                                   builder: (context) =>
                                                       DoctorDetailsPage(
-                                                        userID: item.doctor.id
+                                                        userID: item.doctor!.id
                                                             .toString(),
                                                         hasChange: true,
                                                         bookingId: item.id
@@ -1299,6 +1302,7 @@ class _HomePageState extends ConsumerState<HomePage>
                     );
                   },
                   error: (err, stack) {
+                    log(err.toString());
                     log(stack.toString());
                     return Center(
                       child: Text("$err", style: TextStyle(color: Colors.red)),

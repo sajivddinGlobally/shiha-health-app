@@ -1,6 +1,7 @@
 import 'dart:developer';
 import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 import 'package:pretty_dio_logger/pretty_dio_logger.dart';
 import 'package:shiha_health_app/Screen/splash/splash.page.dart';
 import 'package:shiha_health_app/data/db/userData.dart';
@@ -21,6 +22,19 @@ createDio() {
   );
   dio.interceptors.add(
     InterceptorsWrapper(
+      onRequest: (options, handler) {
+        final rawData = HiveService().getData<Map<dynamic, dynamic>>(
+          key: "user",
+          boxName: HiveBoxes.userData,
+        );
+        var token = rawData?['token'];
+        options.headers.addAll({
+          "Accept": "application/json",
+          "Content-Type": "application/json",
+          if (token != null) "Authorization": "Bearer $token",
+        });
+        return handler.next(options);
+      },
       onResponse: (response, handler) async {
         try {
           if (response.data is Map<String, dynamic> &&

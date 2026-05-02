@@ -30,7 +30,7 @@ class _AppointmentPageState extends ConsumerState<AppointmentPage>
           appointsAsync.when(
             data: (snap) {
               final appointments = snap.data;
-              final splitter = AppointmentSplitter(appointments);
+              final splitter = AppointmentSplitter(appointments!);
               final upcomingList = splitter.upcoming;
               final missedList = splitter.missed;
 
@@ -265,7 +265,7 @@ class _AppointmentPageState extends ConsumerState<AppointmentPage>
                                                 CrossAxisAlignment.start,
                                             children: [
                                               Text(
-                                                item.doctor.fullName,
+                                                item.doctor!.fullName ?? "",
                                                 style: GoogleFonts.poppins(
                                                   fontSize: 14.sp,
                                                   fontWeight: FontWeight.w500,
@@ -274,7 +274,7 @@ class _AppointmentPageState extends ConsumerState<AppointmentPage>
                                                 ),
                                               ),
                                               Text(
-                                                "${item.doctor.specialty} (${item.doctor.experienceYears} Years experience)",
+                                                "${item.doctor!.specialty} (${item.doctor!.experienceYears} Years experience)",
                                                 style: GoogleFonts.poppins(
                                                   fontSize: 12.sp,
                                                   fontWeight: FontWeight.w500,
@@ -373,7 +373,7 @@ class _AppointmentPageState extends ConsumerState<AppointmentPage>
                                               DateFormat("hh:mm a").format(
                                                 DateFormat(
                                                   "HH:mm:ss",
-                                                ).parse(item.time),
+                                                ).parse(item.time.toString()),
                                               ),
                                               style: GoogleFonts.poppins(
                                                 fontSize: 13.sp,
@@ -400,7 +400,7 @@ class _AppointmentPageState extends ConsumerState<AppointmentPage>
                                             SizedBox(width: 8.w),
                                             Expanded(
                                               child: Text(
-                                                item.hospital.name,
+                                                item.hospital?.name ?? "",
                                                 overflow: TextOverflow.ellipsis,
                                                 style: GoogleFonts.poppins(
                                                   fontSize: 13.sp,
@@ -439,7 +439,9 @@ class _AppointmentPageState extends ConsumerState<AppointmentPage>
                                                   CupertinoPageRoute(
                                                     builder: (context) =>
                                                         DoctorDetailsPage(
-                                                          userID: item.doctor.id
+                                                          userID: item
+                                                              .doctor!
+                                                              .id
                                                               .toString(),
                                                           hasChange: true,
                                                           bookingId: item.id
@@ -491,7 +493,7 @@ class MissedAppointment extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-      return SizedBox(
+    return SizedBox(
       height: 400.h,
       child: ListView.builder(
         padding: EdgeInsets.zero,

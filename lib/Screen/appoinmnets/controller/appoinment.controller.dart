@@ -54,11 +54,11 @@ class AppointmentSplitter {
 
   List<Datum> get upcoming {
     return allAppointments
-        .where((a) => a.date.isAtSameMomentAs(today) || a.date.isAfter(today))
+        .where((a) => a.date!.isAtSameMomentAs(today) || a.date!.isAfter(today))
         .toList();
   }
 
   List<Datum> get missed {
-    return allAppointments.where((a) => a.date.isBefore(today)).toList();
+    return allAppointments.where((a) => a.date!.isBefore(today)).toList();
   }
 }
